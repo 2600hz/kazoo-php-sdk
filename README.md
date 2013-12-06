@@ -51,7 +51,7 @@ Now we can use autoloader from Composer by:
 require_once 'vendor/autoload.php';
 
 $client = new \Kazoo\Client();
-$accounts = $client->api('account')->all();
+$accounts = $client->api('account')->get();
 ```
 
 From `$client` object, you can access to all Kazoo.
