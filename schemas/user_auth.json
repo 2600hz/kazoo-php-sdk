@@ -1,0 +1,48 @@
+{
+   "_id":"user_auth",
+   "$schema":"http://json-schema.org/draft-03/schema#",
+   "id":"http://json-schema.org/draft-03/schema#",
+   "description":"Provides an auth-token via user credentials",
+   "properties":{
+      "credentials":{
+         "name":"Credentials",
+         "description":"A hash of the uses credentials",
+         "required":"true",
+         "type":"string",
+         "minLength":1,
+         "maxLength":64
+      },
+      "account_realm":{
+         "name":"Account Realm",
+         "description":"The account realm of the user",
+         "type":"string",
+         "minLength":1,
+         "maxLength":64
+      },
+      "account_name":{
+         "name":"Account Name",
+         "description":"The account name of the user",
+         "type":"string",
+         "minLength":1,
+         "maxLength":64
+      },
+      "phone_number":{
+         "name":"Phone Number",
+         "description":"A phone number assigned to the users account",
+         "type":"string",
+         "minLength":1,
+         "maxLength":64
+      },
+      "method":{
+         "name":"Method",
+         "description":"The hash method",
+         "type":"string",
+         "enum":[
+            "md5",
+            "sha"
+         ],
+         "default":"md5"
+      }
+   },
+   "additionalProperties":false
+}
