@@ -10,11 +10,11 @@ use Kazoo\Api\AbstractApi;
  *
  * @link   https://2600hz.atlassian.net/wiki/display/docs/Accounts+API
  */
-class Directories extends AbstractApi {
+class Faxes extends AbstractApi {
     
     public function __construct(Client $client) {
         parent::__construct($client);
-        $this->setSchemaName("directories.json");
-        $this->setResourceNoun("Directory");
+        $this->setSchemaName("faxes.json");
+        $this->setResourceNoun("Fax");
     }
 }

@@ -1,7 +1,13 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-?>
+namespace Kazoo\Api\Resources;
+
+use Kazoo\Api\AbstractResource;
+
+class Cdr extends AbstractResource {
+    
+    public function __construct(){
+        
+    }
+    
+}

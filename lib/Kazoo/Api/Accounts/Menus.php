@@ -10,11 +10,11 @@ use Kazoo\Api\AbstractApi;
  *
  * @link   https://2600hz.atlassian.net/wiki/display/docs/Accounts+API
  */
-class Devices extends AbstractApi {
+class Menus extends AbstractApi {
     
     public function __construct(Client $client) {
         parent::__construct($client);
-        $this->setSchemaName("devices.json");
-        $this->setResourceNoun("Device");
+        $this->setSchemaName("menus.json");
+        $this->setResourceNoun("Menu");
     }
 }

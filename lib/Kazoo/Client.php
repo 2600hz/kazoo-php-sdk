@@ -76,12 +76,12 @@ class Client {
 
         $this->options['base_url'] = $this->options['base_url'] . "/v" . $this->options['api_version'];
 
-        if(!is_null($this->clientState)){
+        if (!is_null($this->clientState)) {
             $this->setClientState($clientState);
         } else {
             $this->setupClientState();
         }
-        
+
         $this->authenticate();
     }
 
@@ -92,21 +92,26 @@ class Client {
      *
      * @throws InvalidArgumentException
      */
-    public function api($name) {
-        switch ($name) {
-            case 'me':
-            case 'current_user':
-                $api = new Api\CurrentUser($this);
-                break;
-
-            case 'account':
-            case 'accounts':
-                $api = new Api\Accounts($this);
-                break;
-            case 'device':
-            case 'devices':
-                $api = new Api\Devices($this);
-                break;
+    public function api($noun) {
+        switch ($noun) {
+            case 'accounts':            $api = new Api\Accounts($this); break;
+            case 'callflows':           $api = new Api\Callflows($this); break;
+            case "carrier_resources":   $api = new Api\CarrierResources($this); break;
+            case "cdrs":                $api = new Api\Cdrs($this); break;
+            case "click_to_calls":      $api = new Api\ClickToCalls($this); break;
+            case "conferences":         $api = new Api\Conferences($this); break;
+            case "devices":             $api = new Api\Devices($this); break;
+            case "directories":         $api = new Api\Directories($this); break;
+            case "faxes":               $api = new Api\Faxes($this); break;
+            case "groups":              $api = new Api\Groups($this); break;
+            case "menus":               $api = new Api\Menus($this); break;
+            case "phone_numbers":       $api = new Api\PhoneNumbers($this); break;
+            case "queues":              $api = new Api\Queues($this); break;
+            case "registrations":       $api = new Api\Registrations($this); break;
+            case "time_of_day_routes":  $api = new Api\TimeOfDayRoutes($this); break;
+            case "users":               $api = new Api\Users($this); break;
+            case "voicemail_boxes":     $api = new Api\VoicemailBoxes($this); break;
+            case "webhooks":            $api = new Api\Webhooks($this); break;
             default:
                 throw new InvalidArgumentException(sprintf('Undefined api instance called: "%s"', $name));
         }
@@ -127,7 +132,7 @@ class Client {
         try {
 
             $response = $request->send();
-            
+
             switch ($response->getStatusCode()) {
                 case 200:
                     $this->clientState = json_decode($response->getBody());
@@ -143,14 +148,14 @@ class Client {
         }
     }
 
-    private function setClientState(stdClass $clientState){
+    private function setClientState(stdClass $clientState) {
         $this->clientState = $clientState;
     }
-    
-    public function getClientState(){
+
+    public function getClientState() {
         return $this->clientState;
     }
-    
+
     public function getAuthToken() {
         echo $this->getClientState()->auth_token . "\n";
         return $this->getClientState()->auth_token;
