@@ -1,6 +1,6 @@
 <?php
 
-namespace Kazoo\Api\Callflows;
+namespace Kazoo\Api\Accounts;
 
 use Kazoo\Client;
 use Kazoo\Api\AbstractApi;
