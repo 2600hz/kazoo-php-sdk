@@ -85,9 +85,9 @@ html_theme = 'kr'
 
 from sphinx.highlighting import lexers
 from pygments.lexers.web import PhpLexer
-from pygson.json_lexer import JSONLexer
+from pygments.lexers.web import JsonLexer
 lexers['php'] = PhpLexer(startinline=True)
-lexers['json'] = JSONLexer()
+lexers['json'] = JsonLexer()
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
