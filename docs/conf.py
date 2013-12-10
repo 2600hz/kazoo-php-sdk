@@ -19,6 +19,8 @@ sys.path.insert(0, os.path.join(os.path.abspath('.'), "ext"))
 # Disabled: , 'sphinx.ext.intersphinx'
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.todo', 'sphinx.ext.ifconfig', 'sphinx.ext.viewcode', 'sphinxcontrib.phpdomain', 'sphinxcontrib_phpautodoc']
 
+primary_domain = 'php'
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
