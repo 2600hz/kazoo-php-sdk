@@ -69,10 +69,12 @@ abstract class AbstractApi implements ApiInterface {
     }
 
     public function __call($name, $arguments) {
-
+        
+        $base_headers = array("Content-Type" => "application/json", "Accept" => "application/json");
+        
         $uri = (isset($arguments[0]) ? $arguments[0] : '');
         $parameters = (isset($arguments[1]) ? $arguments[1] : array());
-        $requestHeaders = (isset($arguments[2]) ? $arguments[2] : array());
+        $requestHeaders = (isset($arguments[2]) ? array_merge($base_headers, $arguments[2]) : $base_headers);
 
         switch (strtolower($name)) {
             case 'new':

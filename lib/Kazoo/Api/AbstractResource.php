@@ -3,11 +3,9 @@
 namespace Kazoo\Api;
 
 abstract class AbstractResource {
-
-    /**
-     *
-     * @var type 
-     */
-    protected $_data;
+    
+    public function toJSON(){
+        return json_encode($this, false);
+    }
 
 }

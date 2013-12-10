@@ -5,11 +5,10 @@ namespace Kazoo\HttpClient\Message;
 use Guzzle\Http\Message\Response;
 use Kazoo\Exception\ApiLimitExceedException;
 
-class ResponseMediator
-{
-    public static function getContent(Response $response)
-    {
-        $body    = $response->getBody(true);
+class ResponseMediator {
+
+    public static function getContent(Response $response) {
+        $body = $response->getBody(true);
         $content = json_decode($body, true);
 
         if (JSON_ERROR_NONE !== json_last_error()) {
@@ -19,8 +18,7 @@ class ResponseMediator
         return $content;
     }
 
-    public static function getPagination(Response $response)
-    {
+    public static function getPagination(Response $response) {
         $header = $response->getHeader('Link');
 
         if (empty($header)) {
@@ -39,12 +37,12 @@ class ResponseMediator
         return $pagination;
     }
 
-    public static function getApiLimit(Response $response)
-    {
+    public static function getApiLimit(Response $response) {
         $remainingCalls = $response->getHeader('X-RateLimit-Remaining');
 
         if (null !== $remainingCalls && 1 > $remainingCalls) {
             throw new ApiLimitExceedException($remainingCalls);
         }
     }
+
 }

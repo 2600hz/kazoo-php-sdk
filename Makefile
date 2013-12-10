@@ -7,11 +7,10 @@ define LICENSE
 /**
  * Kazoo API helper library.
  *
- * @category  Services
- * @package   Services_Kazoo
+ * @package   Kazoo
  * @author    Ben Wann <ben@2600hz.com>
  * @license   http://creativecommons.org/licenses/MIT/ MIT
- * @link      http://pear.php.net/package/Services_Kazoo
+ * @link      http://github.com/2600hz/kazoo-php-sdk
  */
 endef
 export LICENSE
@@ -35,10 +34,6 @@ test-install:
 	# Composer: http://getcomposer.org/download/
 	composer install
 
-install:
-	pear channel-discover 2600hz.github.com/pear
-	pear install 2600hz/Services_Kazoo
-
 # if these fail, you may need to install the helper library - run "make
 # test-install"
 test:
@@ -54,7 +49,7 @@ docs:
 	. venv/bin/activate; cd docs && make html
 
 authors:
-	echo "Authors\n=======\n\nA huge thanks to all of our contributors:\n\n" > AUTHORS.md
-	git log --raw | grep "^Author: " | cut -d ' ' -f2- | cut -d '<' -f1 | sed 's/^/- /' | sort | uniq >> AUTHORS.md
+    echo "Authors\n=======\n\nMany thanks to all of our contributors:\n\n" > AUTHORS.md
+    git log --format='%aN' | awk '{arr[$0]++} END{for (i in arr){print arr[i], i;}}' | sort -rn | cut -d " " -f2- | sed 's/^/- /' >> AUTHORS.md
 
 .PHONY: all clean dist test docs docs-install test-install authors

@@ -18,21 +18,6 @@ use Guzzle\Http\Client as GuzzleClient;
  */
 class Client {
 
-    public $client_state;
-
-    /**
-     * Constant for authentication method. Indicates the new favored login method
-     * with username and password via HTTP Authentication.
-     */
-
-    const REQUEST_KAZOO_LOGIN = 'kazoo_login_authentication';
-
-    /**
-     * Constant for authentication method. Indicates the new login method with
-     * with token via HTTP Authentication.
-     */
-    const AUTH_HTTP_TOKEN = 'http_token';
-
     /**
      * @var array
      */
@@ -47,7 +32,7 @@ class Client {
     );
 
     /**
-     * The Buzz instance used to communicate with GitHub
+     * The Buzz instance used to communicate with Kazoo
      *
      * @var HttpClient
      */
@@ -56,6 +41,7 @@ class Client {
     private $password;
     private $siprealm;
     private $clientState;
+    private $baseAccount;
 
     /**
      * Instantiate a new Kazoo client
@@ -82,7 +68,9 @@ class Client {
             $this->setupClientState();
         }
 
-        $this->authenticate();
+        $this->setAuthToken();
+        
+        $this->requestBaseAccount();
     }
 
     /**
@@ -94,24 +82,42 @@ class Client {
      */
     public function api($noun) {
         switch ($noun) {
-            case 'accounts':            $api = new Api\Accounts($this); break;
-            case 'callflows':           $api = new Api\Callflows($this); break;
-            case "carrier_resources":   $api = new Api\CarrierResources($this); break;
-            case "cdrs":                $api = new Api\Cdrs($this); break;
-            case "click_to_calls":      $api = new Api\ClickToCalls($this); break;
-            case "conferences":         $api = new Api\Conferences($this); break;
-            case "devices":             $api = new Api\Devices($this); break;
-            case "directories":         $api = new Api\Directories($this); break;
-            case "faxes":               $api = new Api\Faxes($this); break;
-            case "groups":              $api = new Api\Groups($this); break;
-            case "menus":               $api = new Api\Menus($this); break;
-            case "phone_numbers":       $api = new Api\PhoneNumbers($this); break;
-            case "queues":              $api = new Api\Queues($this); break;
-            case "registrations":       $api = new Api\Registrations($this); break;
-            case "time_of_day_routes":  $api = new Api\TimeOfDayRoutes($this); break;
-            case "users":               $api = new Api\Users($this); break;
-            case "voicemail_boxes":     $api = new Api\VoicemailBoxes($this); break;
-            case "webhooks":            $api = new Api\Webhooks($this); break;
+            case 'accounts': $api = new Api\Accounts($this);
+                break;
+            case 'callflows': $api = new Api\Callflows($this);
+                break;
+            case "carrier_resources": $api = new Api\CarrierResources($this);
+                break;
+            case "cdrs": $api = new Api\Cdrs($this);
+                break;
+            case "click_to_calls": $api = new Api\ClickToCalls($this);
+                break;
+            case "conferences": $api = new Api\Conferences($this);
+                break;
+            case "devices": $api = new Api\Devices($this);
+                break;
+            case "directories": $api = new Api\Directories($this);
+                break;
+            case "faxes": $api = new Api\Faxes($this);
+                break;
+            case "groups": $api = new Api\Groups($this);
+                break;
+            case "menus": $api = new Api\Menus($this);
+                break;
+            case "phone_numbers": $api = new Api\PhoneNumbers($this);
+                break;
+            case "queues": $api = new Api\Queues($this);
+                break;
+            case "registrations": $api = new Api\Registrations($this);
+                break;
+            case "time_of_day_routes": $api = new Api\TimeOfDayRoutes($this);
+                break;
+            case "users": $api = new Api\Users($this);
+                break;
+            case "voicemail_boxes": $api = new Api\VoicemailBoxes($this);
+                break;
+            case "webhooks": $api = new Api\Webhooks($this);
+                break;
             default:
                 throw new InvalidArgumentException(sprintf('Undefined api instance called: "%s"', $name));
         }
@@ -119,6 +125,10 @@ class Client {
         return $api;
     }
 
+    /**
+     * 
+     * @throws AuthenticationException
+     */
     private function setupClientState() {
 
         $payload = new stdClass();
@@ -147,31 +157,42 @@ class Client {
             die($e->getMessage());
         }
     }
+    
+    private function requestBaseAccount(){
+        $this->baseAccount = $this->api('accounts')->get($this->getClientState()->account_id);
+    }
 
+    /**
+     * 
+     * @param stdClass $clientState
+     */
     private function setClientState(stdClass $clientState) {
         $this->clientState = $clientState;
     }
 
+    /**
+     * 
+     * @return type
+     */
     public function getClientState() {
         return $this->clientState;
     }
 
+    /**
+     * 
+     * @return type
+     */
     public function getAuthToken() {
-        echo $this->getClientState()->auth_token . "\n";
         return $this->getClientState()->auth_token;
     }
 
     /**
      * Authenticate a user for all next requests
      *
-     * @param string      $tokenOrLogin GitHub private token/username/client ID
-     * @param null| string $password     GitHub password/secret (optionally can contain $authMethod)
-     * @param string $sipRealm     GitHub password/secret (optionally can contain $authMethod)
-     * @param string $authMethod   One of the AUTH_* class constants
+     * @param string      $token Kazoo auth token
      *
-     * @throws InvalidArgumentException If no authentication method was given
      */
-    private function authenticate() {
+    private function setAuthToken() {
         $this->getHttpClient()->authenticate($this->getAuthToken());
     }
 

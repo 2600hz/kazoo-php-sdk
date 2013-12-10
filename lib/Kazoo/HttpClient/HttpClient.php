@@ -24,7 +24,6 @@ class HttpClient implements HttpClientInterface {
         'api_version' => 'v1',
         'cache_dir' => null
     );
-    
     protected $headers = array();
     private $lastResponse;
     private $lastRequest;
@@ -61,8 +60,7 @@ class HttpClient implements HttpClientInterface {
      */
     public function clearHeaders() {
         $this->headers = array(
-            'Accept' => sprintf('application/vnd.github.%s+json', $this->options['api_version']),
-            'User-Agent' => sprintf('%s', $this->options['user_agent']),
+            'User-Agent' => sprintf('%s', $this->options['user_agent'])
         );
     }
 
@@ -109,6 +107,7 @@ class HttpClient implements HttpClientInterface {
      * {@inheritDoc}
      */
     public function request($path, $body = null, $httpMethod = 'GET', array $headers = array(), array $options = array()) {
+
         $request = $this->createRequest($httpMethod, $path, $body, $headers, $options);
         $request->addHeaders($headers);
 

@@ -2,14 +2,9 @@
 docs/_build/
 vendor/*
 composer.phar
-coverage
 package.xml
 *.tgz
-
-# You should be keeping these in a global gitignore, see for example 
-# https://help.github.com/articles/ignoring-files#global-gitignore
 .DS_Store
-.idea
 
 nbproject
 

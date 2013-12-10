@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "b4a3ce8c05e777fa18b802956d5d0e38ad338a69"
+                "reference": "50c5393062bc9035d0a872b9b2af8221f264ea19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/b4a3ce8c05e777fa18b802956d5d0e38ad338a69",
-                "reference": "b4a3ce8c05e777fa18b802956d5d0e38ad338a69",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/50c5393062bc9035d0a872b9b2af8221f264ea19",
+                "reference": "50c5393062bc9035d0a872b9b2af8221f264ea19",
                 "shasum": ""
             },
             "require": {
@@ -65,8 +65,8 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Guzzle\\Tests": "tests/",
-                    "Guzzle": "src/"
+                    "Guzzle": "src/",
+                    "Guzzle\\Tests": "tests/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -95,7 +95,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2013-12-05 23:39:20"
+            "time": "2013-12-09 04:01:52"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -103,12 +103,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "22d97c25185386a40d929c7110b786e787b09b84"
+                "reference": "ad8b959e5962624004738d50a2d8e83c5668e143"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/22d97c25185386a40d929c7110b786e787b09b84",
-                "reference": "22d97c25185386a40d929c7110b786e787b09b84",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/ad8b959e5962624004738d50a2d8e83c5668e143",
+                "reference": "ad8b959e5962624004738d50a2d8e83c5668e143",
                 "shasum": ""
             },
             "require": {
@@ -116,7 +116,8 @@
             },
             "require-dev": {
                 "json-schema/json-schema-test-suite": "1.1.0",
-                "phpunit/phpunit": "~3.7.0"
+                "phpdocumentor/phpdocumentor": "~2",
+                "phpunit/phpunit": "~3.7"
             },
             "bin": [
                 "bin/validate-json"
@@ -162,7 +163,7 @@
                 "json",
                 "schema"
             ],
-            "time": "2013-09-11 14:27:11"
+            "time": "2013-12-08 21:17:57"
         },
         {
             "name": "symfony/event-dispatcher",
