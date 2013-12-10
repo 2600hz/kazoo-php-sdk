@@ -39,7 +39,7 @@ class Client {
     private $httpClient;
     private $username;
     private $password;
-    private $siprealm;
+    private $sipRealm;
     private $clientState;
     private $baseAccount;
 
@@ -48,11 +48,11 @@ class Client {
      *
      * @param null|HttpClientInterface $httpClient Kazoo http client
      */
-    public function __construct($username, $password, $siprealm, $clientState = null, $options = null, HttpClientInterface $httpClient = null) {
+    public function __construct($username, $password, $sipRealm, $options = null, $clientState = null, HttpClientInterface $httpClient = null) {
         $this->httpClient = $httpClient;
         $this->username = $username;
         $this->password = $password;
-        $this->siprealm = $siprealm;
+        $this->sipRealm = $sipRealm;
 
         $this->options['schema_dir'] = dirname(__DIR__) . "/../schemas";
 
