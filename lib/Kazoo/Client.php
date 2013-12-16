@@ -161,7 +161,7 @@ class Client {
     }
     
     private function requestBaseAccount(){
-        $this->baseAccount = $this->api('accounts')->get($this->getClientState()->account_id);
+        $this->baseAccount = $this->api('accounts')->get($this->getClientState()->data->account_id);
     }
 
     /**
