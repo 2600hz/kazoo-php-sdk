@@ -7,9 +7,9 @@ use Kazoo\Exception\ApiLimitExceedException;
 
 class ResponseMediator {
 
-    public static function getContent(Response $response) {
+    public static function getContent(Response $response, $json_force_object = false) {
         $body = $response->getBody(true);
-        $content = json_decode($body, true);
+        $content = json_decode($body, $json_force_object);
 
         if (JSON_ERROR_NONE !== json_last_error()) {
             return $body;

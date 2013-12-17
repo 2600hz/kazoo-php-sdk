@@ -6,6 +6,10 @@ use Guzzle\Http\Client as GuzzleClient;
 use Guzzle\Http\ClientInterface;
 use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
+use Guzzle\Log\MonologLogAdapter;
+use Monolog\Logger;
+use Guzzle\Plugin\Log\LogPlugin;
+use Guzzle\Log\MessageFormatter;
 use Kazoo\Exception\ErrorException;
 use Kazoo\Exception\RuntimeException;
 use Kazoo\HttpClient\Listener\AuthListener;
@@ -21,7 +25,9 @@ class HttpClient implements HttpClientInterface {
         'user_agent' => 'kazoo-php-sdk (http://github.com/2600hz/kazoo-php-sdk)',
         'timeout' => 10,
         'api_limit' => 5000,
-        'api_version' => 'v1',
+        'api_version' => '1',
+        'log_type' => null,
+        'log_file' => null,
         'cache_dir' => null
     );
     protected $headers = array();
@@ -36,6 +42,26 @@ class HttpClient implements HttpClientInterface {
         $this->options = array_merge($this->options, $options);
         $client = $client ? : new GuzzleClient($this->options['base_url'], $this->options);
         $this->client = $client;
+        
+        $logger = null;
+        switch($this->options['log_type']){
+            case "file":
+                $logger = new Logger('sdk_logger');
+                $logger->pushHandler(new \Monolog\Handler\StreamHandler($this->options['log_file'], LOGGER::DEBUG));
+                break;
+            case "stdout":
+                $logger = new Logger('sdk_logger');
+                $logger->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout', LOGGER::DEBUG));
+                break;
+            default:
+                $logger = null;
+        }
+        
+        if(!is_null($logger)){
+            $adapter = new MonologLogAdapter($logger);
+            $logPlugin = new LogPlugin($adapter, MessageFormatter::DEBUG_FORMAT);
+            $client->addSubscriber($logPlugin);
+        }
 
         $this->addListener('request.error', array(new ErrorListener($this->options), 'onRequestError'));
         $this->clearHeaders();
@@ -107,7 +133,6 @@ class HttpClient implements HttpClientInterface {
      * {@inheritDoc}
      */
     public function request($path, $body = null, $httpMethod = 'GET', array $headers = array(), array $options = array()) {
-
         $request = $this->createRequest($httpMethod, $path, $body, $headers, $options);
         $request->addHeaders($headers);
 

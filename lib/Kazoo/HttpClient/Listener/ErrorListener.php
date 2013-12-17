@@ -45,7 +45,7 @@ class ErrorListener
                 throw new ApiLimitExceedException($this->options['api_limit']);
             }
 
-            $content = ResponseMediator::getContent($response);
+            $content = ResponseMediator::getContent($response, true);
             if (is_array($content) && isset($content['message'])) {
                 if (400 == $response->getStatusCode()) {
                     throw new ErrorException($content['message'], 400);
