@@ -17,6 +17,7 @@ Generating Kazoo JSON
 Account JSON:
 
 .. code-block:: php
+    
     $username = 'testuser';
     $password = 'pAssw0rd';
     $sipRealm = 'sip.realm.com';
@@ -132,8 +133,9 @@ The following code will create a new Account resource:
     $client = new \Kazoo\Client($username, $password, $sipRealm, $options);
 
     $newAccount = $client->accounts()->new();
-    $newAccount->name = "Test Account";
-    $newAccount->realm = "sip.testaccount.com";
+    $newAccount->name = "New Test Account";
+    $newAccount->realm = "sip".rand(0,10000).".testaccount.com";
+    $newAccount->timezone = "America/Chicago";
 
     $client->accounts()->create($newAccount);
 
@@ -148,13 +150,31 @@ The following code will create a new Device resource for the Account (or sub-acc
 
 .. code-block:: php
 
-    $newDevice = $client->accounts()->devices()->new();
-    $newDevice->name = "Test Account";
-    $newDevice->realm = "sip.testaccount.com";
-    $client->accounts()->devices()->create($newDevice);
+    $shellDevice = $client->accounts()->devices()->new();
+    $num = substr(number_format(time() * rand(),0,'',''),0,4);
+    $shellDevice->name = "Test Device #" . $num;
+    $shellDevice->sip->password = substr(number_format(time() * rand(),0,'',''),0,10);
+    $shellDevice->sip->username = "testdevice".$num;
+    $newDevice = $this->client->accounts()->devices()->create($shellDevice);
 
     echo "<pre>";
-    echo $account;
+    echo $newDevice;
+    echo "</pre>";
+
+Read Account CDRS
+>>>>>>>>>>>>>>>>>>>>>>
+
+The following code will generate a list of CDRS
+
+.. code-block:: php
+
+    $start = strtotime('-30 Day') + \Kazoo\Client::GREGORIAN_OFFSET;
+    $end = time() + \Kazoo\Client::GREGORIAN_OFFSET;
+    $filters = array("created_from" => $start, "created_to" => $end);
+    $cdrs = $client->accounts()->cdrs()->retrieve($filters);
+
+    echo "<pre>";
+    echo print_r($cdrs);
     echo "</pre>";
 
 
