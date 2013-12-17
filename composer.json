@@ -20,7 +20,6 @@
         "php": ">=5.3.2",
         "ext-curl": "*",
         "guzzle/guzzle": "~3.7",
-        "justinrainbow/json-schema": "1.4.*@dev",
         "monolog/monolog": "1.*"
     },
     "require-dev": {

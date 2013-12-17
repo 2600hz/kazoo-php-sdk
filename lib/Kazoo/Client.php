@@ -202,7 +202,7 @@ class Client {
     private function setupAccounts() {
         $this->accounts = new \Kazoo\Api\Resource\Accounts($this, $this->options['base_url'] . "/accounts/{account_id}");
         $this->baseAccountId = $this->getClientState()->data->account_id;
-        $this->setCurrentAccountContext($this->baseAccountId);
+        $this->setAccountContext($this->baseAccountId);
     }
 
     public function getBaseHeaders() {
@@ -238,7 +238,7 @@ class Client {
      * 
      * @param string $account
      */
-    public function setCurrentAccountContext($account_id) {
+    public function setAccountContext($account_id) {
         $this->addUriToken("account_id");
         $this->addUriTokenValue('account_id', $account_id);
         $this->curAccount = $account_id;
