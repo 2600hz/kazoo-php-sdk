@@ -12,7 +12,9 @@ instance. The constructor takes your Kazoo username, password, and sip realm of 
 
 .. code-block:: php
 
-    $username = "testuser";
-    $password = "secret";
-	$sipRealm = "test.siprealm.com";
-    $client = new Kazoo\Client($username, $password, $sipRealm);
+    $username = 'testuser';
+    $password = 'pAssw0rd';
+    $sipRealm = 'sip.realm.com';
+    $options  = array();
+    $options["base_url"] = "http://127.0.0.1:8000";
+    $client = new \Kazoo\Client($username, $password, $sipRealm, $options);

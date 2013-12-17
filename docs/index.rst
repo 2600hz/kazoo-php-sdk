@@ -17,11 +17,17 @@ Generating Kazoo JSON
 Account JSON:
 
 .. code-block:: php
+    
+    $username = 'testuser';
+    $password = 'pAssw0rd';
+    $sipRealm = 'sip.realm.com';
+    $options  = array();
+    $options["base_url"] = "http://127.0.0.1:8000";
+    $client = new \Kazoo\Client($username, $password, $sipRealm, $options);
 
-    $client = new Kazoo\Client($username, $password, $sipRealm);
-    $account = $client->api('accounts')->new();
+    $account = $client->accounts()->new();
     echo "<pre>";
-    echo $account->toJSON();
+    echo $account;
     echo "</pre>";
 
 Will result in the following json:
@@ -124,14 +130,18 @@ The following code will create a new Account resource:
 
 .. code-block:: php
 
-    $client = new Kazoo\Client($username, $password, $sipRealm);
+    $client = new \Kazoo\Client($username, $password, $sipRealm, $options);
 
-    $newAccount = $client->api('accounts')->new();
-    $newAccount->name = "Test Account";
-    $newAccount->realm = "sip.testaccount.com";
+    $newAccount = $client->accounts()->new();
+    $newAccount->name = "New Test Account";
+    $newAccount->realm = "sip".rand(0,10000).".testaccount.com";
+    $newAccount->timezone = "America/Chicago";
 
-    $subaccount = $client->api('accounts')->put($newAccount);
+    $client->accounts()->create($newAccount);
 
+    echo "<pre>";
+    echo $account;
+    echo "</pre>";
 
 Create a SIP Device
 >>>>>>>>>>>>>>>>>>>>>>
@@ -140,10 +150,32 @@ The following code will create a new Device resource for the Account (or sub-acc
 
 .. code-block:: php
 
-    $newDevice = $client->api('devices')->new();
-    $newDevice->name = "Test Account";
-    $newDevice->realm = "sip.testaccount.com";
-    $device = $client->api('accounts')->setResourceId($account_id)->devices()->put($newDevice);
+    $shellDevice = $client->accounts()->devices()->new();
+    $num = substr(number_format(time() * rand(),0,'',''),0,4);
+    $shellDevice->name = "Test Device #" . $num;
+    $shellDevice->sip->password = substr(number_format(time() * rand(),0,'',''),0,10);
+    $shellDevice->sip->username = "testdevice".$num;
+    $newDevice = $this->client->accounts()->devices()->create($shellDevice);
+
+    echo "<pre>";
+    echo $newDevice;
+    echo "</pre>";
+
+Read Account CDRS
+>>>>>>>>>>>>>>>>>>>>>>
+
+The following code will generate a list of CDRS
+
+.. code-block:: php
+
+    $start = strtotime('-30 Day') + \Kazoo\Client::GREGORIAN_OFFSET;
+    $end = time() + \Kazoo\Client::GREGORIAN_OFFSET;
+    $filters = array("created_from" => $start, "created_to" => $end);
+    $cdrs = $client->accounts()->cdrs()->retrieve($filters);
+
+    echo "<pre>";
+    echo print_r($cdrs);
+    echo "</pre>";
 
 
 Installation
