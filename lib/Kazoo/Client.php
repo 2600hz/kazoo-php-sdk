@@ -132,8 +132,10 @@ class Client {
 
         $this->options['schema_dir'] = dirname(__DIR__) . "/../schemas";
 
-        foreach ($options as $option_key => $option_val) {
-            $this->options[$option_key] = $option_val;
+        if (is_array($options) and !empty($options)) {
+            foreach ($options as $option_key => $option_val) {
+                $this->options[$option_key] = $option_val;
+            }
         }
 
         switch ($this->options['log_type']) {
