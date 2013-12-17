@@ -16,10 +16,12 @@ class JsonSchemaObjectFactory {
      */
     public static function getNew(\Kazoo\Client $client, $uri, $entity_class, $schema) {
         $entityInstance = new $entity_class($client, $uri);
-        return self::transformToObject(json_decode($schema), $entityInstance);
+        $empty = new stdClass();
+        $scaffold = self::transformToScaffoldedObject(json_decode($schema), $empty);
+        return $entityInstance->setScaffolding($scaffold);
     }
 
-    private static function transformToObject($json, $accumulator) {
+    private static function transformToScaffoldedObject($json, $accumulator) {
         if (!property_exists($json, 'properties')) {
             return $accumulator;
         }
@@ -32,7 +34,7 @@ class JsonSchemaObjectFactory {
                             $accumulator->$property_name = "";
                             break;
                         case 'object':
-                            $accumulator->$property_name = self::transformToObject($json->properties->$property_name, new stdClass());
+                            $accumulator->$property_name = self::transformToScaffoldedObject($json->properties->$property_name, new stdClass());
                             break;
                         case 'boolean':
                             if (property_exists($property_meta, 'default')) {

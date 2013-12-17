@@ -15,12 +15,19 @@ abstract class AbstractEntity {
         $this->_uri = $uri;
         $this->_data = new stdClass();
     }
+    
+    public function setScaffolding(stdClass $data){
+        $this->_data  = $data;
+        return $this;
+    }
 
     public function updateFromResults(stdClass $results) {
         //Hunt for id
         if (property_exists($results->data, 'id')) {
             $this->id = $results->data->id;
         }
+        
+        return $this;
     }
 
     private function getValueRecursive($root, $search_prop) {
@@ -48,15 +55,6 @@ abstract class AbstractEntity {
         }
     }
 
-    public function __call($name, $arguments){
-        switch(strtolower($name)){
-            case 'save':
-                break;
-            case 'delete':
-                break;
-        }
-    }
-    
     public function __get($prop) {
         return $this->getValueRecursive($this->_data, $prop);
     }
@@ -71,6 +69,17 @@ abstract class AbstractEntity {
 
     public function toJSON() {
         return json_encode($this->_data, false);
+    }
+
+    public function __call($name, $arguments) {
+        switch (strtolower($name)) {
+            case 'save':
+                break;
+            case 'delete':
+                break;
+        }
+        
+        return $this;
     }
 
 }
