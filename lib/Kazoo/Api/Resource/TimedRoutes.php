@@ -10,11 +10,11 @@ use Kazoo\Api\AbstractApi;
  *
  * @link   https://2600hz.atlassian.net/wiki/display/docs/Accounts+API
  */
-class Groups extends AbstractApi {
+class TimedRoutes extends AbstractApi {
     
     public function __construct(Client $client) {
         parent::__construct($client);
-        $this->setSchemaName("groups.json");
-        $this->setResourceNoun("Group");
+        $this->setSchemaName("temporal_rules.json");
+        $this->setResourceNoun("TimedRoute");
     }
 }

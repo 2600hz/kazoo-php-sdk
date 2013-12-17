@@ -3,7 +3,6 @@
 namespace Kazoo;
 
 use stdClass;
-use Kazoo\Api\ApiInterface;
 use Kazoo\Exception\InvalidArgumentException;
 use Kazoo\Exception\AuthenticationException;
 use Kazoo\HttpClient\HttpClient;
@@ -42,6 +41,10 @@ class Client {
     private $sipRealm;
     private $clientState;
     private $baseAccount;
+    private $curAccount;
+    private $accounts;
+    private $uri_tokens = array("api_version");
+    private $uri_token_values = array();
 
     /**
      * Instantiate a new Kazoo client
@@ -60,69 +63,18 @@ class Client {
             $this->options[$option_key] = $option_val;
         }
 
-        $this->options['base_url'] = $this->options['base_url'] . "/v" . $this->options['api_version'];
+        $this->options['base_url'] = $this->options['base_url'] . "/v{api_version}";
 
+        $this->addUriTokenValue('api_version', $this->getOption('api_version'));
+        
         if (!is_null($this->clientState)) {
             $this->setClientState($clientState);
         } else {
             $this->setupClientState();
         }
-
-        $this->setAuthToken();
         
-        $this->requestBaseAccount();
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return ApiInterface
-     *
-     * @throws InvalidArgumentException
-     */
-    public function api($noun) {
-        switch ($noun) {
-            case 'accounts': $api = new Api\Accounts($this);
-                break;
-            case 'callflows': $api = new Api\Callflows($this);
-                break;
-            case "carrier_resources": $api = new Api\CarrierResources($this);
-                break;
-            case "cdrs": $api = new Api\Cdrs($this);
-                break;
-            case "click_to_calls": $api = new Api\ClickToCalls($this);
-                break;
-            case "conferences": $api = new Api\Conferences($this);
-                break;
-            case "devices": $api = new Api\Devices($this);
-                break;
-            case "directories": $api = new Api\Directories($this);
-                break;
-            case "faxes": $api = new Api\Faxes($this);
-                break;
-            case "groups": $api = new Api\Groups($this);
-                break;
-            case "menus": $api = new Api\Menus($this);
-                break;
-            case "phone_numbers": $api = new Api\PhoneNumbers($this);
-                break;
-            case "queues": $api = new Api\Queues($this);
-                break;
-            case "registrations": $api = new Api\Registrations($this);
-                break;
-            case "time_of_day_routes": $api = new Api\TimeOfDayRoutes($this);
-                break;
-            case "users": $api = new Api\Users($this);
-                break;
-            case "voicemail_boxes": $api = new Api\VoicemailBoxes($this);
-                break;
-            case "webhooks": $api = new Api\Webhooks($this);
-                break;
-            default:
-                throw new InvalidArgumentException(sprintf('Undefined api instance called: "%s"', $name));
-        }
-
-        return $api;
+        $this->setAuthToken();
+        $this->setupAccounts();
     }
 
     /**
@@ -134,15 +86,14 @@ class Client {
         $payload = new stdClass();
         $payload->data = new stdClass();
         $payload->data->credentials = md5($this->username . ":" . $this->password);
-        $payload->data->realm = $this->siprealm;
-        $client = new GuzzleClient($this->options['base_url']);
+        $payload->data->realm = $this->sipRealm;
+        $tokenizedUri = $this->getTokenizedUri($this->options['base_url']);
+        $client = new GuzzleClient($tokenizedUri);
         $headers = array("Content-Type" => "application/json", "Accept" => "application/json");
         $request = $client->put("user_auth", $headers, json_encode($payload));
 
         try {
-
             $response = $request->send();
-
             switch ($response->getStatusCode()) {
                 case 200:
                     $this->clientState = json_decode($response->getBody());
@@ -158,8 +109,50 @@ class Client {
         }
     }
     
-    private function requestBaseAccount(){
-        $this->baseAccount = $this->api('accounts')->get($this->getClientState()->account_id);
+    private function setupAccounts(){        
+        $this->accounts = new \Kazoo\Api\Resource\Accounts($this, "/accounts");
+        $account = $this->accounts->retrieve($this->getClientState()->data->account_id);
+        $this->baseAccount = $account;
+        $this->setCurrentAccountContext($account);
+    }
+    
+    public function addUriToken($variable){
+        if(!in_array($variable, $this->uri_tokens)){
+            $this->uri_tokens[] = $variable;
+        }
+    }
+    
+    public function addUriTokenValue($token, $value){
+        $this->uri_token_values[$token] = $value;
+    }
+    
+    private function getTokenizedUri($uri){
+        
+        $tokenized_uri = $uri;
+        foreach($this->uri_tokens as $token){
+            $pattern = "/\{".$token."\}/";
+            if(array_key_exists($token, $this->uri_token_values)){
+                $value = $this->uri_token_values[$token];
+            } else {
+                throw new Exception\UriTokenException("Missing uri token value for token: " . $token);
+            }
+            
+            $tokenized_uri = preg_replace($pattern, $value, $tokenized_uri);
+        }
+        return $tokenized_uri;
+    }
+    
+    /**
+     * 
+     * @param \Kazoo\Api\Data\Entity\Account $account
+     */
+    public function setCurrentAccountContext(\Kazoo\Api\Data\Entity\Account $account){
+        $this->addUriTokenValue('account_id', $account->id);
+        $this->curAccount = $account;
+    }
+    
+    public function getAccountContext(){
+        return $this->curAccount;
     }
 
     /**
@@ -260,6 +253,145 @@ class Client {
         }
 
         $this->options[$name] = $value;
+    }
+    
+    public function __call($name, $arguments) {
+        
+        $base_headers = array("Content-Type" => "application/json", "Accept" => "application/json");
+        
+        $uri = (isset($arguments[0]) ? $arguments[0] : '');
+        $parameters = (isset($arguments[1]) ? $arguments[1] : array());
+        $requestHeaders = (isset($arguments[2]) ? array_merge($base_headers, $arguments[2]) : $base_headers);
+        
+        $this->getTokenizedUri($uri);
+
+        switch (strtolower($name)) {
+            case 'accounts':
+                return $this->accounts;
+                break;
+            case 'account':
+                return $this->getCurrentAccount();
+                break;
+            case 'retrieve':
+            case 'get':
+                return $this->get($uri, $parameters, $requestHeaders);
+                break;
+            case 'update':
+            case 'post':
+                return $this->post($uri, $parameters, $requestHeaders);
+                break;
+            case 'create':
+            case 'put':
+                return $this->put($uri, $parameters, $requestHeaders);
+                break;
+            case 'delete':
+                return $this->delete($uri, $parameters, $requestHeaders);
+                break;
+        }
+    }
+    
+    /**
+     * Send a GET request with query parameters.
+     *
+     * @param string $path              Request path.
+     * @param array $parameters         GET parameters.
+     * @param array $requestHeaders     Request Headers.
+     * @return \Guzzle\Http\EntityBodyInterface|mixed|string
+     */
+    protected function get($path, array $parameters = array(), $requestHeaders = array()) {
+        if (null !== $this->perPage && !isset($parameters['per_page'])) {
+            $parameters['per_page'] = $this->perPage;
+        }
+        if (array_key_exists('ref', $parameters) && is_null($parameters['ref'])) {
+            unset($parameters['ref']);
+        }
+        $response = $this->getHttpClient()->get($path, $parameters, $requestHeaders);
+
+        return ResponseMediator::getContent($response);
+    }
+
+    /**
+     * Send a POST request with JSON-encoded parameters.
+     *
+     * @param string $path              Request path.
+     * @param array $parameters         POST parameters to be JSON encoded.
+     * @param array $requestHeaders     Request headers.
+     */
+    protected function post($path, array $parameters = array(), $requestHeaders = array()) {
+        return $this->postRaw(
+                        $path, $this->createJsonBody($parameters), $requestHeaders
+        );
+    }
+
+    /**
+     * Send a POST request with raw data.
+     *
+     * @param string $path              Request path.
+     * @param $body                     Request body.
+     * @param array $requestHeaders     Request headers.
+     * @return \Guzzle\Http\EntityBodyInterface|mixed|string
+     */
+    protected function postRaw($path, $body, $requestHeaders = array()) {
+        $response = $this->getHttpClient()->post(
+                $path, $body, $requestHeaders
+        );
+
+        return ResponseMediator::getContent($response);
+    }
+
+    /**
+     * Send a PATCH request with JSON-encoded parameters.
+     *
+     * @param string $path              Request path.
+     * @param array $parameters         POST parameters to be JSON encoded.
+     * @param array $requestHeaders     Request headers.
+     */
+    protected function patch($path, array $parameters = array(), $requestHeaders = array()) {
+        $response = $this->getHttpClient()->patch(
+                $path, $this->createJsonBody($parameters), $requestHeaders
+        );
+
+        return ResponseMediator::getContent($response);
+    }
+
+    /**
+     * Send a PUT request with JSON-encoded parameters.
+     *
+     * @param string $path              Request path.
+     * @param array $parameters         POST parameters to be JSON encoded.
+     * @param array $requestHeaders     Request headers.
+     */
+    protected function put($path, array $parameters = array(), $requestHeaders = array()) {
+        $response = $this->getHttpClient()->put(
+                $path, $this->createJsonBody($parameters), $requestHeaders
+        );
+
+        return ResponseMediator::getContent($response);
+    }
+
+    /**
+     * Send a DELETE request with JSON-encoded parameters.
+     *
+     * @param string $path              Request path.
+     * @param array $parameters         POST parameters to be JSON encoded.
+     * @param array $requestHeaders     Request headers.
+     */
+    protected function delete($path, array $parameters = array(), $requestHeaders = array()) {
+        $response = $this->getHttpClient()->delete(
+                $path, $this->createJsonBody($parameters), $requestHeaders
+        );
+
+        return ResponseMediator::getContent($response);
+    }
+
+    /**
+     * Create a JSON encoded version of an array of parameters.
+     *
+     * @param array $parameters   Request parameters
+     * @return null|string
+     */
+    protected function createJsonBody(array $parameters) {
+        return (count($parameters) === 0) ? null : json_encode($parameters, empty($parameters) ? JSON_FORCE_OBJECT : 0);
     }
 
 }

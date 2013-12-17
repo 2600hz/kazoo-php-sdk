@@ -18,12 +18,12 @@ class TestCase extends \PHPUnit_Framework_TestCase {
         $username = 'testuser';
         $password = 'a12341234';
         $sipRealm = 'sip.test.com';
-        $token = null;
+        $options  = array("base_url" => "http://192.168.56.111:8000");
 
         // You have to specify authentication here to run full suite
 
         try {
-            $this->client = new Client($username, $password, $sipRealm, $token, array("base_url" => "http://192.168.56.111:8000"));
+            $this->client = new Client($username, $password, $sipRealm, $options);
         } catch (ApiLimitExceedException $e) {
             $this->markTestSkipped('API limit reached. Skipping to prevent unnecessary failure.');
         } catch (RuntimeException $e) {

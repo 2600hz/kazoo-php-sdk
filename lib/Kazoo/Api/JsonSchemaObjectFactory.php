@@ -3,14 +3,20 @@
 namespace Kazoo\Api;
 
 use stdClass;
-use Kazoo\Api\Resources;
 
 class JsonSchemaObjectFactory {
-
-    public static function getNew($nounType, $schema) {
-        $class = "\\Kazoo\\Api\\Resources\\" . $nounType;
-        $nounInstance = new $class();
-        return self::transformToObject(json_decode($schema), $nounInstance);
+    
+    /**
+     * 
+     * @param Kazoo\Client $client
+     * @param string $uri
+     * @param string $entity_class
+     * @param string $schema
+     * @return Kazoo\Api\Data\AbstractEntity
+     */
+    public static function getNew(\Kazoo\Client $client, $uri, $entity_class, $schema) {
+        $entityInstance = new $entity_class($client, $uri);
+        return self::transformToObject(json_decode($schema), $entityInstance);
     }
 
     private static function transformToObject($json, $accumulator) {
