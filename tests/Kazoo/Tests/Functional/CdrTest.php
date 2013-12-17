@@ -13,10 +13,8 @@ class CdrTest extends TestCase {
             $start = strtotime('-30 Day') + \Kazoo\Client::GREGORIAN_OFFSET;
             $end = time() + \Kazoo\Client::GREGORIAN_OFFSET;
             $filters = array("created_from" => $start, "created_to" => $end);
-            $api = $this->client->accounts()->cdrs();
-            $api->retrieve($filters);
-            print_r($cdrs);
-            $this->assertTrue(true);
+            $cdrs = $this->client->accounts()->cdrs()->retrieve($filters);
+            $this->assertGreaterThan(0, count($cdrs->data));
         } catch (Exception $e) {
             $this->markTestSkipped($e->getMessage());
         }

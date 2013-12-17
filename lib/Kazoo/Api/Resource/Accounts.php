@@ -23,27 +23,27 @@ class Accounts extends AbstractResource {
     }
 
     public function defineChildApis() {
-        $this->_child_resources[] = array("name" => "callflows", "uri" => "/{account_id}/callflows", "resource_class" => "Callflows");
-        $this->_child_resources[] = array("name" => "carrier_resources", "uri" => "/{account_id}/carrier_resources", "resource_class" => "CarrierResources");
-        $this->_child_resources[] = array("name" => "cdrs", "uri" => "/{account_id}/cdrs", "resource_class" => "Cdrs");
-        $this->_child_resources[] = array("name" => "clicktocalls", "uri" => "/{account_id}/clicktocall", "resource_class" => "ClickToCalls");
-        $this->_child_resources[] = array("name" => "conferences", "uri" => "/{account_id}/conferences", "resource_class" => "Conferences");
-        $this->_child_resources[] = array("name" => "devices", "uri" => "/{account_id}/devices", "resource_class" => "Devices");
-        $this->_child_resources[] = array("name" => "directories", "uri" => "/{account_id}/directories", "resource_class" => "Directories");
-        $this->_child_resources[] = array("name" => "faxes", "uri" => "/{account_id}/faxes", "resource_class" => "Faxes");
-        $this->_child_resources[] = array("name" => "hotdesks", "uri" => "/{account_id}/hotdesks", "resource_class" => "Hotdesks");
-        $this->_child_resources[] = array("name" => "quickcalls", "uri" => "/{account_id}/quickcalls", "resource_class" => "Quickcalls");
-        $this->_child_resources[] = array("name" => "menus", "uri" => "/{account_id}/menus", "resource_class" => "Menus");
-        $this->_child_resources[] = array("name" => "agents", "uri" => "/{account_id}/agents", "resource_class" => "Agents");
-        $this->_child_resources[] = array("name" => "queues", "uri" => "/{account_id}/queues", "resource_class" => "Queues");
-        $this->_child_resources[] = array("name" => "media", "uri" => "/{account_id}/media", "resource_class" => "Media");
-        $this->_child_resources[] = array("name" => "users", "uri" => "/{account_id}/users", "resource_class" => "Users");
-        $this->_child_resources[] = array("name" => "timed_routes", "uri" => "/{account_id}/temporal_rules", "resource_class" => "TimedRoutes");
-        $this->_child_resources[] = array("name" => "groups", "uri" => "/{account_id}/groups", "resource_class" => "RingGroups");
-        $this->_child_resources[] = array("name" => "registrations", "uri" => "/{account_id}/registrations", "resource_class" => "Registrations");
-        $this->_child_resources[] = array("name" => "voicemail_boxes", "uri" => "/{account_id}/vmboxes", "resource_class" => "VoicemailBoxes");
-        $this->_child_resources[] = array("name" => "webhooks", "uri" => "/{account_id}/webhooks", "resource_class" => "Webhooks");
-        $this->_child_resources[] = array("name" => "phone_numbers", "uri" => "/{account_id}/phone_numbers", "resource_class" => "PhoneNumbers");
+        $this->_child_resources[] = array("name" => "callflows", "uri" => "/callflows", "resource_class" => "Callflows");
+        $this->_child_resources[] = array("name" => "carrier_resources", "uri" => "/carrier_resources", "resource_class" => "CarrierResources");
+        $this->_child_resources[] = array("name" => "cdrs", "uri" => "/cdrs", "resource_class" => "Cdrs");
+        $this->_child_resources[] = array("name" => "clicktocalls", "uri" => "/clicktocall", "resource_class" => "ClickToCalls");
+        $this->_child_resources[] = array("name" => "conferences", "uri" => "/conferences", "resource_class" => "Conferences");
+        $this->_child_resources[] = array("name" => "devices", "uri" => "/devices", "resource_class" => "Devices");
+        $this->_child_resources[] = array("name" => "directories", "uri" => "/directories", "resource_class" => "Directories");
+        $this->_child_resources[] = array("name" => "faxes", "uri" => "/faxes", "resource_class" => "Faxes");
+        $this->_child_resources[] = array("name" => "hotdesks", "uri" => "/hotdesks", "resource_class" => "Hotdesks");
+        $this->_child_resources[] = array("name" => "quickcalls", "uri" => "/quickcalls", "resource_class" => "Quickcalls");
+        $this->_child_resources[] = array("name" => "menus", "uri" => "/menus", "resource_class" => "Menus");
+        $this->_child_resources[] = array("name" => "agents", "uri" => "/agents", "resource_class" => "Agents");
+        $this->_child_resources[] = array("name" => "queues", "uri" => "/queues", "resource_class" => "Queues");
+        $this->_child_resources[] = array("name" => "media", "uri" => "/media", "resource_class" => "Media");
+        $this->_child_resources[] = array("name" => "users", "uri" => "/users", "resource_class" => "Users");
+        $this->_child_resources[] = array("name" => "timed_routes", "uri" => "/temporal_rules", "resource_class" => "TimedRoutes");
+        $this->_child_resources[] = array("name" => "groups", "uri" => "/groups", "resource_class" => "RingGroups");
+        $this->_child_resources[] = array("name" => "registrations", "uri" => "/registrations", "resource_class" => "Registrations");
+        $this->_child_resources[] = array("name" => "voicemail_boxes", "uri" => "/vmboxes", "resource_class" => "VoicemailBoxes");
+        $this->_child_resources[] = array("name" => "webhooks", "uri" => "/webhooks", "resource_class" => "Webhooks");
+        $this->_child_resources[] = array("name" => "phone_numbers", "uri" => "/phone_numbers", "resource_class" => "PhoneNumbers");
     }
 
     public function __call($name, $arguments) {

@@ -57,13 +57,10 @@ abstract class AbstractResource {
     }
 
     protected function hasChildResource($name) {
-        print_r(array_keys($this->_child_resource_instances));
-        echo "hasChildResource: " . $name . "\n";
         return array_key_exists($name, $this->_child_resource_instances);
     }
 
     protected function getChildResource($name) {
-        echo "getChildResource: " . $name . "\n";
         return $this->_child_resource_instances[$name];
     }
 

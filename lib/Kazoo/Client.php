@@ -380,6 +380,7 @@ class Client {
         }
 
         $tokenizedUri = $this->getTokenizedUri($path);
+        
         try {
             $response = $this->getHttpClient()->get($tokenizedUri, $parameters, $requestHeaders);
         } catch (ErrorException $e) {
