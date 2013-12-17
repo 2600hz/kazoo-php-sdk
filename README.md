@@ -4,6 +4,8 @@
 
 A simple Object Oriented wrapper for Kazoo API, written with PHP5.
 
+[SDK Documentation] (http://kazoo-php-sdk.readthedocs.org)
+
 ## Features
 
 * Follows PSR-0 conventions and coding standard: autoload friendly
