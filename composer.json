@@ -27,5 +27,5 @@
     },
     "autoload": {
         "psr-0": {"Kazoo": "lib/"}
-    },
+    }
 }
