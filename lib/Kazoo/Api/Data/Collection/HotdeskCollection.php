@@ -6,6 +6,6 @@ use Kazoo\Api\Data\AbstractCollection;
 /**
  * 
  */
-class AccountCollection extends AbstractCollection {
+class HotdeskCollection extends AbstractCollection {
     
 }
