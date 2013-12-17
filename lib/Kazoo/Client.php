@@ -34,7 +34,7 @@ class Client {
     );
 
     const GREGORIAN_OFFSET = 62167219200;
-    
+
     /**
      * number of items per page
      *
@@ -96,7 +96,7 @@ class Client {
      * @var array 
      */
     private $baseHeaders = array("Content-Type" => "application/json", "Accept" => "application/json");
-    
+
     /**
      *
      * @var \Kazoo\Api\Resource\Accounts
@@ -380,7 +380,7 @@ class Client {
         }
 
         $tokenizedUri = $this->getTokenizedUri($path);
-        
+
         try {
             $response = $this->getHttpClient()->get($tokenizedUri, $parameters, $requestHeaders);
         } catch (ErrorException $e) {
@@ -399,9 +399,14 @@ class Client {
      * @param array $parameters         POST parameters to be JSON encoded.
      * @param array $requestHeaders     Request headers.
      */
-    public function post($path, array $parameters = array(), $requestHeaders = array()) {
+    public function post($path, $payload, $requestHeaders = array()) {
+        $shell = new stdClass();
+        $shell->data = $payload;
+        
+        $tokenizedUri = $this->getTokenizedUri($path);
+        
         return $this->postRaw(
-                        $path, $this->createJsonBody($parameters), $requestHeaders
+                        $tokenizedUri, $this->createJsonBody($shell), $requestHeaders
         );
     }
 
@@ -428,9 +433,10 @@ class Client {
      * @param array $parameters         POST parameters to be JSON encoded.
      * @param array $requestHeaders     Request headers.
      */
-    public function patch($path, array $parameters = array(), $requestHeaders = array()) {
+    public function patch($path, $payload, $requestHeaders = array()) {
+        
         $response = $this->getHttpClient()->patch(
-                $path, $this->createJsonBody($parameters), $requestHeaders
+                $path, $this->createJsonBody($payload), $requestHeaders
         );
 
         return ResponseMediator::getContent($response);
@@ -440,13 +446,28 @@ class Client {
      * Send a PUT request with JSON-encoded parameters.
      *
      * @param string $path              Request path.
-     * @param array $parameters         POST parameters to be JSON encoded.
+     * @param $parameters         POST parameters to be JSON encoded.
      * @param array $requestHeaders     Request headers.
      */
-    public function put($path, array $parameters = array(), $requestHeaders = array()) {
-        $response = $this->getHttpClient()->put(
-                $path, $this->createJsonBody($parameters), $requestHeaders
-        );
+    public function put($path, $payload, $requestHeaders = array()) {
+        
+        $shell = new stdClass();
+        $shell->data = $payload;
+        
+        $tokenizedUri = $this->getTokenizedUri($path);
+
+        try {
+            $response = $this->getHttpClient()->put(
+                    $tokenizedUri, $this->createJsonBody($shell), $requestHeaders
+            );
+        } catch (ErrorException $e) {
+            $this->getLogger()->addCritical($e->getMessage());
+        } catch (RuntimeException $e) {
+            $this->getLogger()->addCritical($e->getMessage());
+        }
+
+
+
 
         return ResponseMediator::getContent($response);
     }

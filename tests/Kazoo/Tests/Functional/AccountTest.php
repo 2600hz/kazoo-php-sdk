@@ -25,4 +25,15 @@ class AccountTest extends TestCase {
         $accounts = $this->client->accounts()->retrieve();
         $this->assertGreaterThan(0, count($accounts->data));
     }
+
+    public function testCreateAccount() {
+        $shellAccount = $this->client->accounts()->new();
+        $shellAccount->name = "New Test Account";
+        $shellAccount->realm = "sip".rand(0,10000).".testaccount.com";
+        $shellAccount->timezone = "America/Chicago";
+        $newAccount = $this->client->accounts()->create($shellAccount);
+        $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Account", $newAccount);
+        $this->assertObjectHasAttribute('id', $newAccount);
+    }
+
 }

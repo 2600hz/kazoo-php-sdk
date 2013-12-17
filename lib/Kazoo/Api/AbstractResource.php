@@ -88,8 +88,10 @@ abstract class AbstractResource {
                     return JsonSchemaObjectFactory::getNew($this->client, $this->uri, static::$_entity_class, $this->getSchemaJson());
                     break;
                 case 'create':
-                    if (is_array($arguments[0])) {
-                        return $this->client->put($this->uri, json_encode($arguments[0]));
+                    if ($arguments[0] instanceof \Kazoo\Api\Data\AbstractEntity) {
+                        $account = $arguments[0];
+                        $result = $this->client->put($this->uri, $account->getData());
+                        return $account->updateFromResult($result);
                     }
                     break;
                 case 'get':

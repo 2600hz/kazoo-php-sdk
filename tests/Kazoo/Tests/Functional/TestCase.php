@@ -14,9 +14,6 @@ class TestCase extends \PHPUnit_Framework_TestCase {
 
     public function setUp() {
 
-//        $username = 'testuser';
-//        $password = 'a12341234';
-//        $sipRealm = 'sip.test.com';
         $username = 'bwann';
         $password = '12341234';
         $sipRealm = 'sip.benwann.com';
