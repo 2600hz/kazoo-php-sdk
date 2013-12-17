@@ -17,11 +17,16 @@ Generating Kazoo JSON
 Account JSON:
 
 .. code-block:: php
+    $username = 'testuser';
+    $password = 'pAssw0rd';
+    $sipRealm = 'sip.realm.com';
+    $options  = array();
+    $options["base_url"] = "http://127.0.0.1:8000";
+    $client = new \Kazoo\Client($username, $password, $sipRealm, $options);
 
-    $client = new Kazoo\Client($username, $password, $sipRealm);
-    $account = $client->api('accounts')->new();
+    $account = $client->accounts()->new();
     echo "<pre>";
-    echo $account->toJSON();
+    echo $account;
     echo "</pre>";
 
 Will result in the following json:
@@ -124,14 +129,17 @@ The following code will create a new Account resource:
 
 .. code-block:: php
 
-    $client = new Kazoo\Client($username, $password, $sipRealm);
+    $client = new \Kazoo\Client($username, $password, $sipRealm, $options);
 
-    $newAccount = $client->api('accounts')->new();
+    $newAccount = $client->accounts()->new();
     $newAccount->name = "Test Account";
     $newAccount->realm = "sip.testaccount.com";
 
-    $subaccount = $client->api('accounts')->put($newAccount);
+    $client->accounts()->create($newAccount);
 
+    echo "<pre>";
+    echo $account;
+    echo "</pre>";
 
 Create a SIP Device
 >>>>>>>>>>>>>>>>>>>>>>
@@ -140,10 +148,14 @@ The following code will create a new Device resource for the Account (or sub-acc
 
 .. code-block:: php
 
-    $newDevice = $client->api('devices')->new();
+    $newDevice = $client->accounts()->devices()->new();
     $newDevice->name = "Test Account";
     $newDevice->realm = "sip.testaccount.com";
-    $device = $client->api('accounts')->setResourceId($account_id)->devices()->put($newDevice);
+    $client->accounts()->devices()->create($newDevice);
+
+    echo "<pre>";
+    echo $account;
+    echo "</pre>";
 
 
 Installation

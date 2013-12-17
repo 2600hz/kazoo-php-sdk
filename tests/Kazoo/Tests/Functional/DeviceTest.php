@@ -2,7 +2,7 @@
 
 namespace Kazoo\Tests\Functional;
 
-use Kazoo\Api\Resources\Device;
+use Kazoo\Api\Data\Entity\Device;
 
 /**
  * @group functional
@@ -13,13 +13,28 @@ class DeviceTest extends TestCase {
      * @test
      */
     public function testEmptyShell() {
-        $device = $this->client->api('accounts')->devices()->new();
-        $this->assertObjectHasAttribute('name', $device);
-        $this->assertObjectHasAttribute('owner_id', $device);
-        $this->assertObjectHasAttribute('outbound_flags', $device);
-        $this->assertObjectHasAttribute('suppress_unregister_notifications', $device);
-        $this->assertObjectHasAttribute('caller_id', $device);
-        $this->assertInstanceOf("Kazoo\\Api\\Resources\\Device", $device);
+        try {
+            $device = $this->client->accounts()->devices()->new();
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
+        } catch (Exception $e) {
+            $this->markTestSkipped($e->getMessage());
+        }
+    }
+
+    public function testRetriveAll() {
+        $devices = $this->client->accounts()->devices()->retrieve();
+        $this->assertGreaterThan(0, count($devices->data));
+    }
+
+    public function testCreateDevice() {
+        $shellDevice = $this->client->accounts()->devices()->new();
+        $num = substr(number_format(time() * rand(),0,'',''),0,4);
+        $shellDevice->name = "Test Device #" . $num;
+        $shellDevice->sip->password = substr(number_format(time() * rand(),0,'',''),0,10);
+        $shellDevice->sip->username = "testdevice".$num;
+        $newDevice = $this->client->accounts()->devices()->create($shellDevice);
+        $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $newDevice);
+        $this->assertObjectHasAttribute('id', $newDevice);
     }
 
 }

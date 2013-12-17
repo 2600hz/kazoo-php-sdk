@@ -4,6 +4,7 @@ vendor/*
 composer.phar
 package.xml
 *.tgz
+*.log
 .DS_Store
 
 nbproject

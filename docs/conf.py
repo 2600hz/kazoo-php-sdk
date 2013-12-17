@@ -19,6 +19,8 @@ sys.path.insert(0, os.path.join(os.path.abspath('.'), "ext"))
 # Disabled: , 'sphinx.ext.intersphinx'
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.todo', 'sphinx.ext.ifconfig', 'sphinx.ext.viewcode', 'sphinxcontrib.phpdomain', 'sphinxcontrib_phpautodoc']
 
+primary_domain = 'php'
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -85,9 +87,9 @@ html_theme = 'kr'
 
 from sphinx.highlighting import lexers
 from pygments.lexers.web import PhpLexer
-from pygson.json_lexer import JSONLexer
+from pygments.lexers.web import JsonLexer
 lexers['php'] = PhpLexer(startinline=True)
-lexers['json'] = JSONLexer()
+lexers['json'] = JsonLexer()
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
