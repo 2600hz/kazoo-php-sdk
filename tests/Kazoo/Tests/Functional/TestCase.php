@@ -2,7 +2,6 @@
 
 namespace Kazoo\Tests\Functional;
 
-use Kazoo\Client;
 use Kazoo\Exception\ApiLimitExceedException;
 use Kazoo\Exception\RuntimeException;
 
@@ -23,7 +22,7 @@ class TestCase extends \PHPUnit_Framework_TestCase {
         // You have to specify authentication here to run full suite
 
         try {
-            $this->client = new Client($username, $password, $sipRealm, $options);
+            $this->client = new \Kazoo\Client($username, $password, $sipRealm, $options);
         } catch (ApiLimitExceedException $e) {
             $this->markTestSkipped('API limit reached. Skipping to prevent unnecessary failure.');
         } catch (RuntimeException $e) {

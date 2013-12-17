@@ -111,9 +111,9 @@ class Client {
     
     private function setupAccounts(){        
         $this->accounts = new \Kazoo\Api\Resource\Accounts($this, "/accounts");
-        $account = $this->accounts->retrieve($this->getClientState()->data->account_id);
-        $this->baseAccount = $account;
-        $this->setCurrentAccountContext($account);
+//        $account = $this->accounts->retrieve($this->getClientState()->data->account_id);
+//        $this->baseAccount = $account;
+//        $this->setCurrentAccountContext($account);
     }
     
     public function addUriToken($variable){
