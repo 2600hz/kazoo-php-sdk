@@ -2,6 +2,7 @@
 
 namespace Kazoo\Api\Resource;
 
+use Kazoo\Api\JsonSchemaObjectFactory;
 use Kazoo\Api\AbstractResource;
 
 /**
@@ -12,16 +13,16 @@ use Kazoo\Api\AbstractResource;
 class Accounts extends AbstractResource {
 
     protected static $_entity_class = "Kazoo\\Api\\Data\\Entity\\Account";
-    protected static $_entity_collection_class = "Kazoo\\Api\\Data\\Collection\\Accounts";
+    protected static $_entity_collection_class = "Kazoo\\Api\\Data\\Collection\\AccountCollection";
     protected static $_schema_name = "accounts.json";
-    
+
     public function __construct(\Kazoo\Client $client, $uri) {
         parent::__construct($client, $uri);
         $this->defineChildApis();
         $this->initChildInstances();
     }
-    
-    public function defineChildApis(){
+
+    public function defineChildApis() {
         $this->_child_resources[] = array("name" => "callflows", "uri" => "/{account_id}/callflows", "resource_class" => "Callflows");
         $this->_child_resources[] = array("name" => "carrier_resources", "uri" => "/{account_id}/carrier_resources", "resource_class" => "CarrierResources");
         $this->_child_resources[] = array("name" => "cdrs", "uri" => "/{account_id}/cdrs", "resource_class" => "Cdrs");
@@ -44,4 +45,41 @@ class Accounts extends AbstractResource {
         $this->_child_resources[] = array("name" => "webhooks", "uri" => "/{account_id}/webhooks", "resource_class" => "Webhooks");
         $this->_child_resources[] = array("name" => "phone_numbers", "uri" => "/{account_id}/phone_numbers", "resource_class" => "PhoneNumbers");
     }
+
+    public function __call($name, $arguments) {
+        
+        if ($this->hasChildResource($name)) {
+            return $this->getChildResource($name);
+        } else {
+            switch (strtolower($name)) {
+                case 'new':
+                    return JsonSchemaObjectFactory::getNew($this->client, $this->uri, self::$_entity_class, $this->getSchemaJson());
+                    break;
+                case 'create':
+                    if (is_array($arguments[0])) {
+                        return $this->client->put($this->uri, json_encode($arguments[0]));
+                    }
+                    break;
+                case 'get':
+                case 'retrieve':
+                    switch (count($arguments)) {
+                        case 0:
+                            return $this->client->get($this->uri . "/descendants");
+                            break;
+                        case 1:
+                            if (is_int($arguments[0])) {
+                                $resource_id = $arguments[0];
+                                $this->client->setCurrentAccountContext($resource_id);
+                                return $this->client->get($this->uri, array());
+                            } else if (is_array($arguments[0])) {
+                                $filters = $arguments[0];
+                                return $this->client->get($this->uri, $filters);
+                            }
+                            break;
+                    }
+                    break;
+            }
+        }
+    }
+
 }

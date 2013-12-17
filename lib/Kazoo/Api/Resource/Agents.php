@@ -6,10 +6,10 @@ use Kazoo\Api\AbstractResource;
 /**
  * 
  */
-class Callflows extends AbstractResource {
+class Agents extends AbstractResource {
     
-    protected static $_entity_class = "Kazoo\\Api\\Data\\Entity\\Callflow";
-    protected static $_entity_collection_class = "Kazoo\\Api\\Data\\Collection\\CallflowCollection";
+    protected static $_entity_class = "Kazoo\\Api\\Data\\Entity\\Agent";
+    protected static $_entity_collection_class = "Kazoo\\Api\\Data\\Collection\\AgentCollection";
     protected static $_schema_name = "callflows.json";
     
     public function __construct(\Kazoo\Client $client, $uri) {

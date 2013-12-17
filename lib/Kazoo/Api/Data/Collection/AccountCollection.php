@@ -8,6 +8,6 @@ use Kazoo\Api\Data\AbstractCollection;
  *
  * @link   https://2600hz.atlassian.net/wiki/display/docs/Accounts+API
  */
-class Accounts extends AbstractCollection {
+class AccountCollection extends AbstractCollection {
     
 }

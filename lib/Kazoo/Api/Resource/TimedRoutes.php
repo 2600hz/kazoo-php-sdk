@@ -1,20 +1,19 @@
 <?php
 
-namespace Kazoo\Api\Accounts;
-
-use Kazoo\Client;
-use Kazoo\Api\AbstractApi;
+namespace Kazoo\Api\Resource;
+use Kazoo\Api\AbstractResource;
 
 /**
- * Creating, editing, deleting and listing devices
- *
- * @link   https://2600hz.atlassian.net/wiki/display/docs/Accounts+API
+ * 
  */
-class TimedRoutes extends AbstractApi {
+class TimedRoutes extends AbstractResource {
     
-    public function __construct(Client $client) {
-        parent::__construct($client);
-        $this->setSchemaName("temporal_rules.json");
-        $this->setResourceNoun("TimedRoute");
+    protected static $_entity_class = "Kazoo\\Api\\Data\\Entity\\TimeRoute";
+    protected static $_entity_collection_class = "Kazoo\\Api\\Data\\Collection\\TimedRouteCollection";
+    protected static $_schema_name = "temporal_routes.json";
+    
+    public function __construct(\Kazoo\Client $client, $uri) {
+        parent::__construct($client, $uri);
     }
+    
 }

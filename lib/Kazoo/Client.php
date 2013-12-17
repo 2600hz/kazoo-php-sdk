@@ -7,8 +7,9 @@ use Kazoo\Exception\InvalidArgumentException;
 use Kazoo\Exception\AuthenticationException;
 use Kazoo\HttpClient\HttpClient;
 use Kazoo\HttpClient\HttpClientInterface;
-use Guzzle\Http\Exception\ClientErrorResponseException;
-use Guzzle\Http\Client as GuzzleClient;
+use Kazoo\HttpClient\Message\ResponseMediator;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 /**
  * PHP Kazoo SDK
@@ -26,9 +27,20 @@ class Client {
         'timeout' => 10,
         'api_limit' => 5000,
         'api_version' => '1',
+        'log_type' => null,
+        'log_file' => null,
         'cache_dir' => null,
         'schema_dir' => null
     );
+
+    const GREGORIAN_OFFSET = 62167219200;
+    
+    /**
+     * number of items per page
+     *
+     * @var null|int
+     */
+    protected $perPage;
 
     /**
      * The Buzz instance used to communicate with Kazoo
@@ -36,20 +48,81 @@ class Client {
      * @var HttpClient
      */
     private $httpClient;
+
+    /**
+     *
+     * @var string
+     */
     private $username;
+
+    /**
+     *
+     * @var string
+     */
     private $password;
+
+    /**
+     *
+     * @var \Monolog\Logger 
+     */
+    private $logger;
+
+    /**
+     *
+     * @var string
+     */
     private $sipRealm;
+
+    /**
+     *
+     * @var stdClass
+     */
     private $clientState;
+
+    /**
+     *
+     * @var \Kazoo\Api\Data\Entity\Account
+     */
     private $baseAccount;
+
+    /**
+     *
+     * @var \Kazoo\Api\Data\Entity\Account
+     */
     private $curAccount;
+
+    /**
+     *
+     * @var array 
+     */
+    private $baseHeaders = array("Content-Type" => "application/json", "Accept" => "application/json");
+    
+    /**
+     *
+     * @var \Kazoo\Api\Resource\Accounts
+     */
     private $accounts;
+
+    /**
+     *
+     * @var array 
+     */
     private $uri_tokens = array("api_version");
+
+    /**
+     *
+     * @var array 
+     */
     private $uri_token_values = array();
 
     /**
-     * Instantiate a new Kazoo client
-     *
-     * @param null|HttpClientInterface $httpClient Kazoo http client
+     * 
+     * @param string $username
+     * @param string $password
+     * @param string $sipRealm
+     * @param null|array $options
+     * @param null|stdClass $clientState
+     * @param null|\Kazoo\HttpClient\HttpClientInterface $httpClient
      */
     public function __construct($username, $password, $sipRealm, $options = null, $clientState = null, HttpClientInterface $httpClient = null) {
         $this->httpClient = $httpClient;
@@ -63,16 +136,32 @@ class Client {
             $this->options[$option_key] = $option_val;
         }
 
+        switch ($this->options['log_type']) {
+            case "file":
+                $this->logger = new Logger('sdk_logger');
+                $this->logger->pushHandler(new StreamHandler($this->options['log_file'], Logger::DEBUG));
+                break;
+            case "stdout":
+                $this->logger = new Logger('sdk_logger');
+                $this->logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
+                break;
+            default:
+            case null:
+                $this->logger = new Logger('sdk_logger');
+                $this->logger->pushHandler(new StreamHandler('php://stdout', Logger::CRITICAL));
+        }
+
         $this->options['base_url'] = $this->options['base_url'] . "/v{api_version}";
 
         $this->addUriTokenValue('api_version', $this->getOption('api_version'));
-        
+
+        $this->setHeaders($this->getBaseHeaders());
+
         if (!is_null($this->clientState)) {
             $this->setClientState($clientState);
         } else {
             $this->setupClientState();
         }
-        
         $this->setAuthToken();
         $this->setupAccounts();
     }
@@ -87,16 +176,13 @@ class Client {
         $payload->data = new stdClass();
         $payload->data->credentials = md5($this->username . ":" . $this->password);
         $payload->data->realm = $this->sipRealm;
-        $tokenizedUri = $this->getTokenizedUri($this->options['base_url']);
-        $client = new GuzzleClient($tokenizedUri);
-        $headers = array("Content-Type" => "application/json", "Accept" => "application/json");
-        $request = $client->put("user_auth", $headers, json_encode($payload));
 
         try {
-            $response = $request->send();
-            switch ($response->getStatusCode()) {
-                case 200:
-                    $this->clientState = json_decode($response->getBody());
+            $tokenizedUri = $this->getTokenizedUri($this->options['base_url'] . "/user_auth");
+            $response = ResponseMediator::getContent($this->getHttpClient()->put($tokenizedUri, json_encode($payload)));
+            switch ($response->status) {
+                case "success":
+                    $this->clientState = $response;
                     break;
                 default:
                     $message = $response->getStatusCode() . " " . $response->getReasonPhrase() . " " . $response->getProtocol() . $response->getProtocolVersion();
@@ -108,50 +194,57 @@ class Client {
             die($e->getMessage());
         }
     }
-    
-    private function setupAccounts(){        
-        $this->accounts = new \Kazoo\Api\Resource\Accounts($this, "/accounts");
-//        $account = $this->accounts->retrieve($this->getClientState()->data->account_id);
-//        $this->baseAccount = $account;
-//        $this->setCurrentAccountContext($account);
+
+    public function getLogger() {
+        return $this->logger;
     }
-    
-    public function addUriToken($variable){
-        if(!in_array($variable, $this->uri_tokens)){
+
+    private function setupAccounts() {
+        $this->accounts = new \Kazoo\Api\Resource\Accounts($this, $this->options['base_url'] . "/accounts/{account_id}");
+        $this->baseAccountId = $this->getClientState()->data->account_id;
+        $this->setCurrentAccountContext($this->baseAccountId);
+    }
+
+    public function getBaseHeaders() {
+        return $this->baseHeaders;
+    }
+
+    public function addUriToken($variable) {
+        if (!in_array($variable, $this->uri_tokens)) {
             $this->uri_tokens[] = $variable;
         }
     }
-    
-    public function addUriTokenValue($token, $value){
+
+    public function addUriTokenValue($token, $value) {
         $this->uri_token_values[$token] = $value;
     }
-    
-    private function getTokenizedUri($uri){
-        
+
+    public function getTokenizedUri($uri) {
         $tokenized_uri = $uri;
-        foreach($this->uri_tokens as $token){
-            $pattern = "/\{".$token."\}/";
-            if(array_key_exists($token, $this->uri_token_values)){
+        foreach ($this->uri_tokens as $token) {
+            $pattern = "/\{" . $token . "\}/";
+            if (array_key_exists($token, $this->uri_token_values)) {
                 $value = $this->uri_token_values[$token];
             } else {
                 throw new Exception\UriTokenException("Missing uri token value for token: " . $token);
             }
-            
+
             $tokenized_uri = preg_replace($pattern, $value, $tokenized_uri);
         }
         return $tokenized_uri;
     }
-    
+
     /**
      * 
-     * @param \Kazoo\Api\Data\Entity\Account $account
+     * @param string $account
      */
-    public function setCurrentAccountContext(\Kazoo\Api\Data\Entity\Account $account){
-        $this->addUriTokenValue('account_id', $account->id);
-        $this->curAccount = $account;
+    public function setCurrentAccountContext($account_id) {
+        $this->addUriToken("account_id");
+        $this->addUriTokenValue('account_id', $account_id);
+        $this->curAccount = $account_id;
     }
-    
-    public function getAccountContext(){
+
+    public function getAccountContext() {
         return $this->curAccount;
     }
 
@@ -254,42 +347,22 @@ class Client {
 
         $this->options[$name] = $value;
     }
-    
-    public function __call($name, $arguments) {
-        
-        $base_headers = array("Content-Type" => "application/json", "Accept" => "application/json");
-        
-        $uri = (isset($arguments[0]) ? $arguments[0] : '');
-        $parameters = (isset($arguments[1]) ? $arguments[1] : array());
-        $requestHeaders = (isset($arguments[2]) ? array_merge($base_headers, $arguments[2]) : $base_headers);
-        
-        $this->getTokenizedUri($uri);
 
-        switch (strtolower($name)) {
-            case 'accounts':
-                return $this->accounts;
-                break;
-            case 'account':
-                return $this->getCurrentAccount();
-                break;
-            case 'retrieve':
-            case 'get':
-                return $this->get($uri, $parameters, $requestHeaders);
-                break;
-            case 'update':
-            case 'post':
-                return $this->post($uri, $parameters, $requestHeaders);
-                break;
-            case 'create':
-            case 'put':
-                return $this->put($uri, $parameters, $requestHeaders);
-                break;
-            case 'delete':
-                return $this->delete($uri, $parameters, $requestHeaders);
-                break;
-        }
+    /**
+     * @return null|int
+     */
+    public function getPerPage() {
+        return $this->perPage;
     }
-    
+
+    /**
+     * @param null|int $perPage
+     */
+    public function setPerPage($perPage) {
+        $this->perPage = (null === $perPage ? $perPage : (int) $perPage);
+        return $this;
+    }
+
     /**
      * Send a GET request with query parameters.
      *
@@ -298,14 +371,22 @@ class Client {
      * @param array $requestHeaders     Request Headers.
      * @return \Guzzle\Http\EntityBodyInterface|mixed|string
      */
-    protected function get($path, array $parameters = array(), $requestHeaders = array()) {
+    public function get($path, array $parameters = array(), $requestHeaders = array()) {
         if (null !== $this->perPage && !isset($parameters['per_page'])) {
             $parameters['per_page'] = $this->perPage;
         }
         if (array_key_exists('ref', $parameters) && is_null($parameters['ref'])) {
             unset($parameters['ref']);
         }
-        $response = $this->getHttpClient()->get($path, $parameters, $requestHeaders);
+
+        $tokenizedUri = $this->getTokenizedUri($path);
+        try {
+            $response = $this->getHttpClient()->get($tokenizedUri, $parameters, $requestHeaders);
+        } catch (ErrorException $e) {
+            $this->getLogger()->addCritical($e->getMessage());
+        } catch (RuntimeException $e) {
+            $this->getLogger()->addCritical($e->getMessage());
+        }
 
         return ResponseMediator::getContent($response);
     }
@@ -317,7 +398,7 @@ class Client {
      * @param array $parameters         POST parameters to be JSON encoded.
      * @param array $requestHeaders     Request headers.
      */
-    protected function post($path, array $parameters = array(), $requestHeaders = array()) {
+    public function post($path, array $parameters = array(), $requestHeaders = array()) {
         return $this->postRaw(
                         $path, $this->createJsonBody($parameters), $requestHeaders
         );
@@ -331,7 +412,7 @@ class Client {
      * @param array $requestHeaders     Request headers.
      * @return \Guzzle\Http\EntityBodyInterface|mixed|string
      */
-    protected function postRaw($path, $body, $requestHeaders = array()) {
+    public function postRaw($path, $body, $requestHeaders = array()) {
         $response = $this->getHttpClient()->post(
                 $path, $body, $requestHeaders
         );
@@ -346,7 +427,7 @@ class Client {
      * @param array $parameters         POST parameters to be JSON encoded.
      * @param array $requestHeaders     Request headers.
      */
-    protected function patch($path, array $parameters = array(), $requestHeaders = array()) {
+    public function patch($path, array $parameters = array(), $requestHeaders = array()) {
         $response = $this->getHttpClient()->patch(
                 $path, $this->createJsonBody($parameters), $requestHeaders
         );
@@ -361,7 +442,7 @@ class Client {
      * @param array $parameters         POST parameters to be JSON encoded.
      * @param array $requestHeaders     Request headers.
      */
-    protected function put($path, array $parameters = array(), $requestHeaders = array()) {
+    public function put($path, array $parameters = array(), $requestHeaders = array()) {
         $response = $this->getHttpClient()->put(
                 $path, $this->createJsonBody($parameters), $requestHeaders
         );
@@ -376,7 +457,7 @@ class Client {
      * @param array $parameters         POST parameters to be JSON encoded.
      * @param array $requestHeaders     Request headers.
      */
-    protected function delete($path, array $parameters = array(), $requestHeaders = array()) {
+    public function delete($path, array $parameters = array(), $requestHeaders = array()) {
         $response = $this->getHttpClient()->delete(
                 $path, $this->createJsonBody($parameters), $requestHeaders
         );
@@ -390,8 +471,19 @@ class Client {
      * @param array $parameters   Request parameters
      * @return null|string
      */
-    protected function createJsonBody(array $parameters) {
-        return (count($parameters) === 0) ? null : json_encode($parameters, empty($parameters) ? JSON_FORCE_OBJECT : 0);
+    protected function createJsonBody($parameters) {
+        return json_encode($parameters);
+    }
+
+    public function __call($name, $arguments) {
+        switch (strtolower($name)) {
+            case 'accounts':
+                return $this->accounts;
+                break;
+            case 'account':
+                return $this->getAccountContext();
+                break;
+        }
     }
 
 }
