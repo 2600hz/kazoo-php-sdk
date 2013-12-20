@@ -94,14 +94,13 @@ abstract class AbstractResource {
                         return $account->updateFromResult($result);
                     }
                     break;
-                case 'get':
                 case 'retrieve':
                     switch (count($arguments)) {
                         case 0:
                             return $this->client->get($this->uri);
                             break;
                         case 1:
-                            if (is_int($arguments[0])) {
+                            if (is_string($arguments[0])) {
                                 $resource_id = $arguments[0];
                                 return $this->client->get($this->uri . "/" . $resource_id, array());
                             } else if (is_array($arguments[0])) {

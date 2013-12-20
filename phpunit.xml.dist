@@ -13,10 +13,16 @@
          verbose="true"
 >
     <testsuites>
-        <testsuite name="JSON Schema Test Suite">
+        <testsuite name="Kazoo SDK Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
+
+<!--    <groups>
+        <exclude>
+            <group>functional</group>
+        </exclude>
+    </groups>-->
 
     <filter>
         <whitelist>

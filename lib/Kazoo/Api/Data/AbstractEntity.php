@@ -11,32 +11,71 @@ abstract class AbstractEntity {
 
     protected $_client;
     protected $_uri;
+    protected $_data;
+    protected $_state = NULL;
 
+    const STATE_EMPTY = 'EMPTY';
+    const STATE_HYDRATED = 'HYDRATED';
+    
     /**
      * 
      * @param \Kazoo\Client $client
      * @param string $uri
      */
-    public function __construct(\Kazoo\Client $client, $uri = null) {
+    public function __construct(\Kazoo\Client $client, $uri, $data = null) {
         $this->_client = $client;
         $this->_uri = $uri;
+        $this->_data = new stdClass();
+        $this->changeState(self::STATE_EMPTY);
     }
 
+    /**
+     * 
+     * @param stdClass $data
+     */
+    private function setData(stdClass $data){
+        $this->_data = array_replace_recursive($this->_data, $data);
+    }
+    
+    /**
+     * 
+     * @param type $state
+     */
+    private function changeState($state){
+        $this->_state = $state;
+    }
+    
     /**
      * 
      * @param stdClass $result
      * @return \Kazoo\Api\Data\AbstractEntity
      */
     public function updateFromResult(stdClass $result) {
-
-        //Hunt for id
-        if (property_exists($result->data, 'id')) {
-            $this->id = $result->data->id;
-        }
-
+        $this->setData($result);
+        $this->changeState(self::STATE_HYDRATED);
         return $this;
     }
 
+    /**
+     * 
+     * @param type $prop
+     * @return type
+     */
+    public function __get($prop){
+        if(property_exists($this->_data, $prop)){
+            return $this->_data->$prop;
+        }
+    }
+    
+    /**
+     * 
+     * @param type $prop
+     * @param type $value
+     */
+    public function __set($prop, $value){
+        $this->_data->$prop = $value;
+    }
+    
     /**
      * 
      * @return type
@@ -50,7 +89,7 @@ abstract class AbstractEntity {
      * @return type
      */
     public function getData() {
-        return json_decode($this->toJSON());
+        return $this->_data;
     }
 
     /**
@@ -58,7 +97,7 @@ abstract class AbstractEntity {
      * @return json
      */
     public function toJSON() {
-        return json_encode($this, false);
+        return json_encode($this->getData(), false);
     }
 
     /**
@@ -70,6 +109,7 @@ abstract class AbstractEntity {
     public function __call($name, $arguments) {
         switch (strtolower($name)) {
             case 'save':
+                
                 break;
             case 'delete':
                 break;

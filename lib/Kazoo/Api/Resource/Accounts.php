@@ -69,7 +69,7 @@ class Accounts extends AbstractResource {
                             return $this->client->get($this->uri . "/descendants");
                             break;
                         case 1:
-                            if (is_int($arguments[0])) {
+                            if (is_string($arguments[0])) {
                                 $resource_id = $arguments[0];
                                 $this->client->setCurrentAccountContext($resource_id);
                                 return $this->client->get($this->uri, array());
