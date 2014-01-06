@@ -97,7 +97,9 @@ abstract class AbstractResource {
                 case 'retrieve':
                     switch (count($arguments)) {
                         case 0:
-                            return $this->client->get($this->uri);
+                            $response = $this->client->get($this->uri, array());
+                            $collection_type = static::$_entity_collection_class;
+                            return new $collection_type($response->data);
                             break;
                         case 1:
                             if (is_string($arguments[0])) {

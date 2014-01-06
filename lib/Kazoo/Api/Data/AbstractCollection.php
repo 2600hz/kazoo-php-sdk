@@ -1,29 +1,17 @@
 <?php
 
-namespace Kazoo\Api;
+namespace Kazoo\Api\Data;
 
 use Iterator;
 use Countable;
-use Kazoo\Api\Resource;
 
-abstract class Collection extends Resource implements Iterator, Countable {
+abstract class AbstractCollection implements Iterator, Countable {
 
     private $position = 0;
     private $array = array();
 
-    public function __construct($client, $uri) {
-
-        $name = get_class($this);
-
-        if (!isset($this->rest_resource_class)) {
-            $this->rest_resource_class = "Kazoo\\Api\\Resource\\" . rtrim($name, 's');
-        }
-
-        parent::__construct($client, $uri);
-    }
-
-    public function getSchemaJson() {
-        return file_get_contents($this->client->getOption('schema_dir') . "/" . static::$_schema_name);
+    public function __construct($list) {
+        $this->array = $list;
     }
 
     public function toJSON() {
@@ -56,7 +44,7 @@ abstract class Collection extends Resource implements Iterator, Countable {
     }
 
     public function count() {
-        return 0;
+        return count($this->array);
     }
 
     public function getUriPart(){
@@ -66,23 +54,4 @@ abstract class Collection extends Resource implements Iterator, Countable {
     private function peekLocal($resource_id){
         return in_array($resource_id, $this);
     }
-    
-    public function __call($name, $arguments) {
-        $request_type = null;
-        
-        if(is_int($arguments[0])){
-            $request_type = ""
-        }
-        
-        switch (strtolower($name)) {
-            case 'new':
-                return JsonSchemaObjectFactory::getNew($this->client, $this->uri, static::$_resource_class, $this->getSchemaJson());
-                break;
-            case 'retrieve':
-                
-                if($this->peekLocal($))
-                break;
-        }
-    }
-
 }
