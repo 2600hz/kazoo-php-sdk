@@ -77,7 +77,7 @@ abstract class AbstractResource {
         $this->_schema_json = file_get_contents($this->client->getOption('schema_dir') . "/" . static::$_schema_name);
         return $this->_schema_json;
     }
-
+    
     public function __call($name, $arguments) {
 
         if ($this->hasChildResource($name)) {
@@ -91,7 +91,7 @@ abstract class AbstractResource {
                     if ($arguments[0] instanceof \Kazoo\Api\Data\AbstractEntity) {
                         $account = $arguments[0];
                         $result = $this->client->put($this->uri, $account->getData());
-                        return $account->updateFromResult($result);
+                        return $account->updateFromResult($result->data);
                     }
                     break;
                 case 'retrieve':

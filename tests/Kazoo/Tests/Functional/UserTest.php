@@ -41,43 +41,45 @@ class UserTest extends \PHPUnit_Framework_TestCase {
         $this->assertGreaterThan(0, count($users));
     }
 
-//    /**
-//     * @test
-//     */
-//    public function testEmptyShell() {
-//        try {
-//            $user = $this->client->accounts()->users()->new();
-//            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\User", $user);
-//        } catch (Exception $e) {
-//            $this->markTestSkipped($e->getMessage());
-//        }
-//    }
+    /**
+     * @test
+     */
+    public function testEmptyShell() {
+        try {
+            $user = $this->client->accounts()->users()->new();
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\User", $user);
+        } catch (Exception $e) {
+            $this->markTestSkipped($e->getMessage());
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function testCreateUser() {
+        
+        $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
+        
+        $user = $this->client->accounts()->users()->new();
+        $user->username = "UnitTest" . $num;
+        $user->first_name = "UnitTestFirstName" . $num;
+        $user->last_name = "UnitTestFirstName" . $num;
+        $this->client->accounts()->users()->create($user);
+
+        echo $user . "\n";
+        die();
+
+        $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\User", $user);
+        $this->assertObjectHasAttribute('id', $user);
+
+        return $user->id;
+    }
 //
 //    /**
 //     * @test
+//     * @depends testCreateUser
 //     */
-//    public function shouldCreateUser() {
-//        $user = $this->client->accounts()->users()->new();
-//        $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
-//        $device->name = "Test Device #" . $num;
-//        $device->sip->password = substr(number_format(time() * rand(), 0, '', ''), 0, 10);
-//        $device->sip->username = "testdevice" . $num;
-//        $this->client->accounts()->devices()->create($device);
-//
-//        echo $device . "\n";
-//        die();
-//
-//        $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $this->test_device);
-//        $this->assertObjectHasAttribute('id', $this->test_device);
-//
-//        return $this->test_device->id;
-//    }
-//
-//    /**
-//     * @test
-//     * @depends shouldCreateDevice
-//     */
-//    public function shouldRetriveDevice($device_id) {
+//    public function testRetriveDevice($device_id) {
 //        $device = $this->client->accounts()->devices()->retrieve($device_id);
 //        $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
 //        $this->assertObjectHasAttribute('id', $this->test_device);

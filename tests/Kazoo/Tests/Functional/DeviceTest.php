@@ -12,7 +12,6 @@ use Kazoo\Exception\RuntimeException;
 class DeviceTest extends \PHPUnit_Framework_TestCase {
 
     protected $client;
-    protected $test_device;
 
     public function setUp() {
 
@@ -45,10 +44,12 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function testEmptyShell() {
+    public function testCreateEmptyShell() {
         try {
-            $this->test_device = $this->client->accounts()->devices()->new();
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $this->test_device);
+            $device = $this->client->accounts()->devices()->new();
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
+            
+            return $device;
         } catch (Exception $e) {
             $this->markTestSkipped($e->getMessage());
         }
@@ -56,9 +57,11 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
+     * @depends testCreateEmptyShell
      */
-    public function shouldCreateDevice() {
+    public function testCreateDevice($device) {
         $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
+        
         $device->name = "Test Device #" . $num;
         $device->sip->password = substr(number_format(time() * rand(), 0, '', ''), 0, 10);
         $device->sip->username = "testdevice" . $num;
@@ -67,43 +70,43 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
         echo $device . "\n";
         die();
 
-        $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $this->test_device);
-        $this->assertObjectHasAttribute('id', $this->test_device);
-
-        return $this->test_device->id;
-    }
-
-    /**
-     * @test
-     * @depends shouldCreateDevice
-     */
-    public function shouldRetriveDevice($device_id) {
-        $device = $this->client->accounts()->devices()->retrieve($device_id);
-        $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
-        $this->assertObjectHasAttribute('id', $this->test_device);
-    }
-
-    /**
-     * @test
-     * @depends shouldCreateDevice
-     */
-    public function testUpdateOne($device_id) {
-        $device = $this->client->accounts()->devices()->retrieve($this->test_device->id);
-        $device->name = "Updated Name";
-        $device->save();
-
         $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
         $this->assertObjectHasAttribute('id', $device);
-    }
 
-    /**
-     * @test
-     * @depends shouldCreateDevice
-     */
-    public function testDeleteOne() {
-        $this->test_device = $this->client->accounts()->devices()->retrieve($this->test_device->id);
-        $this->test_device->delete();
-        $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
+        return $device->id;
     }
+//
+//    /**
+//     * @test
+//     * @depends testCreateDevice
+//     */
+//    public function testRetriveDevice($device_id) {
+//        $device = $this->client->accounts()->devices()->retrieve($device_id);
+//        $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
+//        $this->assertObjectHasAttribute('id', $device);
+//    }
+//
+//    /**
+//     * @test
+//     * @depends testCreateDevice
+//     */
+//    public function testUpdateOne($device_id) {
+//        $device = $this->client->accounts()->devices()->retrieve($device_id);
+//        $device->name = "Updated Name";
+//        $device->save();
+//
+//        $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
+//        $this->assertObjectHasAttribute('id', $device);
+//    }
+//
+//    /**
+//     * @test
+//     * @depends testCreateDevice
+//     */
+//    public function testDeleteOne($device_id) {
+//        $device = $this->client->accounts()->devices()->retrieve($device_id);
+//        $device->delete();
+//        $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
+//    }
 
 }

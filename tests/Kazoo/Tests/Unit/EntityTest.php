@@ -44,8 +44,6 @@ class EntityTest extends \PHPUnit_Framework_TestCase {
         
         $data = json_decode($this->raw_device_json);
         $device = new Device($this->client, "/" . $data->id, $data);
-
-        echo $device;
         
         $device->test = "value";
         $device->available_apps->new_obj = new stdClass();
@@ -53,6 +51,10 @@ class EntityTest extends \PHPUnit_Framework_TestCase {
         $device->available_apps->new_obj->list[] = "cellphone";
         $device->available_apps->new_obj->list[] = "deskphone";
         $device->available_apps->new_obj->list[] = "pager";
+        
+//        echo $device . "\n";
+        echo $device->test . "\n";
+        die();
 
         $this->assertObjectHasAttribute('test', $device);
         $this->assertObjectHasAttribute('available_apps', $device);

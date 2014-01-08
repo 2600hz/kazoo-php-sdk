@@ -16,7 +16,8 @@ abstract class AbstractEntity {
 
     const STATE_EMPTY = 'EMPTY';
     const STATE_HYDRATED = 'HYDRATED';
-    
+    const DOC_KEY = 'id';
+
     /**
      * 
      * @param \Kazoo\Client $client
@@ -25,26 +26,31 @@ abstract class AbstractEntity {
     public function __construct(\Kazoo\Client $client, $uri, $data = null) {
         $this->_client = $client;
         $this->_uri = $uri;
-        $this->_data = new stdClass();
-        $this->changeState(self::STATE_EMPTY);
+        
+        if(is_null($data)){
+            $this->_data = new stdClass();
+            $this->changeState(self::STATE_EMPTY);
+        } else {
+            $this->updateFromResult($data);
+        }
     }
 
     /**
      * 
      * @param stdClass $data
      */
-    private function setData(stdClass $data){
-        $this->_data = array_replace_recursive($this->_data, $data);
+    private function setData(stdClass $data) {
+        $this->_data = (object) array_replace_recursive((array)$this->_data, (array)$data);
     }
-    
+
     /**
      * 
      * @param type $state
      */
-    private function changeState($state){
+    private function changeState($state) {
         $this->_state = $state;
     }
-    
+
     /**
      * 
      * @param stdClass $result
@@ -52,6 +58,7 @@ abstract class AbstractEntity {
      */
     public function updateFromResult(stdClass $result) {
         $this->setData($result);
+        $this->_uri = $this->_uri . "/" . $result->id;
         $this->changeState(self::STATE_HYDRATED);
         return $this;
     }
@@ -61,21 +68,46 @@ abstract class AbstractEntity {
      * @param type $prop
      * @return type
      */
-    public function __get($prop){
-        if(property_exists($this->_data, $prop)){
-            return $this->_data->$prop;
+    public function __get($prop) {
+        echo "Prop:\t" . $prop . "\n";
+        echo "State:\t" . $this->_state . "\n";
+        switch ($this->_state) {
+            case self::STATE_EMPTY:
+                $pk = self::DOC_KEY;
+                if (isset($this->$pk)) {
+                    $result = $this->_client->get($this->_uri, array());
+                    $this->updateFromResult($result);
+                } else {
+                    if (property_exists($this->_data, $prop)) {
+                        return $this->_data->$prop;
+                    }
+                }
+                break;
+            case self::STATE_HYDRATED:
+                if (property_exists($this->_data, $prop)) {
+                    return $this->_data->$prop;
+                }
+                break;
         }
     }
-    
+
+    public function __isset($key) {
+        return isset($this->_data->$key);
+    }
+
+    public function __unset($key) {
+        unset($this->_data->$key);
+    }
+
     /**
      * 
      * @param type $prop
      * @param type $value
      */
-    public function __set($prop, $value){
+    public function __set($prop, $value) {
         $this->_data->$prop = $value;
     }
-    
+
     /**
      * 
      * @return type
@@ -109,7 +141,7 @@ abstract class AbstractEntity {
     public function __call($name, $arguments) {
         switch (strtolower($name)) {
             case 'save':
-                
+
                 break;
             case 'delete':
                 break;
