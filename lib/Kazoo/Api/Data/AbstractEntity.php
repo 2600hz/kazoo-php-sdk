@@ -13,8 +13,7 @@ abstract class AbstractEntity {
     protected $_uri;
     protected $_data;
     protected $_state = NULL;
-    protected $_callflow_module;
-    
+
     /**
      *
      * @var null|string
@@ -34,17 +33,21 @@ abstract class AbstractEntity {
         $this->_client = $client;
         $this->_uri = $uri;
         $this->_schema_json = $this->getSchemaJson();
-        
-        if(is_null($data)){
+
+        if (is_null($data)) {
             $this->_data = new stdClass();
             $this->changeState(self::STATE_EMPTY);
         } else {
             $this->updateFromResult($data);
         }
     }
-    
+
+    public function getCallflowModuleName() {
+        return static::$_callflow_module;
+    }
+
     public function getSchemaJson() {
-        $this->_schema_json = file_get_contents($this->client->getOption('schema_dir') . "/" . static::$_schema_name);
+        $this->_schema_json = file_get_contents($this->_client->getOption('schema_dir') . "/" . static::$_schema_name);
         return $this->_schema_json;
     }
 
@@ -53,7 +56,7 @@ abstract class AbstractEntity {
      * @param stdClass $data
      */
     private function setData(stdClass $data) {
-        $this->_data = (object) array_replace_recursive((array)$this->_data, (array)$data);
+        $this->_data = (object) array_replace_recursive((array) $this->_data, (array) $data);
     }
 
     /**
@@ -75,10 +78,10 @@ abstract class AbstractEntity {
         $this->changeState(self::STATE_HYDRATED);
         return $this;
     }
-    
-    public fucntion getCallflowModule(){
-        
-    }
+
+//    public fucntion getCallflowModule(){
+//        
+//    }
 
     /**
      * 
@@ -86,8 +89,8 @@ abstract class AbstractEntity {
      * @return type
      */
     public function __get($prop) {
-        echo "Prop:\t" . $prop . "\n";
-        echo "State:\t" . $this->_state . "\n";
+//        echo "Prop:\t" . $prop . "\n";
+//        echo "State:\t" . $this->_state . "\n";
         switch ($this->_state) {
             case self::STATE_EMPTY:
                 $pk = self::DOC_KEY;
@@ -158,7 +161,8 @@ abstract class AbstractEntity {
     public function __call($name, $arguments) {
         switch (strtolower($name)) {
             case 'save':
-
+                $result = $this->_client->put($this->_uri, $this->getData());
+                $this->updateFromResult($result);
                 break;
             case 'delete':
                 break;

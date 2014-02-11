@@ -37,7 +37,7 @@ class Accounts extends AbstractResource {
         $this->_child_resources[] = array("name" => "queues", "uri" => "/queues", "resource_class" => "Queues");
         $this->_child_resources[] = array("name" => "media", "uri" => "/media", "resource_class" => "Media");
         $this->_child_resources[] = array("name" => "users", "uri" => "/users", "resource_class" => "Users");
-        $this->_child_resources[] = array("name" => "timed_routes", "uri" => "/temporal_rules", "resource_class" => "TimedRoutes");
+        $this->_child_resources[] = array("name" => "timed_routes", "uri" => "/temporal_rules", "resource_class" => "TimeBasedRoutes");
         $this->_child_resources[] = array("name" => "groups", "uri" => "/groups", "resource_class" => "RingGroups");
         $this->_child_resources[] = array("name" => "registrations", "uri" => "/registrations", "resource_class" => "Registrations");
         $this->_child_resources[] = array("name" => "voicemail_boxes", "uri" => "/vmboxes", "resource_class" => "VoicemailBoxes");
@@ -54,13 +54,6 @@ class Accounts extends AbstractResource {
                 case 'new':
                     $account = new Account($this->client, $this->uri);
                     return JsonSchemaObjectFactory::hydrateNew($account);
-                    break;
-                case 'create':
-                    if ($arguments[0] instanceof \Kazoo\Api\Data\AbstractEntity) {
-                        $account = $arguments[0];
-                        $result = $this->client->put($this->uri, $account->getData());
-                        return $account->updateFromResult($result);
-                    }
                     break;
                 case 'get':
                 case 'retrieve':

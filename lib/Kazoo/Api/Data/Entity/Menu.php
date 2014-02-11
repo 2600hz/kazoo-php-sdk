@@ -1,13 +1,12 @@
 <?php
 
-namespace Kazoo\Api\Resources;
+namespace Kazoo\Api\Data\Entity;
 
-use Kazoo\Api\AbstractResource;
+use Kazoo\Api\Data\AbstractEntity;
 
-class Menu extends AbstractResource {
-    
-    public function __construct(){
-        
-    }
-    
+class Menu extends AbstractEntity {
+
+    protected static $_schema_name = "menus.json";
+    protected static $_callflow_module = "menu";
+
 }

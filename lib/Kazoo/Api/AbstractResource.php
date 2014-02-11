@@ -74,16 +74,11 @@ abstract class AbstractResource {
         } else {
             switch (strtolower($name)) {
                 case 'new':
+                    $entity_class = static::$_entity_class;
                     $entityInstance = new $entity_class($this->client, $this->uri);
                     return JsonSchemaObjectFactory::hydrateNew($entityInstance);
                     break;
-                case 'create':
-                    if ($arguments[0] instanceof \Kazoo\Api\Data\AbstractEntity) {
-                        $account = $arguments[0];
-                        $result = $this->client->put($this->uri, $account->getData());
-                        return $account->updateFromResult($result->data);
-                    }
-                    break;
+                case 'get':
                 case 'retrieve':
                     switch (count($arguments)) {
                         case 0:
@@ -94,7 +89,10 @@ abstract class AbstractResource {
                         case 1:
                             if (is_string($arguments[0])) {
                                 $resource_id = $arguments[0];
-                                return $this->client->get($this->uri . "/" . $resource_id, array());
+                                $result = $this->client->get($this->uri . "/" . $resource_id, array());
+                                $entity_class = static::$_entity_class;
+                                $entityInstance = new $entity_class($this->client, $this->uri);
+                                return $entityInstance->updateFromResult($result->data);
                             } else if (is_array($arguments[0])) {
                                 $filters = $arguments[0];
                                 return $this->client->get($this->uri, $filters);

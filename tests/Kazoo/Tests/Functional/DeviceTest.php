@@ -67,9 +67,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
         $device->sip->username = "testdevice" . $num;
         $this->client->accounts()->devices()->create($device);
 
-        echo $device . "\n";
-        die();
-
         $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
         $this->assertObjectHasAttribute('id', $device);
 
