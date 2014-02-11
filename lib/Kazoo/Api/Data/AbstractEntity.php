@@ -13,6 +13,13 @@ abstract class AbstractEntity {
     protected $_uri;
     protected $_data;
     protected $_state = NULL;
+    protected $_callflow_module;
+    
+    /**
+     *
+     * @var null|string
+     */
+    protected $_schema_json;
 
     const STATE_EMPTY = 'EMPTY';
     const STATE_HYDRATED = 'HYDRATED';
@@ -26,6 +33,7 @@ abstract class AbstractEntity {
     public function __construct(\Kazoo\Client $client, $uri, $data = null) {
         $this->_client = $client;
         $this->_uri = $uri;
+        $this->_schema_json = $this->getSchemaJson();
         
         if(is_null($data)){
             $this->_data = new stdClass();
@@ -33,6 +41,11 @@ abstract class AbstractEntity {
         } else {
             $this->updateFromResult($data);
         }
+    }
+    
+    public function getSchemaJson() {
+        $this->_schema_json = file_get_contents($this->client->getOption('schema_dir') . "/" . static::$_schema_name);
+        return $this->_schema_json;
     }
 
     /**
@@ -61,6 +74,10 @@ abstract class AbstractEntity {
         $this->_uri = $this->_uri . "/" . $result->id;
         $this->changeState(self::STATE_HYDRATED);
         return $this;
+    }
+    
+    public fucntion getCallflowModule(){
+        
     }
 
     /**

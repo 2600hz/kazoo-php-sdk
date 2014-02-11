@@ -8,5 +8,6 @@ use Kazoo\Api\Data\AbstractEntity;
  * 
  */
 class Callflow extends AbstractEntity {
-    
+    protected static $_schema_name = "callflows.json";
+    protected static $_callflow_module = "callflow";
 }

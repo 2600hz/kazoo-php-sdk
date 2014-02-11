@@ -33,12 +33,6 @@ abstract class AbstractResource {
 
     /**
      *
-     * @var null|string
-     */
-    protected $_schema_json;
-
-    /**
-     *
      * @var array
      */
     protected $_child_resources;
@@ -51,7 +45,7 @@ abstract class AbstractResource {
     public function __construct(\Kazoo\Client $client, $uri = null) {
         $this->client = $client;
         $this->uri = $uri;
-        $this->_schema_json = null;
+        
         $this->_child_resources = array();
         $this->_child_resource_instances = array();
     }
@@ -72,11 +66,6 @@ abstract class AbstractResource {
             $this->_child_resource_instances[$name] = new $type($this->client, $this->uri . $uri);
         }
     }
-
-    public function getSchemaJson() {
-        $this->_schema_json = file_get_contents($this->client->getOption('schema_dir') . "/" . static::$_schema_name);
-        return $this->_schema_json;
-    }
     
     public function __call($name, $arguments) {
 
@@ -85,7 +74,8 @@ abstract class AbstractResource {
         } else {
             switch (strtolower($name)) {
                 case 'new':
-                    return JsonSchemaObjectFactory::getNew($this->client, $this->uri, static::$_entity_class, $this->getSchemaJson());
+                    $entityInstance = new $entity_class($this->client, $this->uri);
+                    return JsonSchemaObjectFactory::hydrateNew($entityInstance);
                     break;
                 case 'create':
                     if ($arguments[0] instanceof \Kazoo\Api\Data\AbstractEntity) {

@@ -14,7 +14,6 @@ class Accounts extends AbstractResource {
 
     protected static $_entity_class = "Kazoo\\Api\\Data\\Entity\\Account";
     protected static $_entity_collection_class = "Kazoo\\Api\\Data\\Collection\\AccountCollection";
-    protected static $_schema_name = "accounts.json";
 
     public function __construct(\Kazoo\Client $client, $uri) {
         parent::__construct($client, $uri);
@@ -53,7 +52,8 @@ class Accounts extends AbstractResource {
         } else {
             switch (strtolower($name)) {
                 case 'new':
-                    return JsonSchemaObjectFactory::getNew($this->client, $this->uri, self::$_entity_class, $this->getSchemaJson());
+                    $account = new Account($this->client, $this->uri);
+                    return JsonSchemaObjectFactory::hydrateNew($account);
                     break;
                 case 'create':
                     if ($arguments[0] instanceof \Kazoo\Api\Data\AbstractEntity) {

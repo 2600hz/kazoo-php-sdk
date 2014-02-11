@@ -8,14 +8,12 @@ class JsonSchemaObjectFactory {
     
     /**
      * 
-     * @param Kazoo\Client $client
-     * @param string $uri
-     * @param string $entity_class
+     * @param $entityInstance
      * @param string $schema
      * @return Kazoo\Api\Data\AbstractEntity
      */
-    public static function getNew(\Kazoo\Client $client, $uri, $entity_class, $schema) {
-        $entityInstance = new $entity_class($client, $uri);
+    public static function hydrateNew($entityInstance) {
+        $schema = $entityInstance->getSchemaJson();
         return self::transformToScaffoldedObject(json_decode($schema), $entityInstance);
     }
 
