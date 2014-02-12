@@ -402,9 +402,9 @@ class Client {
     public function post($path, $payload, $requestHeaders = array()) {
         $shell = new stdClass();
         $shell->data = $payload;
-        
+
         $tokenizedUri = $this->getTokenizedUri($path);
-        
+
         return $this->postRaw(
                         $tokenizedUri, $this->createJsonBody($shell), $requestHeaders
         );
@@ -434,7 +434,7 @@ class Client {
      * @param array $requestHeaders     Request headers.
      */
     public function patch($path, $payload, $requestHeaders = array()) {
-        
+
         $response = $this->getHttpClient()->patch(
                 $path, $this->createJsonBody($payload), $requestHeaders
         );
@@ -450,10 +450,10 @@ class Client {
      * @param array $requestHeaders     Request headers.
      */
     public function put($path, $payload, $requestHeaders = array()) {
-        
+
         $shell = new stdClass();
         $shell->data = $payload;
-        
+
         $tokenizedUri = $this->getTokenizedUri($path);
 
         try {
@@ -479,10 +479,21 @@ class Client {
      * @param array $parameters         POST parameters to be JSON encoded.
      * @param array $requestHeaders     Request headers.
      */
-    public function delete($path, array $parameters = array(), $requestHeaders = array()) {
-        $response = $this->getHttpClient()->delete(
-                $path, $this->createJsonBody($parameters), $requestHeaders
-        );
+    public function delete($path, array $parameters = null, $requestHeaders = array()) {
+
+        $tokenizedUri = $this->getTokenizedUri($path);
+
+        try {
+            $response = $this->getHttpClient()->delete(
+                    $tokenizedUri,
+                    $this->createJsonBody($parameters),
+                    $requestHeaders
+            );
+        } catch (ErrorException $e) {
+            $this->getLogger()->addCritical($e->getMessage());
+        } catch (RuntimeException $e) {
+            $this->getLogger()->addCritical($e->getMessage());
+        }
 
         return ResponseMediator::getContent($response);
     }
@@ -493,8 +504,8 @@ class Client {
      * @param array $parameters   Request parameters
      * @return null|string
      */
-    protected function createJsonBody($parameters) {
-        return json_encode($parameters);
+    protected function createJsonBody($parameters = null) {
+        return ((is_null($parameters)) ? null : json_encode($parameters) );
     }
 
     public function __call($name, $arguments) {

@@ -15,14 +15,14 @@ abstract class AbstractResource {
      *
      * @var \Kazoo\Client
      */
-    protected $client;
+    protected $_client;
 
     /**
      * The uri_prefix
      *
      * @var null|string
      */
-    protected $uri;
+    protected $_uri;
 
     /**
      * number of items per page (Kazoo pagination)
@@ -43,9 +43,9 @@ abstract class AbstractResource {
      * @param null|string $uri
      */
     public function __construct(\Kazoo\Client $client, $uri = null) {
-        $this->client = $client;
-        $this->uri = $uri;
-        
+        $this->_client = $client;
+        $this->_uri = $uri;
+
         $this->_child_resources = array();
         $this->_child_resource_instances = array();
     }
@@ -63,10 +63,10 @@ abstract class AbstractResource {
             $type = "Kazoo\\Api\\Resource\\" . $child_resource_definition['resource_class'];
             $name = $child_resource_definition['name'];
             $uri = $child_resource_definition['uri'];
-            $this->_child_resource_instances[$name] = new $type($this->client, $this->uri . $uri);
+            $this->_child_resource_instances[$name] = new $type($this->_client, $this->_uri . $uri);
         }
     }
-    
+
     public function __call($name, $arguments) {
 
         if ($this->hasChildResource($name)) {
@@ -75,27 +75,27 @@ abstract class AbstractResource {
             switch (strtolower($name)) {
                 case 'new':
                     $entity_class = static::$_entity_class;
-                    $entityInstance = new $entity_class($this->client, $this->uri);
+                    $entityInstance = new $entity_class($this->_client, $this->_uri);
                     return JsonSchemaObjectFactory::hydrateNew($entityInstance);
                     break;
                 case 'get':
                 case 'retrieve':
                     switch (count($arguments)) {
                         case 0:
-                            $response = $this->client->get($this->uri, array());
+                            $response = $this->_client->get($this->_uri, array());
                             $collection_type = static::$_entity_collection_class;
                             return new $collection_type($response->data);
                             break;
                         case 1:
                             if (is_string($arguments[0])) {
                                 $resource_id = $arguments[0];
-                                $result = $this->client->get($this->uri . "/" . $resource_id, array());
+                                $result = $this->_client->get($this->_uri . "/" . $resource_id, array());
                                 $entity_class = static::$_entity_class;
-                                $entityInstance = new $entity_class($this->client, $this->uri);
+                                $entityInstance = new $entity_class($this->_client, $this->_uri . "/" . $resource_id);
                                 return $entityInstance->updateFromResult($result->data);
                             } else if (is_array($arguments[0])) {
                                 $filters = $arguments[0];
-                                return $this->client->get($this->uri, $filters);
+                                return $this->_client->get($this->_uri, $filters);
                             }
                             break;
                     }

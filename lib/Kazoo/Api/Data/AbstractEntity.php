@@ -2,6 +2,7 @@
 
 namespace Kazoo\Api\Data;
 
+use Kazoo\Exception\RuntimeException;
 use stdClass;
 
 /**
@@ -40,8 +41,12 @@ abstract class AbstractEntity {
         } else {
             $this->updateFromResult($data);
         }
+    }   
+    
+    public function getUri(){
+        return $this->_uri;
     }
-
+        
     public function getCallflowModuleName() {
         return static::$_callflow_module;
     }
@@ -74,7 +79,6 @@ abstract class AbstractEntity {
      */
     public function updateFromResult(stdClass $result) {
         $this->setData($result);
-        $this->_uri = $this->_uri . "/" . $result->id;
         $this->changeState(self::STATE_HYDRATED);
         return $this;
     }
@@ -89,14 +93,12 @@ abstract class AbstractEntity {
      * @return type
      */
     public function __get($prop) {
-//        echo "Prop:\t" . $prop . "\n";
-//        echo "State:\t" . $this->_state . "\n";
         switch ($this->_state) {
             case self::STATE_EMPTY:
                 $pk = self::DOC_KEY;
                 if (isset($this->$pk)) {
                     $result = $this->_client->get($this->_uri, array());
-                    $this->updateFromResult($result);
+                    $this->updateFromResult($result->data);
                 } else {
                     if (property_exists($this->_data, $prop)) {
                         return $this->_data->$prop;
@@ -161,10 +163,15 @@ abstract class AbstractEntity {
     public function __call($name, $arguments) {
         switch (strtolower($name)) {
             case 'save':
-                $result = $this->_client->put($this->_uri, $this->getData());
-                $this->updateFromResult($result);
+                if(strlen($this->id) > 0){
+                    $result = $this->_client->post($this->_uri, $this->getData());
+                } else {
+                    $result = $this->_client->put($this->_uri, $this->getData());
+                }
+                $this->updateFromResult($result->data);
                 break;
             case 'delete':
+                return $this->_client->delete($this->_uri);
                 break;
         }
 

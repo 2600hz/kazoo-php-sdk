@@ -52,23 +52,23 @@ class Accounts extends AbstractResource {
         } else {
             switch (strtolower($name)) {
                 case 'new':
-                    $account = new Account($this->client, $this->uri);
+                    $account = new Account($this->_client, $this->_uri);
                     return JsonSchemaObjectFactory::hydrateNew($account);
                     break;
                 case 'get':
                 case 'retrieve':
                     switch (count($arguments)) {
                         case 0:
-                            return $this->client->get($this->uri . "/descendants");
+                            return $this->_client->get($this->_uri . "/descendants");
                             break;
                         case 1:
                             if (is_string($arguments[0])) {
                                 $resource_id = $arguments[0];
-                                $this->client->setCurrentAccountContext($resource_id);
-                                return $this->client->get($this->uri, array());
+                                $this->_client->setCurrentAccountContext($resource_id);
+                                return $this->_client->get($this->_uri, array());
                             } else if (is_array($arguments[0])) {
                                 $filters = $arguments[0];
-                                return $this->client->get($this->uri, $filters);
+                                return $this->_client->get($this->_uri, $filters);
                             }
                             break;
                     }

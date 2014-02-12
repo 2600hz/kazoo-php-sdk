@@ -19,7 +19,7 @@ class AccountTest extends \PHPUnit_Framework_TestCase {
         $password = '12341234';
         $sipRealm = 'sip.benwann.com';
         $options  = array();
-        $options["base_url"] = "http://192.168.0.111:8000";
+        $options["base_url"] = "http://192.168.56.111:8000";
         $options["log_type"] = "file";
         $options["log_file"] = "/var/log/kazoo-sdk.log";
 

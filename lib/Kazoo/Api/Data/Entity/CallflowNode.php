@@ -1,6 +1,6 @@
 <?php
 
-namespace Kazoo\Api;
+namespace Kazoo\Api\Data\Entity;
 
 use stdClass;
 
