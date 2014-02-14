@@ -8,3 +8,4 @@ nbproject
 # This is used by the documentation generator
 venv
 vendors
+vendor/.git
