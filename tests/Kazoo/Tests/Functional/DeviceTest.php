@@ -45,13 +45,16 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
      * @test
      */
     public function testCreateEmptyShell() {
+
         try {
             $device = $this->client->accounts()->devices()->new();
             $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
-            
+
             return $device;
+        } catch (RuntimeException $e) {
+            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
-            $this->markTestSkipped($e->getMessage());
+            $this->markTestSkipped("Exception: " . $e->getMessage());
         }
     }
 
@@ -60,50 +63,79 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
      * @depends testCreateEmptyShell
      */
     public function testCreateDevice($device) {
-        $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
-        
-        $device->name = "Test Device #" . $num;
-        $device->sip->password = substr(number_format(time() * rand(), 0, '', ''), 0, 10);
-        $device->sip->username = "testdevice" . $num;
-        $this->client->accounts()->devices()->create($device);
 
-        $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
-        $this->assertObjectHasAttribute('id', $device);
+        try {
+            $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
 
-        return $device->id;
+            $device->name = "Test Device #" . $num;
+            $device->sip->password = substr(number_format(time() * rand(), 0, '', ''), 0, 10);
+            $device->sip->username = "testdevice" . $num;
+            $device->save();
+
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
+            $this->assertTrue((strlen($device->id) > 0));
+
+            return $device->id;
+        } catch (RuntimeException $e) {
+            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
+        } catch (Exception $e) {
+            $this->markTestSkipped("Exception: " . $e->getMessage());
+        }
     }
-//
-//    /**
-//     * @test
-//     * @depends testCreateDevice
-//     */
-//    public function testRetriveDevice($device_id) {
-//        $device = $this->client->accounts()->devices()->retrieve($device_id);
-//        $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
-//        $this->assertObjectHasAttribute('id', $device);
-//    }
-//
-//    /**
-//     * @test
-//     * @depends testCreateDevice
-//     */
-//    public function testUpdateOne($device_id) {
-//        $device = $this->client->accounts()->devices()->retrieve($device_id);
-//        $device->name = "Updated Name";
-//        $device->save();
-//
-//        $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
-//        $this->assertObjectHasAttribute('id', $device);
-//    }
-//
-//    /**
-//     * @test
-//     * @depends testCreateDevice
-//     */
-//    public function testDeleteOne($device_id) {
-//        $device = $this->client->accounts()->devices()->retrieve($device_id);
-//        $device->delete();
-//        $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
-//    }
+
+    /**
+     * @test
+     * @depends testCreateDevice
+     */
+    public function testRetrieveDevice($device_id) {
+
+        try {
+            $device = $this->client->accounts()->devices()->retrieve($device_id);
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
+            $this->assertTrue((strlen($device->id) > 0));
+            return $device;
+        } catch (RuntimeException $e) {
+            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
+        } catch (Exception $e) {
+            $this->markTestSkipped("Exception: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * @test
+     * @depends testRetrieveDevice
+     */
+    public function testUpdateDevice($device) {
+
+        try {
+            $device->name = "Updated: " . $device->name;
+            $device->save();
+
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
+            $this->assertTrue((strlen($device->id) > 0));
+
+            return $device;
+        } catch (RuntimeException $e) {
+            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
+        } catch (Exception $e) {
+            $this->markTestSkipped("Exception: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * @test
+     * @depends testUpdateDevice
+     */
+    public function testDeleteDevice($device) {
+
+        try {
+            $device->delete();
+            $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
+        } catch (RuntimeException $e) {
+            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
+        } catch (Exception $e) {
+            $this->markTestSkipped("Exception: " . $e->getMessage());
+        }
+    }
 
 }

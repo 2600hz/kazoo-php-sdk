@@ -14,6 +14,7 @@ abstract class AbstractEntity {
     protected $_uri;
     protected $_data;
     protected $_state = NULL;
+    protected $_default_callflow_data;
 
     /**
      *
@@ -34,6 +35,7 @@ abstract class AbstractEntity {
         $this->_client = $client;
         $this->_uri = $uri;
         $this->_schema_json = $this->getSchemaJson();
+        $this->_default_callflow_data = new stdClass();
 
         if (is_null($data)) {
             $this->_data = new stdClass();
@@ -49,6 +51,10 @@ abstract class AbstractEntity {
         
     public function getCallflowModuleName() {
         return static::$_callflow_module;
+    }
+    
+    protected function getCallflowDefaultData(){
+        return $this->_default_callflow_data;
     }
 
     public function getSchemaJson() {

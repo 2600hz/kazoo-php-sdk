@@ -89,7 +89,7 @@ abstract class AbstractResource {
                         case 1:
                             if (is_string($arguments[0])) {
                                 $resource_id = $arguments[0];
-                                $result = $this->_client->get($this->_uri . "/" . $resource_id, array());
+                                $result = $this->_client->get($this->_uri . "/" . $resource_id);
                                 $entity_class = static::$_entity_class;
                                 $entityInstance = new $entity_class($this->_client, $this->_uri . "/" . $resource_id);
                                 return $entityInstance->updateFromResult($result->data);

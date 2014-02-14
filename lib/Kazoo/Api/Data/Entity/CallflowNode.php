@@ -29,10 +29,12 @@ class CallflowNode {
 
     public function addDefaultChild(CallflowNode $node) {
         $this->addChild("_", $node);
+        return $node;
     }
 
     public function addChild($key, CallflowNode $node) {
         $this->_flow->children->$key = $node;
+        return $node;
     }
 
     public function renderFlow() {
@@ -41,20 +43,11 @@ class CallflowNode {
     }
 
     private function toFlow($flow, $acc) {
-        foreach ($flow as $key => $value) {
-            if ($key == "children") {
-                $total = count((array) $flow->children);
-                if ($total > 0) {
-                    $acc->children = new stdClass();
-                    foreach ($flow->children as $child_key => $child_callflow_node) {
-                        $acc->children->$child_key = $child_callflow_node->renderFlow();
-                    }
-                } else {
-                    $acc->children = new stdClass();
-                }
-            } else {
-                $acc->$key = $value;
-            }
+        $acc->module = $flow->module;
+        $acc->data = $flow->data;
+        $acc->children = new stdClass();
+        foreach ($flow->children as $child_key => $child_callflow_node) {
+            $acc->children->$child_key = $child_callflow_node->renderFlow();
         }
         return $acc;
     }

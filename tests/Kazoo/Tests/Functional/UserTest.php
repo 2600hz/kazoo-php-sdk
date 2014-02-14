@@ -20,8 +20,6 @@ class UserTest extends \PHPUnit_Framework_TestCase {
         $sipRealm = 'sip.benwann.com';
         $options = array();
         $options["base_url"] = "http://192.168.56.111:8000";
-        $options["log_type"] = "file";
-        $options["log_file"] = "/var/log/kazoo-sdk.log";
 
         // You have to specify authentication here to run full suite
 
@@ -36,76 +34,118 @@ class UserTest extends \PHPUnit_Framework_TestCase {
         }
     }
 
-    public function testRetrieveAll() {
-        $users = $this->client->accounts()->users()->retrieve();
-        $this->assertGreaterThan(0, count($users));
-    }
-
     /**
      * @test
      */
-    public function testEmptyShell() {
+    public function testCreateEmptyShell() {
+        
         try {
             $user = $this->client->accounts()->users()->new();
             $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\User", $user);
+            return $user;
+        } catch (RuntimeException $e) {
+            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
-            $this->markTestSkipped($e->getMessage());
+            $this->markTestSkipped("Exception: " . $e->getMessage());
         }
+        
     }
 
     /**
      * @test
+     * @depends testCreateEmptyShell
      */
-    public function testCreateUser() {
+    public function testCreateUser($user) {
+
+        try {
+
+            $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
+
+            $user->username = "UnitTest" . $num;
+            $user->first_name = "UnitTestFirstName" . $num;
+            $user->last_name = "UnitTestFirstName" . $num;
+            $user->save();
+
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Callflow", $callflow);
+            $this->assertTrue((strlen($user->id) > 0));
+
+            return $user->id;
+        } catch (RuntimeException $e) {
+            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
+        } catch (Exception $e) {
+            $this->markTestSkipped("Exception: " . $e->getMessage());
+        }
         
-        $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
-        
-        $user = $this->client->accounts()->users()->new();
-        $user->username = "UnitTest" . $num;
-        $user->first_name = "UnitTestFirstName" . $num;
-        $user->last_name = "UnitTestFirstName" . $num;
-        $this->client->accounts()->users()->create($user);
-
-        echo $user . "\n";
-        die();
-
-        $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\User", $user);
-        $this->assertObjectHasAttribute('id', $user);
-
-        return $user->id;
     }
-//
-//    /**
-//     * @test
-//     * @depends testCreateUser
-//     */
-//    public function testRetriveDevice($device_id) {
-//        $device = $this->client->accounts()->devices()->retrieve($device_id);
-//        $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
-//        $this->assertObjectHasAttribute('id', $this->test_device);
-//    }
-//
-//    /**
-//     * @test
-//     * @depends shouldCreateDevice
-//     */
-//    public function testUpdateOne($device_id) {
-//        $device = $this->client->accounts()->devices()->retrieve($this->test_device->id);
-//        $device->name = "Updated Name";
-//        $device->save();
-//
-//        $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
-//        $this->assertObjectHasAttribute('id', $device);
-//    }
-//
-//    /**
-//     * @test
-//     * @depends shouldCreateDevice
-//     */
-//    public function testDeleteOne() {
-//        $this->test_device = $this->client->accounts()->devices()->retrieve($this->test_device->id);
-//        $this->test_device->delete();
-//        $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
-//    }
+
+    /**
+     * @test
+     * @depends testCreateUser
+     */
+    public function testRetrieveUser($user_id) {
+        
+        try {
+            $user = $this->client->accounts()->users()->retrieve($user_id);
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\User", $user);
+            $this->assertTrue((strlen($user->id) > 0));
+            return $user;
+        } catch (RuntimeException $e) {
+            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
+        } catch (Exception $e) {
+            $this->markTestSkipped("Exception: " . $e->getMessage());
+        }
+        
+    }
+
+    /**
+     * @test
+     * @depends testRetrieveUser
+     */
+    public function testUpdateUser($user) {
+
+        try {
+            $user->first_name = $user->first_name . "-";
+            $user->save();
+
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\User", $user);
+            $this->assertTrue((strlen($user->id) > 0));
+            return $user;
+        } catch (RuntimeException $e) {
+            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
+        } catch (Exception $e) {
+            $this->markTestSkipped("Exception: " . $e->getMessage());
+        }
+        
+    }
+
+    public function testRetrieveAll() {
+        
+        try {
+            $users = $this->client->accounts()->users()->retrieve();
+            $this->assertGreaterThan(0, count($users));
+        } catch (RuntimeException $e) {
+            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
+        } catch (Exception $e) {
+            $this->markTestSkipped("Exception: " . $e->getMessage());
+        }
+        
+    }
+
+    /**
+     * @test
+     * @depends testUpdateUser
+     */
+    public function testDeleteUser($user) {
+        
+        try {
+            $user->delete();
+            $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
+        } catch (RuntimeException $e) {
+            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
+        } catch (Exception $e) {
+            $this->markTestSkipped("Exception: " . $e->getMessage());
+        }
+        
+    }
 
 }

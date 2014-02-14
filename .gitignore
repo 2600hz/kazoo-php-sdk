@@ -1,13 +1,10 @@
 .projectile
 docs/_build/
-vendor/*
-composer.phar
 package.xml
 *.tgz
 *.log
 .DS_Store
-
 nbproject
-
 # This is used by the documentation generator
 venv
+vendors

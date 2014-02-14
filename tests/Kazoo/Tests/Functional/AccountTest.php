@@ -18,10 +18,8 @@ class AccountTest extends \PHPUnit_Framework_TestCase {
         $username = 'bwann';
         $password = '12341234';
         $sipRealm = 'sip.benwann.com';
-        $options  = array();
+        $options = array();
         $options["base_url"] = "http://192.168.56.111:8000";
-        $options["log_type"] = "file";
-        $options["log_file"] = "/var/log/kazoo-sdk.log";
 
         // You have to specify authentication here to run full suite
 
@@ -35,44 +33,98 @@ class AccountTest extends \PHPUnit_Framework_TestCase {
             }
         }
     }
-    
+
     /**
      * @test
      */
-    public function testEmptyShell() {
+    public function testCreateEmptyAccount() {
         try {
             $account = $this->client->accounts()->new();
             $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Account", $account);
+            return $account;
         } catch (Exception $e) {
             $this->markTestSkipped($e->getMessage());
         }
     }
 
-    public function testRetriveOne() {
-        $account = $this->client->accounts()->retrieve($this->client->getAccountContext());
-        $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Account", $account);
-    }
-    
-    public function testUpdateOne() {
-        $account = $this->client->retrieve($this->client->getAccountContext());
-        $account->name = "Updated name";
-        $account->save();
-        $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Account", $account);
+    /**
+     * @test
+     * @depends testCreateEmptyAccount
+     */
+    public function testCreateAccount(Account $account) {
+
+        try {
+            $account->name = "Unit-Test Account";
+            $account->realm = "sip" . rand(0, 10000) . ".unittestaccount.com";
+            $account->timezone = "America/Chicago";
+            $account->save();
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Account", $account);
+            $this->assertTrue((strlen($account->id) > 0));
+            return $account->id;
+        } catch (RuntimeException $e) {
+            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
+        } catch (Exception $e) {
+            $this->markTestSkipped("Exception: " . $e->getMessage());
+        }
     }
 
-    public function testRetriveAll() {
-        $accounts = $this->client->accounts()->retrieve();
-        $this->assertGreaterThan(0, count($accounts->data));
+    /**
+     * @test
+     * @depends testCreateAccount
+     */
+    public function testRetrieveAccount($account_id) {
+
+        try {
+            $account = $this->client->accounts()->retrieve($account_id);
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Account", $account);
+            $this->assertTrue((strlen($account->id) > 0));
+            return $account;
+        } catch (RuntimeException $e) {
+            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
+        } catch (Exception $e) {
+            $this->markTestSkipped("Exception: " . $e->getMessage());
+        }
     }
 
-    public function testCreateAccount() {
-        $account = $this->client->accounts()->new();
-        $account->name = "New Test Account";
-        $account->realm = "sip".rand(0,10000).".testaccount.com";
-        $account->timezone = "America/Chicago";
-        $this->client->accounts()->create($account);
-        $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Account", $account);
-        $this->assertObjectHasAttribute('id', $account);
+    /**
+     * @test
+     * @depends testRetrieveAccount
+     */
+    public function testUpdateAccount(Account $account) {
+
+        try {
+            $account->name = "Updated: " . $account->name;
+            $account->save();
+
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Account", $account);
+            $this->assertTrue((strlen($account->id) > 0));
+            return $account;
+        } catch (RuntimeException $e) {
+            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
+        } catch (Exception $e) {
+            $this->markTestSkipped("Exception: " . $e->getMessage());
+        }
     }
+
+    /**
+     * @test
+     * @depends testUpdateAccount
+     */
+    public function testDeleteAccount(Account $account) {
+
+        try {
+            $account->delete();
+            $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
+        } catch (RuntimeException $e) {
+            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
+        } catch (Exception $e) {
+            $this->markTestSkipped("Exception: " . $e->getMessage());
+        }
+    }
+
+//    public function testRetrieveAll() {
+//        $accounts = $this->client->accounts()->retrieve();
+//        $this->assertGreaterThan(0, count($accounts->data));
+//    }
 
 }

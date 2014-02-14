@@ -15,8 +15,6 @@ class CdrTest extends \PHPUnit_Framework_TestCase {
         $sipRealm = 'sip.benwann.com';
         $options = array();
         $options["base_url"] = "http://192.168.56.111:8000";
-        $options["log_type"] = "file";
-        $options["log_file"] = "/var/log/kazoo-sdk.log";
 
         // You have to specify authentication here to run full suite
 

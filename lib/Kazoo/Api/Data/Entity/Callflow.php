@@ -9,6 +9,7 @@ use Kazoo\Api\Data\Entity\CallflowNode;
  * 
  */
 class Callflow extends AbstractEntity {
+    
     protected static $_schema_name = "callflows.json";
     protected static $_callflow_module = "callflow";
     
@@ -29,8 +30,18 @@ class Callflow extends AbstractEntity {
         return $data;
     }
     
-    public function getNewCallflowNode(){
-        return new CallflowNode();
+    public function getCallflowDefaultData(){
+        $this->_default_callflow_data->id = $this->id;
+        $this->_default_callflow_data->timeout = "20";
+        $this->_default_callflow_data->can_call_self = false;
+        return $this->_default_callflow_data;
+    }
+    
+    public function getNewCallflowNode(AbstractEntity $entity){
+        $node = new CallflowNode();
+        $node->setModule($entity->getCallflowModuleName());
+        $node->setData($entity->getCallflowDefaultData());
+        return $node;
     }
     
     public function setFlow(CallflowNode $root){

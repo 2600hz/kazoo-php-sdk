@@ -4,6 +4,7 @@ namespace Kazoo\Api\Resource;
 
 use Kazoo\Api\JsonSchemaObjectFactory;
 use Kazoo\Api\AbstractResource;
+use Kazoo\Api\Data\Entity\Account;
 
 /**
  * Creating, editing, deleting and listing accounts
@@ -59,13 +60,18 @@ class Accounts extends AbstractResource {
                 case 'retrieve':
                     switch (count($arguments)) {
                         case 0:
-                            return $this->_client->get($this->_uri . "/descendants");
+                            $response = $this->_client->get($this->_uri . "/children");
+                            $collection_type = static::$_entity_collection_class;
+                            return new $collection_type($response->data);
                             break;
                         case 1:
                             if (is_string($arguments[0])) {
                                 $resource_id = $arguments[0];
                                 $this->_client->setCurrentAccountContext($resource_id);
-                                return $this->_client->get($this->_uri, array());
+                                $result = $this->_client->get($this->_uri);
+                                $entity_class = static::$_entity_class;
+                                $entityInstance = new $entity_class($this->_client, $this->_uri);
+                                return $entityInstance->updateFromResult($result->data);
                             } else if (is_array($arguments[0])) {
                                 $filters = $arguments[0];
                                 return $this->_client->get($this->_uri, $filters);

@@ -23,11 +23,9 @@ class CallflowTest extends \PHPUnit_Framework_TestCase {
         $sipRealm = 'sip.benwann.com';
         $options = array();
         $options["base_url"] = "http://192.168.56.111:8000";
-        $options["log_type"] = "file";
-        $options["log_file"] = "/var/log/kazoo-sdk.log";
-        $this->test_user_id = "204f27a1a5a62142a607b5489462c873";
+        $this->test_user_id = "2ce19958c25ca6c048730963d0a4209c";
         $this->test_vmbox_id = "04758ef7cacb2b42f1dc88211d8ae250";
-        $this->test_device_id = "ec729f89d1f03d394e926e93eff9afb1";
+        $this->test_device_id = "6017819f3bddd69b7781ebe2dab3d4aa";
 
         // You have to specify authentication here to run full suite
 
@@ -45,7 +43,7 @@ class CallflowTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function testCreateEmptyShell() {
+    public function testCreateEmptyCallflow() {
         
         try {
             $callflow = $this->client->accounts()->callflows()->new();
@@ -60,7 +58,7 @@ class CallflowTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testCreateEmptyShell
+     * @depends testCreateEmptyCallflow
      */
     public function testCreateCallflow($callflow) {
 
@@ -68,38 +66,29 @@ class CallflowTest extends \PHPUnit_Framework_TestCase {
             $user = $this->client->accounts()->users()->retrieve($this->test_user_id);
             $vmbox = $this->client->accounts()->voicemail_boxes()->retrieve($this->test_vmbox_id);
             $device = $this->client->accounts()->devices()->retrieve($this->test_device_id);
-
-            $ext = rand(2000, 9999);
-            $callflow->name = $ext . " - New Test Callflow";
-            $callflow->addNumber((string) $ext);
-            $callflow->addNumber("+1314234" . $ext);
-
-            $root_node = $callflow->getNewCallflowNode();
+            
+            $root_node = $callflow->getNewCallflowNode($user);
             $root_node->setModule($user->getCallflowModuleName());
             $root_node->setDataProperty('timeout', "20");
             $root_node->setDataProperty('can_call_self', false);
             $root_node->setDataProperty('id', $user->id);
-
-            $device_node = $callflow->getNewCallflowNode();
-            $device_node->setModule($device->getCallflowModuleName());
-            $device_node->setDataProperty('id', $device->id);
-            $root_node->addDefaultChild($device_node);
-
-            $vm_node = $callflow->getNewCallflowNode();
-            $vm_node->setModule($vmbox->getCallflowModuleName());
-            $vm_node->setDataProperty('id', $vmbox->id);
-
-            $device_node->addDefaultChild($vm_node);
-
-            $callflow->setFlow($root_node);
+            
+            $device_node = $callflow->getNewCallflowNode($device);
+            $vm_node = $callflow->getNewCallflowNode($vmbox);
+            
+            $ext = rand(2000,9999);
+            $callflow->name = $ext . " - New Test Callflow";
+            $callflow->addNumber((string)$ext);
+            $callflow->addNumber("+1314234" . $ext);
+            $callflow->setFlow($root_node->addDefaultChild($device_node)->addDefaultChild($vm_node)); 
             $callflow->save();
 
-
             $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Callflow", $callflow);
+            $this->assertTrue((strlen($callflow->id) > 0));
 
             return $callflow->id;
         } catch (RuntimeException $e) {
-            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
+            $this->markTestSkipped("Runtime Exception: " . $e->getTraceAsString());
         } catch (Exception $e) {
             $this->markTestSkipped("Exception: " . $e->getMessage());
         }

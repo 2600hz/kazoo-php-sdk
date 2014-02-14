@@ -129,13 +129,15 @@ class Client {
         $this->username = $username;
         $this->password = $password;
         $this->sipRealm = $sipRealm;
-
-        $this->options['schema_dir'] = dirname(__DIR__) . "/../schemas";
+        
+        if(is_null($this->options['schema_dir'])){
+            $this->options['schema_dir'] = dirname(__DIR__) . "/../schemas";
+        }
 
         foreach ($options as $option_key => $option_val) {
             $this->options[$option_key] = $option_val;
         }
-
+        
         switch ($this->options['log_type']) {
             case "file":
                 $this->logger = new Logger('sdk_logger');
@@ -147,8 +149,7 @@ class Client {
                 break;
             default:
             case null:
-                $this->logger = new Logger('sdk_logger');
-                $this->logger->pushHandler(new StreamHandler('php://stdout', Logger::CRITICAL));
+                $this->logger = null;
         }
 
         $this->options['base_url'] = $this->options['base_url'] . "/v{api_version}";
@@ -372,6 +373,7 @@ class Client {
      * @return \Guzzle\Http\EntityBodyInterface|mixed|string
      */
     public function get($path, array $parameters = array(), $requestHeaders = array()) {
+
         if (null !== $this->perPage && !isset($parameters['per_page'])) {
             $parameters['per_page'] = $this->perPage;
         }
