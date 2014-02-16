@@ -2,14 +2,14 @@
 
 namespace Kazoo\Tests\Functional;
 
-use Kazoo\Api\Data\Entity\Device;
+use Kazoo\Api\Data\Entity\Agent;
 use Kazoo\Exception\ApiLimitExceedException;
 use Kazoo\Exception\RuntimeException;
 
 /**
  * @group functional
  */
-class DeviceTest extends \PHPUnit_Framework_TestCase {
+class AgentTest extends \PHPUnit_Framework_TestCase {
 
     protected $client;
 
@@ -37,13 +37,13 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function testCreateEmptyDevice() {
+    public function testCreateEmptyAgent() {
 
         try {
-            $device = $this->client->accounts()->devices()->new();
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
+            $agent = $this->client->accounts()->agents()->new();
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Agent", $agent);
 
-            return $device;
+            return $agent;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -53,22 +53,20 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testCreateEmptyDevice
+     * @depends testCreateEmptyAgent
      */
-    public function testCreateDevice($device) {
+    public function testCreateAgent($agent) {
 
         try {
             $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
 
-            $device->name = "Test Device #" . $num;
-            $device->sip->password = substr(number_format(time() * rand(), 0, '', ''), 0, 10);
-            $device->sip->username = "testdevice" . $num;
-            $device->save();
+            $agent->name = "Test Agent #" . $num;
+            $agent->save();
 
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
-            $this->assertTrue((strlen($device->id) > 0));
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Agent", $agent);
+            $this->assertTrue((strlen($agent->id) > 0));
 
-            return $device->id;
+            return $agent->id;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -78,15 +76,15 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testCreateDevice
+     * @depends testCreateAgent
      */
-    public function testRetrieveDevice($device_id) {
+    public function testRetrieveAgent($agent_id) {
 
         try {
-            $device = $this->client->accounts()->devices()->retrieve($device_id);
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
-            $this->assertTrue((strlen($device->id) > 0));
-            return $device;
+            $agent = $this->client->accounts()->agents()->retrieve($agent_id);
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Agent", $agent);
+            $this->assertTrue((strlen($agent->id) > 0));
+            return $agent;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -96,18 +94,18 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testRetrieveDevice
+     * @depends testRetrieveAgent
      */
-    public function testUpdateDevice($device) {
+    public function testUpdateAgent($agent) {
 
         try {
-            $device->name = "Updated: " . $device->name;
-            $device->save();
+            $agent->name = "Updated: " . $agent->name;
+            $agent->save();
 
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
-            $this->assertTrue((strlen($device->id) > 0));
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Agent", $agent);
+            $this->assertTrue((strlen($agent->id) > 0));
 
-            return $device;
+            return $agent;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -117,21 +115,21 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
     
     /**
      * @test
-     * @depends testUpdateDevice
+     * @depends testUpdateAgent
      */
-    public function testRetrieveAllAndUpdateOne($search_device) {
+    public function testRetrieveAllAndUpdateOne($search_agent) {
         
         try {
             
-            $devices = $this->client->accounts()->devices()->retrieve();
-            foreach($devices as $device){
-                if($device->id == $search_device->id){
-                    $search_device->name = "Updated: " . $search_device->name;
-                    $search_device->save();
+            $agents = $this->client->accounts()->agents()->retrieve();
+            foreach($agents as $agent){
+                if($agent->id == $search_agent->id){
+                    $search_agent->name = "Updated: " . $search_agent->name;
+                    $search_agent->save();
                 }
             }
-            $this->assertGreaterThan(0, count($devices));
-            return $search_device;
+            $this->assertGreaterThan(0, count($agents));
+            return $search_agent;
             
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
@@ -144,10 +142,10 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
      * @test
      * @depends testRetrieveAllAndUpdateOne
      */
-    public function testDeleteDevice($device) {
+    public function testDeleteAgent($agent) {
 
         try {
-            $device->delete();
+            $agent->delete();
             $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());

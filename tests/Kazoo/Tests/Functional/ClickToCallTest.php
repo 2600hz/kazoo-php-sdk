@@ -2,14 +2,14 @@
 
 namespace Kazoo\Tests\Functional;
 
-use Kazoo\Api\Data\Entity\Device;
+use Kazoo\Api\Data\Entity\ClickToCall;
 use Kazoo\Exception\ApiLimitExceedException;
 use Kazoo\Exception\RuntimeException;
 
 /**
  * @group functional
  */
-class DeviceTest extends \PHPUnit_Framework_TestCase {
+class ClickToCallTest extends \PHPUnit_Framework_TestCase {
 
     protected $client;
 
@@ -37,13 +37,13 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function testCreateEmptyDevice() {
+    public function testCreateEmptyCTCall() {
 
         try {
-            $device = $this->client->accounts()->devices()->new();
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
+            $ctcall = $this->client->accounts()->clicktocalls()->new();
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\ClickToCall", $ctcall);
 
-            return $device;
+            return $ctcall;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -53,22 +53,20 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testCreateEmptyDevice
+     * @depends testCreateEmptyCTCall
      */
-    public function testCreateDevice($device) {
+    public function testCreateCTCall($ctcall) {
 
         try {
             $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
 
-            $device->name = "Test Device #" . $num;
-            $device->sip->password = substr(number_format(time() * rand(), 0, '', ''), 0, 10);
-            $device->sip->username = "testdevice" . $num;
-            $device->save();
+            $ctcall->name = "Test CTCall #" . $num;
+            $ctcall->save();
 
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
-            $this->assertTrue((strlen($device->id) > 0));
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\ClickToCall", $ctcall);
+            $this->assertTrue((strlen($ctcall->id) > 0));
 
-            return $device->id;
+            return $ctcall->id;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -78,15 +76,15 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testCreateDevice
+     * @depends testCreateCTCall
      */
-    public function testRetrieveDevice($device_id) {
+    public function testRetrieveCTCall($ctcall_id) {
 
         try {
-            $device = $this->client->accounts()->devices()->retrieve($device_id);
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
-            $this->assertTrue((strlen($device->id) > 0));
-            return $device;
+            $ctcall = $this->client->accounts()->clicktocalls()->retrieve($ctcall_id);
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\ClickToCall", $call);
+            $this->assertTrue((strlen($call->id) > 0));
+            return $ctcall;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -96,18 +94,18 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testRetrieveDevice
+     * @depends testRetrieveCTCall
      */
-    public function testUpdateDevice($device) {
+    public function testUpdateCTCall($ctcall) {
 
         try {
-            $device->name = "Updated: " . $device->name;
-            $device->save();
+            $ctcall->name = "Updated: " . $ctcall->name;
+            $ctcall->save();
 
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
-            $this->assertTrue((strlen($device->id) > 0));
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\ClickToCall", $ctcall);
+            $this->assertTrue((strlen($ctcall->id) > 0));
 
-            return $device;
+            return $ctcall;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -117,21 +115,21 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
     
     /**
      * @test
-     * @depends testUpdateDevice
+     * @depends testUpdateCTCall
      */
-    public function testRetrieveAllAndUpdateOne($search_device) {
+    public function testRetrieveAllAndUpdateOne($search_ctcall) {
         
         try {
             
-            $devices = $this->client->accounts()->devices()->retrieve();
-            foreach($devices as $device){
-                if($device->id == $search_device->id){
-                    $search_device->name = "Updated: " . $search_device->name;
-                    $search_device->save();
+            $ctcalls = $this->client->accounts()->clicktocalls()->retrieve();
+            foreach($ctcalls as $ctcall){
+                if($ctcall->id == $search_ctcall->id){
+                    $search_ctcall->name = "Updated: " . $search_ctcall->name;
+                    $search_ctcall->save();
                 }
             }
-            $this->assertGreaterThan(0, count($devices));
-            return $search_device;
+            $this->assertGreaterThan(0, count($ctcalls));
+            return $search_ctcall;
             
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
@@ -144,10 +142,10 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
      * @test
      * @depends testRetrieveAllAndUpdateOne
      */
-    public function testDeleteDevice($device) {
+    public function testDeleteCTCall($ctcall) {
 
         try {
-            $device->delete();
+            $ctcall->delete();
             $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());

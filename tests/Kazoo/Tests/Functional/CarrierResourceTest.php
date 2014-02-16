@@ -2,14 +2,14 @@
 
 namespace Kazoo\Tests\Functional;
 
-use Kazoo\Api\Data\Entity\Device;
+use Kazoo\Api\Data\Entity\CarrierResource;
 use Kazoo\Exception\ApiLimitExceedException;
 use Kazoo\Exception\RuntimeException;
 
 /**
  * @group functional
  */
-class DeviceTest extends \PHPUnit_Framework_TestCase {
+class CarrierResourceTest extends \PHPUnit_Framework_TestCase {
 
     protected $client;
 
@@ -37,13 +37,13 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function testCreateEmptyDevice() {
+    public function testCreateEmptyCarrierResource() {
 
         try {
-            $device = $this->client->accounts()->devices()->new();
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
+            $resource = $this->client->accounts()->carrier_resources()->new();
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\CarrierResource", $resource);
 
-            return $device;
+            return $resource;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -53,22 +53,22 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testCreateEmptyDevice
+     * @depends testCreateEmptyCarrierResource
      */
-    public function testCreateDevice($device) {
+    public function testCreateCarrierResource($resource) {
 
         try {
             $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
 
-            $device->name = "Test Device #" . $num;
-            $device->sip->password = substr(number_format(time() * rand(), 0, '', ''), 0, 10);
-            $device->sip->username = "testdevice" . $num;
-            $device->save();
+            $resource->name = "Test CarrierResource #" . $num;
+            $resource->sip->password = substr(number_format(time() * rand(), 0, '', ''), 0, 10);
+            $resource->sip->username = "testdevice" . $num;
+            $resource->save();
 
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
-            $this->assertTrue((strlen($device->id) > 0));
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\CarrierResource", $resource);
+            $this->assertTrue((strlen($resource->id) > 0));
 
-            return $device->id;
+            return $resource->id;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -78,15 +78,15 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testCreateDevice
+     * @depends testCreateCarrierResource
      */
-    public function testRetrieveDevice($device_id) {
+    public function testRetrieveCarrierResource($resource_id) {
 
         try {
-            $device = $this->client->accounts()->devices()->retrieve($device_id);
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
-            $this->assertTrue((strlen($device->id) > 0));
-            return $device;
+            $resource = $this->client->accounts()->carrier_resources()->retrieve($resource_id);
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\CarrierResource", $resource);
+            $this->assertTrue((strlen($resource->id) > 0));
+            return $resource;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -96,18 +96,18 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testRetrieveDevice
+     * @depends testRetrieveCarrierResource
      */
-    public function testUpdateDevice($device) {
+    public function testUpdateCarrierResource($resource) {
 
         try {
-            $device->name = "Updated: " . $device->name;
-            $device->save();
+            $resource->name = "Updated: " . $resource->name;
+            $resource->save();
 
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
-            $this->assertTrue((strlen($device->id) > 0));
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\CarrierResource", $resource);
+            $this->assertTrue((strlen($resource->id) > 0));
 
-            return $device;
+            return $resource;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -117,21 +117,21 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
     
     /**
      * @test
-     * @depends testUpdateDevice
+     * @depends testUpdateCarrierResource
      */
-    public function testRetrieveAllAndUpdateOne($search_device) {
+    public function testRetrieveAllAndUpdateOne($search_resource) {
         
         try {
             
-            $devices = $this->client->accounts()->devices()->retrieve();
-            foreach($devices as $device){
-                if($device->id == $search_device->id){
-                    $search_device->name = "Updated: " . $search_device->name;
-                    $search_device->save();
+            $resources = $this->client->accounts()->carrier_resources()->retrieve();
+            foreach($resources as $resource){
+                if($resource->id == $search_resource->id){
+                    $search_resource->name = "Updated: " . $search_resource->name;
+                    $search_resource->save();
                 }
             }
-            $this->assertGreaterThan(0, count($devices));
-            return $search_device;
+            $this->assertGreaterThan(0, count($resources));
+            return $search_resource;
             
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
@@ -144,10 +144,10 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
      * @test
      * @depends testRetrieveAllAndUpdateOne
      */
-    public function testDeleteDevice($device) {
+    public function testDeleteCarrierResource($resource) {
 
         try {
-            $device->delete();
+            $resource->delete();
             $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
