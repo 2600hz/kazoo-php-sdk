@@ -8,8 +8,8 @@ use Kazoo\Exception\AuthenticationException;
 use Kazoo\HttpClient\HttpClient;
 use Kazoo\HttpClient\HttpClientInterface;
 use Kazoo\HttpClient\Message\ResponseMediator;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
+
+
 
 /**
  * PHP Kazoo SDK
@@ -34,6 +34,7 @@ class Client {
     );
 
     const GREGORIAN_OFFSET = 62167219200;
+    const DATE_FORMAT = 'Y-m-d';
 
     /**
      * number of items per page

@@ -12,9 +12,14 @@ class JsonSchemaObjectFactory {
      * @param string $schema
      * @return Kazoo\Api\Data\AbstractEntity
      */
-    public static function hydrateNew($entityInstance) {
-        $schema = $entityInstance->getSchemaJson();
-        return ((is_null($schema)) ? $entityInstance : self::transformToScaffoldedObject(json_decode($schema), $entityInstance));
+    public static function hydrateNew($entityInstance) {        
+        
+        if(!is_null($entityInstance->getSchemaJson())) {
+            return self::transformToScaffoldedObject(json_decode($entityInstance->getSchemaJson()), $entityInstance);
+        } else {
+            return $entityInstance;
+        }
+        
     }
 
     private static function transformToScaffoldedObject($json, $accumulator) {
@@ -34,7 +39,7 @@ class JsonSchemaObjectFactory {
                                     $accumulator->$property_name = "";
                                 }
                             } else {
-                                if (property_exists($property_meta, 'minLength') || property_exists($property_meta, 'minLength')) {
+                                if (property_exists($property_meta, 'minLength') || property_exists($property_meta, 'maxLength')) {
                                     if (property_exists($property_meta, 'required')){
                                         $accumulator->$property_name = "";
                                     }
@@ -76,7 +81,6 @@ class JsonSchemaObjectFactory {
                 }
             }
         }
-
         return $accumulator;
     }
 

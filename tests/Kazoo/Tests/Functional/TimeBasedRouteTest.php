@@ -59,7 +59,6 @@ class TimeBasedRouteTest extends \PHPUnit_Framework_TestCase {
 
         try {
             $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
-
             $route->name = "Test TimeBasedRoute #" . $num;
             $route->save();
 
@@ -112,25 +111,24 @@ class TimeBasedRouteTest extends \PHPUnit_Framework_TestCase {
             $this->markTestSkipped("Exception: " . $e->getMessage());
         }
     }
-    
+
     /**
      * @test
      * @depends testUpdateTimeBasedRoute
      */
     public function testRetrieveAllAndUpdateOne($search_route) {
-        
+
         try {
-            
+
             $routes = $this->client->accounts()->timed_routes()->retrieve();
-            foreach($routes as $route){
-                if($route->id == $search_route->id){
+            foreach ($routes as $route) {
+                if ($route->id == $search_route->id) {
                     $search_route->name = "Updated: " . $search_route->name;
                     $search_route->save();
                 }
             }
             $this->assertGreaterThan(0, count($routes));
             return $search_route;
-            
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -138,20 +136,20 @@ class TimeBasedRouteTest extends \PHPUnit_Framework_TestCase {
         }
     }
 
-    /**
-     * @test
-     * @depends testRetrieveAllAndUpdateOne
-     */
-    public function testDeleteTimeBasedRoute($route) {
-
-        try {
-            $route->delete();
-            $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
-        } catch (RuntimeException $e) {
-            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
-        } catch (Exception $e) {
-            $this->markTestSkipped("Exception: " . $e->getMessage());
-        }
-    }
+//    /**
+//     * @test
+//     * @depends testRetrieveAllAndUpdateOne
+//     */
+//    public function testDeleteTimeBasedRoute($route) {
+//
+//        try {
+//            $route->delete();
+//            $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
+//        } catch (RuntimeException $e) {
+//            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
+//        } catch (Exception $e) {
+//            $this->markTestSkipped("Exception: " . $e->getMessage());
+//        }
+//    }
 
 }

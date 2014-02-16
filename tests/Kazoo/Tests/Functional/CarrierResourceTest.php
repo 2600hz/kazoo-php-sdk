@@ -58,8 +58,8 @@ class CarrierResourceTest extends \PHPUnit_Framework_TestCase {
     public function testCreateCarrierResource($resource) {
 
         try {
-            $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
-
+            
+            $num = rand(1, 10000);
             $resource->name = "Test CarrierResource #" . $num;
             $resource->sip->password = substr(number_format(time() * rand(), 0, '', ''), 0, 10);
             $resource->sip->username = "testdevice" . $num;
@@ -69,6 +69,7 @@ class CarrierResourceTest extends \PHPUnit_Framework_TestCase {
             $this->assertTrue((strlen($resource->id) > 0));
 
             return $resource->id;
+            
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {

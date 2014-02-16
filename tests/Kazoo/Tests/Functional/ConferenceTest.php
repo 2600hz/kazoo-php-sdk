@@ -58,18 +58,19 @@ class ConferenceTest extends \PHPUnit_Framework_TestCase {
      * @test
      * @depends testCreateEmptyConference
      */
-    public function testCreateConference($ring_group) {
+    public function testCreateConference($conference) {
 
         try {
-            $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
+            
+            $num = rand(1, 10000);
+            $conference->name = "Test Conference #" . $num;
+            $conference->save();
 
-            $ring_group->name = "Test Conference #" . $num;
-            $ring_group->save();
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Conference", $conference);
+            $this->assertTrue((strlen($conference->id) > 0));
 
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Conference", $ring_group);
-            $this->assertTrue((strlen($ring_group->id) > 0));
-
-            return $ring_group->id;
+            return $conference->id;
+            
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -81,14 +82,14 @@ class ConferenceTest extends \PHPUnit_Framework_TestCase {
      * @test
      * @depends testCreateConference
      */
-    public function testRetrieveConference($ring_group_id) {
+    public function testRetrieveConference($conference_id) {
 
         try {
             
-            $ring_group = $this->client->accounts()->groups()->retrieve($ring_group_id);
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Conference", $ring_group);
-            $this->assertTrue((strlen($ring_group->id) > 0));
-            return $ring_group;
+            $conference = $this->client->accounts()->conferences()->retrieve($conference_id);
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Conference", $conference);
+            $this->assertTrue((strlen($conference->id) > 0));
+            return $conference;
             
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
@@ -101,17 +102,17 @@ class ConferenceTest extends \PHPUnit_Framework_TestCase {
      * @test
      * @depends testRetrieveConference
      */
-    public function testUpdateConference($ring_group) {
+    public function testUpdateConference($conference) {
 
         try {
-            $ring_group->name = "Updated: " . $ring_group->name;
-            $ring_group->addDeviceToGroup($this->test_device_id);
-            $ring_group->save();
+            $conference->name = "Updated: " . $conference->name;
+            $conference->addDeviceToGroup($this->test_device_id);
+            $conference->save();
 
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Conference", $ring_group);
-            $this->assertTrue((strlen($ring_group->id) > 0));
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Conference", $conference);
+            $this->assertTrue((strlen($conference->id) > 0));
 
-            return $ring_group;
+            return $conference;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {

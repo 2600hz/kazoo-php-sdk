@@ -46,7 +46,6 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase {
             $directory = $this->client->accounts()->directories()->new();
             $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Directory", $directory);
             return $directory;
-            
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -61,13 +60,14 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase {
     public function testCreateDirectory($directory) {
 
         try {
-            
+
             $user = $this->client->accounts()->users()->retrieve($this->test_user_id);
             $callflow = $this->client->accounts()->callflows()->retrieve($this->test_callflow_id);
 
+            $num = rand(1, 10000);
             $directory->name = "Test Directory #" . $num;
             $directory->save();
-            
+
             $user->addDirectoryEntry($directory->id, $callflow->id);
             $user->save();
 
@@ -89,12 +89,11 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase {
     public function testRetrieveDirectory($directory_id) {
 
         try {
-            
+
             $directory = $this->client->accounts()->directories()->retrieve($directory_id);
             $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Directory", $directory);
             $this->assertTrue((strlen($directory->id) > 0));
             return $directory;
-            
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -111,9 +110,9 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase {
         try {
             $directory->name = "Updated: " . $directory->name;
             $directory->save();
-            
+
             $user = $this->client->accounts()->users()->retrieve($this->test_user_id);
-            
+
             //Remove user from directory
             $user->removeDirectoryEntry($directory->id);
             $user->save();
@@ -128,25 +127,24 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase {
             $this->markTestSkipped("Exception: " . $e->getMessage());
         }
     }
-    
+
     /**
      * @test
      * @depends testUpdateDirectory
      */
     public function testRetrieveAllAndUpdateOne($search_directory) {
-        
+
         try {
-            
+
             $directories = $this->client->accounts()->directories()->retrieve();
-            foreach($directories as $directory){
-                if($directory->id == $search_directory->id){
+            foreach ($directories as $directory) {
+                if ($directory->id == $search_directory->id) {
                     $search_directory->name = "Updated: " . $search_directory->name;
                     $search_directory->save();
                 }
             }
-            $this->assertGreaterThan(0, count($directorys));
+            $this->assertGreaterThan(0, count($directories));
             return $search_directory;
-            
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -161,16 +159,17 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase {
     public function testDeleteDirectory($directory) {
 
         try {
-            
-            $users = $directory->users;
-            
-            foreach($users as $user){
+
+            $user_entries = $directory->users;
+
+            foreach ($user_entries as $user_entry) {
+                $user = $this->client->accounts()->users()->retrieve($user_entry->user_id);
                 $user->removeDirectoryEntry($directory->id);
                 $user->save();
             }
-            
+
             $directory->delete();
-            
+
             $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());

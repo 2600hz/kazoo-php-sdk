@@ -58,8 +58,8 @@ class ClickToCallTest extends \PHPUnit_Framework_TestCase {
     public function testCreateCTCall($ctcall) {
 
         try {
-            $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
-
+            
+            $num = rand(1, 10000);
             $ctcall->name = "Test CTCall #" . $num;
             $ctcall->save();
 
@@ -67,6 +67,7 @@ class ClickToCallTest extends \PHPUnit_Framework_TestCase {
             $this->assertTrue((strlen($ctcall->id) > 0));
 
             return $ctcall->id;
+            
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {

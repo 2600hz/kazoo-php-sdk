@@ -58,7 +58,7 @@ class AgentTest extends \PHPUnit_Framework_TestCase {
     public function testCreateAgent($agent) {
 
         try {
-            $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
+            $num = rand(1, 10000);
 
             $agent->name = "Test Agent #" . $num;
             $agent->save();

@@ -3,6 +3,7 @@
 namespace Kazoo\Api\Data\Entity;
 
 use Kazoo\Api\Data\AbstractEntity;
+use stdClass;
 
 class User extends AbstractEntity {
 

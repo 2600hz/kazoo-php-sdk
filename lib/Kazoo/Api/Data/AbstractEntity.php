@@ -2,6 +2,7 @@
 
 namespace Kazoo\Api\Data;
 
+use Kazoo\Api\JsonSchemaObjectFactory;
 use Kazoo\Exception\RuntimeException;
 use stdClass;
 
@@ -35,6 +36,7 @@ abstract class AbstractEntity {
     public function __construct(\Kazoo\Client $client, $uri, $data = null) {
         $this->_client = $client;
         $this->_uri = $uri;
+        $this->_data = new stdClass();
         $this->_schema_json = $this->getSchemaJson();
         $this->_default_callflow_data = new stdClass();
 
@@ -42,7 +44,6 @@ abstract class AbstractEntity {
         $this->initDefaultValues();
         
         if (is_null($data)) {
-            $this->_data = new stdClass();
             $this->changeState(self::STATE_NEW);
         } else {
             $this->updateFromResult($data);
@@ -64,7 +65,13 @@ abstract class AbstractEntity {
     }
 
     public function getSchemaJson() {
-        $this->_schema_json = ((is_null(static::$_schema_name)) ? null : file_get_contents($this->_client->getOption('schema_dir') . "/" . static::$_schema_name));
+        
+        if(is_null(static::$_schema_name)) {
+            $this->_schema_json = null;
+        } else {
+            $this->_schema_json = file_get_contents($this->_client->getOption('schema_dir') . "/" . static::$_schema_name);
+        }
+        
         return $this->_schema_json;
     }
 
