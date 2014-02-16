@@ -55,7 +55,7 @@ require_once "kazoo-php-sdk/lib/Kazoo/Client.php";
 
 
 $options = array("base_url" => "http://kazoo-crossbar-url:8000");
-$client = new \Kazoo\Client($'user', '12341234', 'sip.realm.com', $options);
+$client = new \Kazoo\Client('user', '12341234', 'sip.realm.com', $options);
 $devices = $this->client->accounts()->devices()->retrieve();
 foreach($devices as $device){
 	echo $cdr->toJSON();	//Your device configurations for the logged in account
