@@ -38,6 +38,9 @@ abstract class AbstractEntity {
         $this->_schema_json = $this->getSchemaJson();
         $this->_default_callflow_data = new stdClass();
 
+        JsonSchemaObjectFactory::hydrateNew($this);
+        $this->initDefaultValues();
+        
         if (is_null($data)) {
             $this->_data = new stdClass();
             $this->changeState(self::STATE_NEW);
@@ -45,6 +48,8 @@ abstract class AbstractEntity {
             $this->updateFromResult($data);
         }
     }   
+    
+    abstract protected function initDefaultValues(){}
     
     public function getUri(){
         return $this->_uri;
@@ -59,7 +64,6 @@ abstract class AbstractEntity {
     }
 
     public function getSchemaJson() {
-        
         $this->_schema_json = ((is_null(static::$_schema_name)) ? null : file_get_contents($this->_client->getOption('schema_dir') . "/" . static::$_schema_name));
         return $this->_schema_json;
     }

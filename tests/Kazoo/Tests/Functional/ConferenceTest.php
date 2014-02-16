@@ -2,14 +2,14 @@
 
 namespace Kazoo\Tests\Functional;
 
-use Kazoo\Api\Data\Entity\RingGroup;
+use Kazoo\Api\Data\Entity\Conference;
 use Kazoo\Exception\ApiLimitExceedException;
 use Kazoo\Exception\RuntimeException;
 
 /**
  * @group functional
  */
-class RingGroupTest extends \PHPUnit_Framework_TestCase {
+class ConferenceTest extends \PHPUnit_Framework_TestCase {
 
     protected $client;
 
@@ -39,13 +39,13 @@ class RingGroupTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function testCreateEmptyRingGroup() {
+    public function testCreateEmptyConference() {
 
         try {
             
-            $ring_group = $this->client->accounts()->groups()->new();
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\RingGroup", $ring_group);
-            return $ring_group;
+            $conference = $this->client->accounts()->conferences()->new();
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Conference", $conference);
+            return $conference;
             
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
@@ -56,18 +56,17 @@ class RingGroupTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testCreateEmptyRingGroup
+     * @depends testCreateEmptyConference
      */
-    public function testCreateRingGroup($ring_group) {
+    public function testCreateConference($ring_group) {
 
         try {
             $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
 
-            $ring_group->name = "Test Ring Group #" . $num;
-            $ring_group->addUserToGroup($this->test_user_id);
+            $ring_group->name = "Test Conference #" . $num;
             $ring_group->save();
 
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\RingGroup", $ring_group);
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Conference", $ring_group);
             $this->assertTrue((strlen($ring_group->id) > 0));
 
             return $ring_group->id;
@@ -80,14 +79,14 @@ class RingGroupTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testCreateRingGroup
+     * @depends testCreateConference
      */
-    public function testRetrieveRingGroup($ring_group_id) {
+    public function testRetrieveConference($ring_group_id) {
 
         try {
             
             $ring_group = $this->client->accounts()->groups()->retrieve($ring_group_id);
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\RingGroup", $ring_group);
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Conference", $ring_group);
             $this->assertTrue((strlen($ring_group->id) > 0));
             return $ring_group;
             
@@ -100,16 +99,16 @@ class RingGroupTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testRetrieveRingGroup
+     * @depends testRetrieveConference
      */
-    public function testUpdateRingGroup($ring_group) {
+    public function testUpdateConference($ring_group) {
 
         try {
             $ring_group->name = "Updated: " . $ring_group->name;
             $ring_group->addDeviceToGroup($this->test_device_id);
             $ring_group->save();
 
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\RingGroup", $ring_group);
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Conference", $ring_group);
             $this->assertTrue((strlen($ring_group->id) > 0));
 
             return $ring_group;
@@ -122,21 +121,21 @@ class RingGroupTest extends \PHPUnit_Framework_TestCase {
     
     /**
      * @test
-     * @depends testUpdateRingGroup
+     * @depends testUpdateConference
      */
-    public function testRetrieveAllAndUpdateOne($search_ring_group) {
+    public function testRetrieveAllAndUpdateOne($search_conference) {
         
         try {
             
-            $groups = $this->client->accounts()->groups()->retrieve();
-            foreach($groups as $group){
-                if($group->id == $search_ring_group->id){
-                    $search_ring_group->name = "Updated: " . $search_ring_group->name;
-                    $search_ring_group->save();
+            $conferences = $this->client->accounts()->groups()->retrieve();
+            foreach($conferences as $conference){
+                if($conference->id == $search_conference->id){
+                    $search_conference->name = "Updated: " . $search_conference->name;
+                    $search_conference->save();
                 }
             }
-            $this->assertGreaterThan(0, count($groups));
-            return $search_ring_group;
+            $this->assertGreaterThan(0, count($conferences));
+            return $search_conference;
             
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
@@ -149,10 +148,10 @@ class RingGroupTest extends \PHPUnit_Framework_TestCase {
      * @test
      * @depends testRetrieveAllAndUpdateOne
      */
-    public function testDeleteRingGroup($ring_group) {
+    public function testDeleteConference($conference) {
 
         try {
-            $ring_group->delete();
+            $conference->delete();
             $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());

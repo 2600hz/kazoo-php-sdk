@@ -75,8 +75,7 @@ abstract class AbstractResource {
             switch (strtolower($name)) {
                 case 'new':
                     $entity_class = static::$_entity_class;
-                    $entityInstance = new $entity_class($this->_client, $this->_uri);
-                    return JsonSchemaObjectFactory::hydrateNew($entityInstance);
+                    return new $entity_class($this->_client, $this->_uri);
                     break;
                 case 'get':
                 case 'retrieve':
