@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(__FILE__) . "/../vendor/autoload.php";
-
 namespace Kazoo;
+
+require_once dirname(__FILE__) . "/../vendor/autoload.php";
 
 use stdClass;
 use Kazoo\Exception\InvalidArgumentException;
@@ -490,7 +490,7 @@ class Client {
             
             $tokenizedUri = $this->getTokenizedUri($path);
             $response = $this->getHttpClient()->delete($tokenizedUri, $this->createJsonBody($parameters), $requestHeaders);
-            return ResponseMediator::getContent($response
+            return ResponseMediator::getContent($response);
                     
         } catch (ErrorException $e) {
             $this->getLogger()->addCritical($e->getMessage());
