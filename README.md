@@ -1,7 +1,5 @@
 # PHP Kazoo API
 
-[![Build Status](https://secure.travis-ci.org/2600hz/kazoo-php-sdk.png)](http://travis-ci.org/2600hz/kazoo-php-sdk)
-
 A simple Object Oriented wrapper for Kazoo API, written with PHP5.
 
 [SDK Documentation] (http://kazoo-php-sdk.readthedocs.org)
