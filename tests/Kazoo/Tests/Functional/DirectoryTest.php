@@ -43,7 +43,6 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase {
     public function testCreateEmptyDirectory() {
 
         try {
-            
             $directory = $this->client->accounts()->directories()->new();
             $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Directory", $directory);
             return $directory;
@@ -65,16 +64,12 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase {
             
             $user = $this->client->accounts()->users()->retrieve($this->test_user_id);
             $callflow = $this->client->accounts()->callflows()->retrieve($this->test_callflow_id);
-            
-            
 
             $directory->name = "Test Directory #" . $num;
-            
             $directory->save();
             
-            $directory->addUserToDirectory($this->test_user_id, $this->test_callflow_id);
-            $directory->addUserToDirectory($this->test_user2_id, $this->test_callflow2_id);
-            
+            $user->addDirectoryEntry($directory->id, $callflow->id);
+            $user->save();
 
             $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Directory", $directory);
             $this->assertTrue((strlen($directory->id) > 0));
@@ -115,8 +110,13 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase {
 
         try {
             $directory->name = "Updated: " . $directory->name;
-            $directory->removeUserFromDirectory($this->test_user2_id);
             $directory->save();
+            
+            $user = $this->client->accounts()->users()->retrieve($this->test_user_id);
+            
+            //Remove user from directory
+            $user->removeDirectoryEntry($directory->id);
+            $user->save();
 
             $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Directory", $directory);
             $this->assertTrue((strlen($directory->id) > 0));
@@ -137,8 +137,8 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase {
         
         try {
             
-            $directorys = $this->client->accounts()->groups()->retrieve();
-            foreach($directorys as $directory){
+            $directories = $this->client->accounts()->directories()->retrieve();
+            foreach($directories as $directory){
                 if($directory->id == $search_directory->id){
                     $search_directory->name = "Updated: " . $search_directory->name;
                     $search_directory->save();
@@ -154,20 +154,29 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase {
         }
     }
 
-//    /**
-//     * @test
-//     * @depends testRetrieveAllAndUpdateOne
-//     */
-//    public function testDeleteDirectory($directory) {
-//
-//        try {
-//            $directory->delete();
-//            $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
-//        } catch (RuntimeException $e) {
-//            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
-//        } catch (Exception $e) {
-//            $this->markTestSkipped("Exception: " . $e->getMessage());
-//        }
-//    }
+    /**
+     * @test
+     * @depends testRetrieveAllAndUpdateOne
+     */
+    public function testDeleteDirectory($directory) {
+
+        try {
+            
+            $users = $directory->users;
+            
+            foreach($users as $user){
+                $user->removeDirectoryEntry($directory->id);
+                $user->save();
+            }
+            
+            $directory->delete();
+            
+            $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
+        } catch (RuntimeException $e) {
+            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
+        } catch (Exception $e) {
+            $this->markTestSkipped("Exception: " . $e->getMessage());
+        }
+    }
 
 }

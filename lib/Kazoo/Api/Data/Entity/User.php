@@ -20,7 +20,7 @@ class User extends AbstractEntity {
         return $this->_default_callflow_data;
     }
 
-    public function addUserToDirectory($directory_id, $callflow_id) {
+    public function addDirectoryEntry($directory_id, $callflow_id) {
 
         if ($this->directories instanceof stdClass) {
             $directories = $this->directories;
@@ -32,7 +32,7 @@ class User extends AbstractEntity {
         $this->directories = $directories;
     }
 
-    public function removeFromDirectory($directory_id) {
+    public function removeDirectoryEntry($directory_id) {
 
         if ($this->directories instanceof stdClass) {
             $directories = $this->directories;

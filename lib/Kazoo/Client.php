@@ -188,7 +188,7 @@ class Client {
 
     private function setupAccounts() {
         $this->accounts = new \Kazoo\Api\Resource\Accounts($this, $this->options['base_url'] . "/accounts/{account_id}");
-        $this->accounts = new \Kazoo\Api\Resource\GlobalPhoneNumbers($this, $this->options['base_url'] . "/phone_numbers");
+        $this->phone_numbers = new \Kazoo\Api\Resource\GlobalPhoneNumbers($this, $this->options['base_url'] . "/phone_numbers");
         $this->baseAccountId = $this->getClientState()->data->account_id;
         $this->setAccountContext($this->baseAccountId);
     }

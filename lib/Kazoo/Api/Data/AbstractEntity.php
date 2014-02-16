@@ -49,8 +49,8 @@ abstract class AbstractEntity {
         }
     }   
     
-    abstract protected function initDefaultValues(){}
-    
+    abstract protected function initDefaultValues();
+            
     public function getUri(){
         return $this->_uri;
     }

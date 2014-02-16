@@ -13,7 +13,9 @@ class Account extends AbstractEntity {
     protected static $_schema_name = "accounts.json";
     protected static $_callflow_module = "account";
 
-    public function initDefaultValues(){}
+    public function initDefaultValues() {
+        
+    }
     
     /**
      * 
