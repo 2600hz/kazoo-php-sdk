@@ -110,7 +110,7 @@ class HttpClient implements HttpClientInterface {
      */
     public function request($path, $body = null, $httpMethod = 'GET', array $headers = array(), array $options = array()) {
         $request = $this->createRequest($httpMethod, $path, $body, $headers, $options);
-        $request->addHeaders($headers);
+        //$request->addHeaders($headers);
 
         try {
             $response = $this->client->send($request);
@@ -150,9 +150,11 @@ class HttpClient implements HttpClientInterface {
     }
 
     protected function createRequest($httpMethod, $path, $body = null, array $headers = array(), array $options = array()) {
-        return $this->client->createRequest(
-                        $httpMethod, $path, array_merge($this->headers, $headers), $body, $options
-        );
+        $merged_headers = array_merge($this->headers, $headers);
+//        echo "Path: " . $path . "\n";
+//        echo "HTTP Verb: " . $httpMethod . "\nHeaders:\n";
+//        print_r($merged_headers);
+        return $this->client->createRequest($httpMethod, $path, $merged_headers, $body, $options);
     }
 
 }

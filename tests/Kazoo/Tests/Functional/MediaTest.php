@@ -59,11 +59,14 @@ class MediaTest extends \PHPUnit_Framework_TestCase {
 
         try {
             $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
-
+            
             $media->name = "Test Media #" . $num;
-            $media->sip->password = substr(number_format(time() * rand(), 0, '', ''), 0, 10);
-            $media->sip->username = "testdevice" . $num;
             $media->save();
+            
+            echo $media->getUri() . "\n";
+            
+            $media->setUploadFilePath(dirname(__FILE__) . "/../assets/greeting.wav");
+            $media->upload();
 
             $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Media", $media);
             $this->assertTrue((strlen($media->id) > 0));

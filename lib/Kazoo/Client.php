@@ -9,8 +9,6 @@ use Kazoo\HttpClient\HttpClient;
 use Kazoo\HttpClient\HttpClientInterface;
 use Kazoo\HttpClient\Message\ResponseMediator;
 
-
-
 /**
  * PHP Kazoo SDK
  *
@@ -130,8 +128,8 @@ class Client {
         $this->username = $username;
         $this->password = $password;
         $this->sipRealm = $sipRealm;
-        
-        if(is_null($this->options['schema_dir'])){
+
+        if (is_null($this->options['schema_dir'])) {
             $this->options['schema_dir'] = dirname(__DIR__) . "/../schemas";
         }
 
@@ -236,11 +234,11 @@ class Client {
     public function getAccountContext() {
         return $this->curAccount;
     }
-    
-    public function resetBaseAccountContext(){
+
+    public function resetBaseAccountContext() {
         $this->curAccount = $this->baseAccountId;
     }
-    
+
     /**
      * 
      * @param stdClass $clientState
@@ -366,24 +364,24 @@ class Client {
      */
     public function get($path, array $parameters = array(), $requestHeaders = array()) {
 
-        if (null !== $this->perPage && !isset($parameters['per_page'])) {
-            $parameters['per_page'] = $this->perPage;
-        }
-        if (array_key_exists('ref', $parameters) && is_null($parameters['ref'])) {
-            unset($parameters['ref']);
-        }
-
-        $tokenizedUri = $this->getTokenizedUri($path);
-
         try {
+            
+            if (null !== $this->perPage && !isset($parameters['per_page'])) {
+                $parameters['per_page'] = $this->perPage;
+            }
+            if (array_key_exists('ref', $parameters) && is_null($parameters['ref'])) {
+                unset($parameters['ref']);
+            }
+
+            $tokenizedUri = $this->getTokenizedUri($path);
             $response = $this->getHttpClient()->get($tokenizedUri, $parameters, $requestHeaders);
+            return ResponseMediator::getContent($response);
+            
         } catch (ErrorException $e) {
             $this->getLogger()->addCritical($e->getMessage());
         } catch (RuntimeException $e) {
             $this->getLogger()->addCritical($e->getMessage());
         }
-
-        return ResponseMediator::getContent($response);
     }
 
     /**
@@ -394,14 +392,18 @@ class Client {
      * @param array $requestHeaders     Request headers.
      */
     public function post($path, $payload, $requestHeaders = array()) {
-        $shell = new stdClass();
-        $shell->data = $payload;
-
-        $tokenizedUri = $this->getTokenizedUri($path);
-
-        return $this->postRaw(
-                        $tokenizedUri, $this->createJsonBody($shell), $requestHeaders
-        );
+        
+        try {
+            $shell = new stdClass();
+            $shell->data = $payload;
+            $tokenizedUri = $this->getTokenizedUri($path);
+            return $this->postRaw($tokenizedUri, $this->createJsonBody($shell), $requestHeaders);
+            
+        } catch (ErrorException $e) {
+            $this->getLogger()->addCritical($e->getMessage());
+        } catch (RuntimeException $e) {
+            $this->getLogger()->addCritical($e->getMessage());
+        }
     }
 
     /**
@@ -413,11 +415,18 @@ class Client {
      * @return \Guzzle\Http\EntityBodyInterface|mixed|string
      */
     public function postRaw($path, $body, $requestHeaders = array()) {
-        $response = $this->getHttpClient()->post(
-                $path, $body, $requestHeaders
-        );
-
-        return ResponseMediator::getContent($response);
+        
+        try {
+            
+            $tokenizedUri = $this->getTokenizedUri($path);
+            $response = $this->getHttpClient()->post($tokenizedUri, $body, $requestHeaders);
+            return ResponseMediator::getContent($response);
+            
+        } catch (ErrorException $e) {
+            $this->getLogger()->addCritical($e->getMessage());
+        } catch (RuntimeException $e) {
+            $this->getLogger()->addCritical($e->getMessage());
+        }
     }
 
     /**
@@ -429,11 +438,16 @@ class Client {
      */
     public function patch($path, $payload, $requestHeaders = array()) {
 
-        $response = $this->getHttpClient()->patch(
-                $path, $this->createJsonBody($payload), $requestHeaders
-        );
-
-        return ResponseMediator::getContent($response);
+        try {
+            
+            $response = $this->getHttpClient()->patch($path, $this->createJsonBody($payload), $requestHeaders);
+            return ResponseMediator::getContent($response);
+            
+        } catch (ErrorException $e) {
+            $this->getLogger()->addCritical($e->getMessage());
+        } catch (RuntimeException $e) {
+            $this->getLogger()->addCritical($e->getMessage());
+        }
     }
 
     /**
@@ -445,25 +459,20 @@ class Client {
      */
     public function put($path, $payload, $requestHeaders = array()) {
 
-        $shell = new stdClass();
-        $shell->data = $payload;
-
-        $tokenizedUri = $this->getTokenizedUri($path);
-
         try {
-            $response = $this->getHttpClient()->put(
-                    $tokenizedUri, $this->createJsonBody($shell), $requestHeaders
-            );
+            
+            $shell = new stdClass();
+            $shell->data = $payload;
+
+            $tokenizedUri = $this->getTokenizedUri($path);
+            $response = $this->getHttpClient()->put($tokenizedUri, $this->createJsonBody($shell), $requestHeaders);
+            return ResponseMediator::getContent($response);
+            
         } catch (ErrorException $e) {
             $this->getLogger()->addCritical($e->getMessage());
         } catch (RuntimeException $e) {
             $this->getLogger()->addCritical($e->getMessage());
         }
-
-
-
-
-        return ResponseMediator::getContent($response);
     }
 
     /**
@@ -475,21 +484,17 @@ class Client {
      */
     public function delete($path, array $parameters = null, $requestHeaders = array()) {
 
-        $tokenizedUri = $this->getTokenizedUri($path);
-
         try {
-            $response = $this->getHttpClient()->delete(
-                    $tokenizedUri,
-                    $this->createJsonBody($parameters),
-                    $requestHeaders
-            );
+            
+            $tokenizedUri = $this->getTokenizedUri($path);
+            $response = $this->getHttpClient()->delete($tokenizedUri, $this->createJsonBody($parameters), $requestHeaders);
+            return ResponseMediator::getContent($response
+                    
         } catch (ErrorException $e) {
             $this->getLogger()->addCritical($e->getMessage());
         } catch (RuntimeException $e) {
             $this->getLogger()->addCritical($e->getMessage());
         }
-
-        return ResponseMediator::getContent($response);
     }
 
     /**
