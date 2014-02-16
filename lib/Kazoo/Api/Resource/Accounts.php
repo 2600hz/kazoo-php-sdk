@@ -58,9 +58,19 @@ class Accounts extends AbstractResource {
                 case 'retrieve':
                     switch (count($arguments)) {
                         case 0:
-                            $response = $this->_client->get($this->_uri . "/children");
+                            $response = $this->_client->get($this->_uri, array());
                             $collection_type = static::$_entity_collection_class;
-                            return new $collection_type($response->data);
+                            $raw_entity_list = $response->data;
+                            
+                            $entity_list = array();
+                            foreach($raw_entity_list as $raw_entity){
+                                $entity_class = static::$_entity_class;
+                                $entityInstance = new $entity_class($this->_client, $this->_uri . "/" . $raw_entity->id);
+                                $entityInstance->partialUpdateFromResult($raw_entity);
+                                $entity_list[] = $entityInstance; 
+                            }
+                            
+                            return new $collection_type($entity_list);
                             break;
                         case 1:
                             if (is_string($arguments[0])) {
@@ -75,7 +85,20 @@ class Accounts extends AbstractResource {
                                 return $entityInstance;
                             } else if (is_array($arguments[0])) {
                                 $filters = $arguments[0];
-                                return $this->_client->get($this->_uri, $filters);
+                                
+                                $response = $this->_client->get($this->_uri, $filters);
+                                $collection_type = static::$_entity_collection_class;
+                                $raw_entity_list = $response->data;
+
+                                $entity_list = array();
+                                foreach($raw_entity_list as $raw_entity){
+                                    $entity_class = static::$_entity_class;
+                                    $entityInstance = new $entity_class($this->_client, $this->_uri . "/" . $raw_entity->id);
+                                    $entityInstance->partialUpdateFromResult($raw_entity);
+                                    $entity_list[] = $entityInstance; 
+                                }
+
+                                return new $collection_type($entity_list);
                             }
                             break;
                     }
