@@ -77,12 +77,12 @@ See the `doc` directory for more detailed documentation.
 [![2600hz](http://2600hz.com/images/logo.png)](http://2600hz.com)
 
 ### Contributors
-- Ben Wann
-- Karl Anderson
-- James Aimonetti
-- Darren Schreiber
-- Francis Genet
-- Peter Defebvre
+- [Ben Wann](https://github.com/tickbw)
+- [Karl Anderson](https://github.com/k-anderson)
+- [James Aimonetti](https://github.com/jamesaimonetti)
+- [Darren Schreiber](https://github.com/dschreiber)
+- [Peter Defebvre](https://github.com/macpie)
+- [Francis Genet](https://github.com/frifri)
 - Thanks to [KnpLabs/php-github-api](https://github.com/KnpLabs/php-github-api) for their work on the Php github api, which inspired this library
 
 Thanks to GitHub for the high quality API and documentation.
