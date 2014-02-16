@@ -2,14 +2,14 @@
 
 namespace Kazoo\Tests\Functional;
 
-use Kazoo\Api\Data\Entity\User;
+use Kazoo\Api\Data\Entity\Menu;
 use Kazoo\Exception\ApiLimitExceedException;
 use Kazoo\Exception\RuntimeException;
 
 /**
  * @group functional
  */
-class UserTest extends \PHPUnit_Framework_TestCase {
+class MenuTest extends \PHPUnit_Framework_TestCase {
 
     protected $client;
 
@@ -37,12 +37,13 @@ class UserTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function testCreateEmptyUser() {
+    public function testCreateEmptyMenu() {
 
         try {
-            $user = $this->client->accounts()->users()->new();
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\User", $user);
-            return $user;
+            $menu = $this->client->accounts()->menus()->new();
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Menu", $menu);
+
+            return $menu;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -52,23 +53,20 @@ class UserTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testCreateEmptyUser
+     * @depends testCreateEmptyMenu
      */
-    public function testCreateUser($user) {
+    public function testCreateMenu($menu) {
 
         try {
-
             $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
 
-            $user->username = "UnitTest" . $num;
-            $user->first_name = "UnitTestFirstName" . $num;
-            $user->last_name = "UnitTestFirstName" . $num;
-            $user->save();
+            $menu->name = "Test Menu #" . $num;
+            $menu->save();
 
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Callflow", $callflow);
-            $this->assertTrue((strlen($user->id) > 0));
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Menu", $menu);
+            $this->assertTrue((strlen($menu->id) > 0));
 
-            return $user->id;
+            return $menu->id;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -78,15 +76,15 @@ class UserTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testCreateUser
+     * @depends testCreateMenu
      */
-    public function testRetrieveUser($user_id) {
+    public function testRetrieveMenu($menu_id) {
 
         try {
-            $user = $this->client->accounts()->users()->retrieve($user_id);
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\User", $user);
-            $this->assertTrue((strlen($user->id) > 0));
-            return $user;
+            $menu = $this->client->accounts()->menus()->retrieve($menu_id);
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Menu", $menu);
+            $this->assertTrue((strlen($menu->id) > 0));
+            return $menu;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -96,41 +94,43 @@ class UserTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testRetrieveUser
+     * @depends testRetrieveMenu
      */
-    public function testUpdateUser($user) {
+    public function testUpdateMenu($menu) {
 
         try {
-            $user->first_name = $user->first_name . "-";
-            $user->save();
+            $menu->name = "Updated: " . $menu->name;
+            $menu->save();
 
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\User", $user);
-            $this->assertTrue((strlen($user->id) > 0));
-            return $user;
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Menu", $menu);
+            $this->assertTrue((strlen($menu->id) > 0));
+
+            return $menu;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
             $this->markTestSkipped("Exception: " . $e->getMessage());
         }
     }
-
+    
     /**
      * @test
-     * @depends testUpdateUser
+     * @depends testUpdateMenu
      */
-    public function testRetrieveAllAndUpdateOne($search_user) {
-
+    public function testRetrieveAllAndUpdateOne($search_menu) {
+        
         try {
-
-            $users = $this->client->accounts()->users()->retrieve();
-            foreach ($users as $user) {
-                if ($device->id == $search_user->id) {
-                    $search_user->name = "Updated: " . $search_user->name;
-                    $search_user->save();
+            
+            $menus = $this->client->accounts()->menus()->retrieve();
+            foreach($menus as $menu){
+                if($menu->id == $search_menu->id){
+                    $search_menu->name = "Updated: " . $search_menu->name;
+                    $search_menu->save();
                 }
             }
-            $this->assertGreaterThan(0, count($users));
-            return $search_user;
+            $this->assertGreaterThan(0, count($menus));
+            return $search_menu;
+            
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -142,10 +142,10 @@ class UserTest extends \PHPUnit_Framework_TestCase {
      * @test
      * @depends testRetrieveAllAndUpdateOne
      */
-    public function testDeleteUser($user) {
+    public function testDeleteMenu($menu) {
 
         try {
-            $user->delete();
+            $menu->delete();
             $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());

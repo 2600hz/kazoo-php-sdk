@@ -2,14 +2,14 @@
 
 namespace Kazoo\Tests\Functional;
 
-use Kazoo\Api\Data\Entity\User;
+use Kazoo\Api\Data\Entity\TimeBasedRoute;
 use Kazoo\Exception\ApiLimitExceedException;
 use Kazoo\Exception\RuntimeException;
 
 /**
  * @group functional
  */
-class UserTest extends \PHPUnit_Framework_TestCase {
+class TimeBasedRouteTest extends \PHPUnit_Framework_TestCase {
 
     protected $client;
 
@@ -37,12 +37,13 @@ class UserTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function testCreateEmptyUser() {
+    public function testCreateEmptyTimeBasedRoute() {
 
         try {
-            $user = $this->client->accounts()->users()->new();
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\User", $user);
-            return $user;
+            $route = $this->client->accounts()->timed_routes()->new();
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\TimeBasedRoute", $route);
+
+            return $route;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -52,23 +53,20 @@ class UserTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testCreateEmptyUser
+     * @depends testCreateEmptyTimeBasedRoute
      */
-    public function testCreateUser($user) {
+    public function testCreateTimeBasedRoute($route) {
 
         try {
-
             $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
 
-            $user->username = "UnitTest" . $num;
-            $user->first_name = "UnitTestFirstName" . $num;
-            $user->last_name = "UnitTestFirstName" . $num;
-            $user->save();
+            $route->name = "Test TimeBasedRoute #" . $num;
+            $route->save();
 
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Callflow", $callflow);
-            $this->assertTrue((strlen($user->id) > 0));
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\TimeBasedRoute", $route);
+            $this->assertTrue((strlen($route->id) > 0));
 
-            return $user->id;
+            return $route->id;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -78,15 +76,15 @@ class UserTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testCreateUser
+     * @depends testCreateTimeBasedRoute
      */
-    public function testRetrieveUser($user_id) {
+    public function testRetrieveTimeBasedRoute($route_id) {
 
         try {
-            $user = $this->client->accounts()->users()->retrieve($user_id);
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\User", $user);
-            $this->assertTrue((strlen($user->id) > 0));
-            return $user;
+            $route = $this->client->accounts()->timed_routes()->retrieve($route_id);
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\TimeBasedRoute", $route);
+            $this->assertTrue((strlen($route->id) > 0));
+            return $route;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -96,41 +94,43 @@ class UserTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testRetrieveUser
+     * @depends testRetrieveTimeBasedRoute
      */
-    public function testUpdateUser($user) {
+    public function testUpdateTimeBasedRoute($route) {
 
         try {
-            $user->first_name = $user->first_name . "-";
-            $user->save();
+            $route->name = "Updated: " . $route->name;
+            $route->save();
 
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\User", $user);
-            $this->assertTrue((strlen($user->id) > 0));
-            return $user;
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\TimeBasedRoute", $route);
+            $this->assertTrue((strlen($route->id) > 0));
+
+            return $route;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
             $this->markTestSkipped("Exception: " . $e->getMessage());
         }
     }
-
+    
     /**
      * @test
-     * @depends testUpdateUser
+     * @depends testUpdateTimeBasedRoute
      */
-    public function testRetrieveAllAndUpdateOne($search_user) {
-
+    public function testRetrieveAllAndUpdateOne($search_route) {
+        
         try {
-
-            $users = $this->client->accounts()->users()->retrieve();
-            foreach ($users as $user) {
-                if ($device->id == $search_user->id) {
-                    $search_user->name = "Updated: " . $search_user->name;
-                    $search_user->save();
+            
+            $routes = $this->client->accounts()->timed_routes()->retrieve();
+            foreach($routes as $route){
+                if($route->id == $search_route->id){
+                    $search_route->name = "Updated: " . $search_route->name;
+                    $search_route->save();
                 }
             }
-            $this->assertGreaterThan(0, count($users));
-            return $search_user;
+            $this->assertGreaterThan(0, count($routes));
+            return $search_route;
+            
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -142,10 +142,10 @@ class UserTest extends \PHPUnit_Framework_TestCase {
      * @test
      * @depends testRetrieveAllAndUpdateOne
      */
-    public function testDeleteUser($user) {
+    public function testDeleteTimeBasedRoute($route) {
 
         try {
-            $user->delete();
+            $route->delete();
             $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());

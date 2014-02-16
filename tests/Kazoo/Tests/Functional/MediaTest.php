@@ -2,14 +2,14 @@
 
 namespace Kazoo\Tests\Functional;
 
-use Kazoo\Api\Data\Entity\User;
+use Kazoo\Api\Data\Entity\Media;
 use Kazoo\Exception\ApiLimitExceedException;
 use Kazoo\Exception\RuntimeException;
 
 /**
  * @group functional
  */
-class UserTest extends \PHPUnit_Framework_TestCase {
+class MediaTest extends \PHPUnit_Framework_TestCase {
 
     protected $client;
 
@@ -37,12 +37,13 @@ class UserTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function testCreateEmptyUser() {
+    public function testCreateEmptyMedia() {
 
         try {
-            $user = $this->client->accounts()->users()->new();
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\User", $user);
-            return $user;
+            $media = $this->client->accounts()->media()->new();
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Media", $media);
+
+            return $media;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -52,23 +53,22 @@ class UserTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testCreateEmptyUser
+     * @depends testCreateEmptyMedia
      */
-    public function testCreateUser($user) {
+    public function testCreateMedia($media) {
 
         try {
-
             $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
 
-            $user->username = "UnitTest" . $num;
-            $user->first_name = "UnitTestFirstName" . $num;
-            $user->last_name = "UnitTestFirstName" . $num;
-            $user->save();
+            $media->name = "Test Media #" . $num;
+            $media->sip->password = substr(number_format(time() * rand(), 0, '', ''), 0, 10);
+            $media->sip->username = "testdevice" . $num;
+            $media->save();
 
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Callflow", $callflow);
-            $this->assertTrue((strlen($user->id) > 0));
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Media", $media);
+            $this->assertTrue((strlen($media->id) > 0));
 
-            return $user->id;
+            return $media->id;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -78,15 +78,15 @@ class UserTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testCreateUser
+     * @depends testCreateMedia
      */
-    public function testRetrieveUser($user_id) {
+    public function testRetrieveMedia($media_id) {
 
         try {
-            $user = $this->client->accounts()->users()->retrieve($user_id);
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\User", $user);
-            $this->assertTrue((strlen($user->id) > 0));
-            return $user;
+            $media = $this->client->accounts()->media()->retrieve($media_id);
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Media", $media);
+            $this->assertTrue((strlen($media->id) > 0));
+            return $media;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -96,41 +96,43 @@ class UserTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testRetrieveUser
+     * @depends testRetrieveMedia
      */
-    public function testUpdateUser($user) {
+    public function testUpdateMedia($media) {
 
         try {
-            $user->first_name = $user->first_name . "-";
-            $user->save();
+            $media->name = "Updated: " . $media->name;
+            $media->save();
 
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\User", $user);
-            $this->assertTrue((strlen($user->id) > 0));
-            return $user;
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Media", $media);
+            $this->assertTrue((strlen($media->id) > 0));
+
+            return $media;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
             $this->markTestSkipped("Exception: " . $e->getMessage());
         }
     }
-
+    
     /**
      * @test
-     * @depends testUpdateUser
+     * @depends testUpdateMedia
      */
-    public function testRetrieveAllAndUpdateOne($search_user) {
-
+    public function testRetrieveAllAndUpdateOne($search_media) {
+        
         try {
-
-            $users = $this->client->accounts()->users()->retrieve();
-            foreach ($users as $user) {
-                if ($device->id == $search_user->id) {
-                    $search_user->name = "Updated: " . $search_user->name;
-                    $search_user->save();
+            
+            $medias = $this->client->accounts()->media()->retrieve();
+            foreach($medias as $media){
+                if($media->id == $search_media->id){
+                    $search_media->name = "Updated: " . $search_media->name;
+                    $search_media->save();
                 }
             }
-            $this->assertGreaterThan(0, count($users));
-            return $search_user;
+            $this->assertGreaterThan(0, count($medias));
+            return $search_media;
+            
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -142,10 +144,10 @@ class UserTest extends \PHPUnit_Framework_TestCase {
      * @test
      * @depends testRetrieveAllAndUpdateOne
      */
-    public function testDeleteUser($user) {
+    public function testDeleteMedia($media) {
 
         try {
-            $user->delete();
+            $media->delete();
             $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());

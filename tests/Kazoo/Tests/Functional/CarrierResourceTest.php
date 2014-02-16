@@ -2,14 +2,14 @@
 
 namespace Kazoo\Tests\Functional;
 
-use Kazoo\Api\Data\Entity\User;
+use Kazoo\Api\Data\Entity\Device;
 use Kazoo\Exception\ApiLimitExceedException;
 use Kazoo\Exception\RuntimeException;
 
 /**
  * @group functional
  */
-class UserTest extends \PHPUnit_Framework_TestCase {
+class DeviceTest extends \PHPUnit_Framework_TestCase {
 
     protected $client;
 
@@ -37,12 +37,13 @@ class UserTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function testCreateEmptyUser() {
+    public function testCreateEmptyDevice() {
 
         try {
-            $user = $this->client->accounts()->users()->new();
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\User", $user);
-            return $user;
+            $device = $this->client->accounts()->devices()->new();
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
+
+            return $device;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -52,23 +53,22 @@ class UserTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testCreateEmptyUser
+     * @depends testCreateEmptyDevice
      */
-    public function testCreateUser($user) {
+    public function testCreateDevice($device) {
 
         try {
-
             $num = substr(number_format(time() * rand(), 0, '', ''), 0, 4);
 
-            $user->username = "UnitTest" . $num;
-            $user->first_name = "UnitTestFirstName" . $num;
-            $user->last_name = "UnitTestFirstName" . $num;
-            $user->save();
+            $device->name = "Test Device #" . $num;
+            $device->sip->password = substr(number_format(time() * rand(), 0, '', ''), 0, 10);
+            $device->sip->username = "testdevice" . $num;
+            $device->save();
 
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Callflow", $callflow);
-            $this->assertTrue((strlen($user->id) > 0));
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
+            $this->assertTrue((strlen($device->id) > 0));
 
-            return $user->id;
+            return $device->id;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -78,15 +78,15 @@ class UserTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testCreateUser
+     * @depends testCreateDevice
      */
-    public function testRetrieveUser($user_id) {
+    public function testRetrieveDevice($device_id) {
 
         try {
-            $user = $this->client->accounts()->users()->retrieve($user_id);
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\User", $user);
-            $this->assertTrue((strlen($user->id) > 0));
-            return $user;
+            $device = $this->client->accounts()->devices()->retrieve($device_id);
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
+            $this->assertTrue((strlen($device->id) > 0));
+            return $device;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -96,41 +96,43 @@ class UserTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testRetrieveUser
+     * @depends testRetrieveDevice
      */
-    public function testUpdateUser($user) {
+    public function testUpdateDevice($device) {
 
         try {
-            $user->first_name = $user->first_name . "-";
-            $user->save();
+            $device->name = "Updated: " . $device->name;
+            $device->save();
 
-            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\User", $user);
-            $this->assertTrue((strlen($user->id) > 0));
-            return $user;
+            $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Device", $device);
+            $this->assertTrue((strlen($device->id) > 0));
+
+            return $device;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
             $this->markTestSkipped("Exception: " . $e->getMessage());
         }
     }
-
+    
     /**
      * @test
-     * @depends testUpdateUser
+     * @depends testUpdateDevice
      */
-    public function testRetrieveAllAndUpdateOne($search_user) {
-
+    public function testRetrieveAllAndUpdateOne($search_device) {
+        
         try {
-
-            $users = $this->client->accounts()->users()->retrieve();
-            foreach ($users as $user) {
-                if ($device->id == $search_user->id) {
-                    $search_user->name = "Updated: " . $search_user->name;
-                    $search_user->save();
+            
+            $devices = $this->client->accounts()->devices()->retrieve();
+            foreach($devices as $device){
+                if($device->id == $search_device->id){
+                    $search_device->name = "Updated: " . $search_device->name;
+                    $search_device->save();
                 }
             }
-            $this->assertGreaterThan(0, count($users));
-            return $search_user;
+            $this->assertGreaterThan(0, count($devices));
+            return $search_device;
+            
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
@@ -142,10 +144,10 @@ class UserTest extends \PHPUnit_Framework_TestCase {
      * @test
      * @depends testRetrieveAllAndUpdateOne
      */
-    public function testDeleteUser($user) {
+    public function testDeleteDevice($device) {
 
         try {
-            $user->delete();
+            $device->delete();
             $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());

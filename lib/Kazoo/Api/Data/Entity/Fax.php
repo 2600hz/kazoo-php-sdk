@@ -18,4 +18,21 @@ class Fax extends AbstractEntity {
         return $this->_default_callflow_data;
     }
 
+    /**
+     * 
+     * @param string $name
+     * @param null|array $arguments
+     * @return \Kazoo\Api\Data\AbstractEntity
+     */
+    public function __call($name, $arguments) {
+        switch (strtolower($name)) {
+            case 'save':
+                $result = $this->_client->put($this->_uri . "/outgoing", $this->getData());
+                $this->updateFromResult($result->data);
+                break;
+        }
+
+        return $this;
+    }
+
 }
