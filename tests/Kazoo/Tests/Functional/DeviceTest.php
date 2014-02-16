@@ -36,13 +36,6 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
         }
     }
 
-    public function testRetriveAll() {
-        $devices = $this->client->accounts()->devices()->retrieve();
-        print_r($devices);
-        die();
-        $this->assertGreaterThan(0, count($devices->data));
-    }
-
     /**
      * @test
      */
@@ -123,10 +116,35 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
             $this->markTestSkipped("Exception: " . $e->getMessage());
         }
     }
-
+    
     /**
      * @test
      * @depends testUpdateDevice
+     */
+    public function testRetrieveAllAndUpdateOne($search_device) {
+        
+        try {
+            
+            $devices = $this->client->accounts()->devices()->retrieve();
+            foreach($devices as $device){
+                if($device->id == $search_device->id){
+                    $search_device->name = "Updated: " . $search_device->name;
+                    $search_device->save();
+                }
+            }
+            $this->assertGreaterThan(0, count($devices));
+            return $search_device;
+            
+        } catch (RuntimeException $e) {
+            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
+        } catch (Exception $e) {
+            $this->markTestSkipped("Exception: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * @test
+     * @depends testRetrieveAllAndUpdateOne
      */
     public function testDeleteDevice($device) {
 

@@ -22,7 +22,8 @@ abstract class AbstractEntity {
      */
     protected $_schema_json;
 
-    const STATE_EMPTY = 'EMPTY';
+    const STATE_NEW = 'EMPTY';
+    const STATE_PARTIAL_HYDRATED = 'PARTIAL';
     const STATE_HYDRATED = 'HYDRATED';
     const DOC_KEY = 'id';
 
@@ -39,7 +40,7 @@ abstract class AbstractEntity {
 
         if (is_null($data)) {
             $this->_data = new stdClass();
-            $this->changeState(self::STATE_EMPTY);
+            $this->changeState(self::STATE_NEW);
         } else {
             $this->updateFromResult($data);
         }
@@ -89,6 +90,17 @@ abstract class AbstractEntity {
         return $this;
     }
 
+    /**
+     * 
+     * @param stdClass $result
+     * @return \Kazoo\Api\Data\AbstractEntity
+     */
+    public function partialUpdateFromResult(stdClass $result) {
+        $this->setData($result);
+        $this->changeState(self::STATE_PARTIAL_HYDRATED);
+        return $this;
+    }
+
 //    public fucntion getCallflowModule(){
 //        
 //    }
@@ -99,24 +111,29 @@ abstract class AbstractEntity {
      * @return type
      */
     public function __get($prop) {
+        $return = null;
         switch ($this->_state) {
-            case self::STATE_EMPTY:
+            case self::STATE_NEW:
+            case self::STATE_PARTIAL_HYDRATED:
                 $pk = self::DOC_KEY;
                 if (isset($this->$pk)) {
                     $result = $this->_client->get($this->_uri, array());
                     $this->updateFromResult($result->data);
+                    $return = $this->_data->$prop;
                 } else {
                     if (property_exists($this->_data, $prop)) {
-                        return $this->_data->$prop;
+                        $return = $this->_data->$prop;
                     }
                 }
                 break;
             case self::STATE_HYDRATED:
                 if (property_exists($this->_data, $prop)) {
-                    return $this->_data->$prop;
+                    $return = $this->_data->$prop;
                 }
                 break;
         }
+        
+        return $return;
     }
 
     public function __isset($key) {

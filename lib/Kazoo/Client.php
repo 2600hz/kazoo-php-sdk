@@ -137,20 +137,6 @@ class Client {
         foreach ($options as $option_key => $option_val) {
             $this->options[$option_key] = $option_val;
         }
-        
-        switch ($this->options['log_type']) {
-            case "file":
-                $this->logger = new Logger('sdk_logger');
-                $this->logger->pushHandler(new StreamHandler($this->options['log_file'], Logger::DEBUG));
-                break;
-            case "stdout":
-                $this->logger = new Logger('sdk_logger');
-                $this->logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
-                break;
-            default:
-            case null:
-                $this->logger = null;
-        }
 
         $this->options['base_url'] = $this->options['base_url'] . "/v{api_version}";
 
