@@ -23,8 +23,7 @@
     "minimum-stability": "stable",
     "preferred-install": "dist",
     "require-dev": {
-        "phpunit/phpunit": "3.7.*",
-        "monolog/monolog": "1.*"
+        "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
         "psr-0": {"Kazoo": "lib/"}

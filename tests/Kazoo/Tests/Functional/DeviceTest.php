@@ -36,15 +36,17 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
         }
     }
 
-//    public function testRetriveAll() {
-//        $devices = $this->client->accounts()->devices()->retrieve();
-//        $this->assertGreaterThan(0, count($devices->data));
-//    }
+    public function testRetriveAll() {
+        $devices = $this->client->accounts()->devices()->retrieve();
+        print_r($devices);
+        die();
+        $this->assertGreaterThan(0, count($devices->data));
+    }
 
     /**
      * @test
      */
-    public function testCreateEmptyShell() {
+    public function testCreateEmptyDevice() {
 
         try {
             $device = $this->client->accounts()->devices()->new();
@@ -60,7 +62,7 @@ class DeviceTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @depends testCreateEmptyShell
+     * @depends testCreateEmptyDevice
      */
     public function testCreateDevice($device) {
 

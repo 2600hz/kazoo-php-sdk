@@ -42,8 +42,10 @@ class AccountTest extends \PHPUnit_Framework_TestCase {
             $account = $this->client->accounts()->new();
             $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Account", $account);
             return $account;
+        } catch (RuntimeException $e) {
+            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
-            $this->markTestSkipped($e->getMessage());
+            $this->markTestSkipped("Exception: " . $e->getMessage());
         }
     }
 
@@ -52,10 +54,11 @@ class AccountTest extends \PHPUnit_Framework_TestCase {
      * @depends testCreateEmptyAccount
      */
     public function testCreateAccount(Account $account) {
-
+        
         try {
-            $account->name = "Unit-Test Account";
-            $account->realm = "sip" . rand(0, 10000) . ".unittestaccount.com";
+            $randnum = rand(1, 10000);
+            $account->name = $randnum . " Unit-Test Account";
+            $account->realm = "sip" . $randnum . ".unittestaccount.com";
             $account->timezone = "America/Chicago";
             $account->save();
             $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Account", $account);
@@ -75,15 +78,22 @@ class AccountTest extends \PHPUnit_Framework_TestCase {
     public function testRetrieveAccount($account_id) {
 
         try {
+            
             $account = $this->client->accounts()->retrieve($account_id);
             $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Account", $account);
             $this->assertTrue((strlen($account->id) > 0));
             return $account;
+            
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
             $this->markTestSkipped("Exception: " . $e->getMessage());
         }
+    }
+    
+    public function testRetrieveAll() {
+        $accounts = $this->client->accounts()->retrieve();
+        $this->assertGreaterThan(0, count($accounts));
     }
 
     /**
@@ -93,6 +103,7 @@ class AccountTest extends \PHPUnit_Framework_TestCase {
     public function testUpdateAccount(Account $account) {
 
         try {
+
             $account->name = "Updated: " . $account->name;
             $account->save();
 
@@ -113,18 +124,15 @@ class AccountTest extends \PHPUnit_Framework_TestCase {
     public function testDeleteAccount(Account $account) {
 
         try {
+            
             $account->delete();
             $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
+            
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
         } catch (Exception $e) {
             $this->markTestSkipped("Exception: " . $e->getMessage());
         }
     }
-
-//    public function testRetrieveAll() {
-//        $accounts = $this->client->accounts()->retrieve();
-//        $this->assertGreaterThan(0, count($accounts->data));
-//    }
 
 }

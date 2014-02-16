@@ -248,7 +248,11 @@ class Client {
     public function getAccountContext() {
         return $this->curAccount;
     }
-
+    
+    public function resetBaseAccountContext(){
+        $this->curAccount = $this->baseAccountId;
+    }
+    
     /**
      * 
      * @param stdClass $clientState

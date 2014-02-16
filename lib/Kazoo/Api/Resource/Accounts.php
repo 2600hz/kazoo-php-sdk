@@ -67,11 +67,14 @@ class Accounts extends AbstractResource {
                         case 1:
                             if (is_string($arguments[0])) {
                                 $resource_id = $arguments[0];
-                                $this->_client->setCurrentAccountContext($resource_id);
+                                $curAccountContext = $this->_client->getAccountContext();
+                                $this->_client->setAccountContext($resource_id);
                                 $result = $this->_client->get($this->_uri);
+                                $this->_client->setAccountContext($curAccountContext);
                                 $entity_class = static::$_entity_class;
                                 $entityInstance = new $entity_class($this->_client, $this->_uri);
-                                return $entityInstance->updateFromResult($result->data);
+                                $entityInstance->updateFromResult($result->data);
+                                return $entityInstance;
                             } else if (is_array($arguments[0])) {
                                 $filters = $arguments[0];
                                 return $this->_client->get($this->_uri, $filters);
