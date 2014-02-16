@@ -1,10 +1,10 @@
 <?php
 
-namespace Kazoo\Api\Resources;
+namespace Kazoo\Api\Data\Entity;
 
-use Kazoo\Api\AbstractResource;
+use Kazoo\Api\Data\AbstractEntity;
 
-class Conference extends AbstractResource {
+class Conference extends AbstractEntity {
 
     protected static $_schema_name = "conferences.json";
     protected static $_callflow_module = "conference";
