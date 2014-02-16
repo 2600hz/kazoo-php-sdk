@@ -14,7 +14,7 @@ class JsonSchemaObjectFactory {
      */
     public static function hydrateNew($entityInstance) {
         $schema = $entityInstance->getSchemaJson();
-        return self::transformToScaffoldedObject(json_decode($schema), $entityInstance);
+        return ((is_null($schema)) ? $entityInstance : self::transformToScaffoldedObject(json_decode($schema), $entityInstance));
     }
 
     private static function transformToScaffoldedObject($json, $accumulator) {

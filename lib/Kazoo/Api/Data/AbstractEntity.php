@@ -59,7 +59,8 @@ abstract class AbstractEntity {
     }
 
     public function getSchemaJson() {
-        $this->_schema_json = file_get_contents($this->_client->getOption('schema_dir') . "/" . static::$_schema_name);
+        
+        $this->_schema_json = ((is_null(static::$_schema_name)) ? null : file_get_contents($this->_client->getOption('schema_dir') . "/" . static::$_schema_name));
         return $this->_schema_json;
     }
 
