@@ -40,9 +40,9 @@ class TimeBasedRouteTest extends \PHPUnit_Framework_TestCase {
     public function testCreateEmptyTimeBasedRoute() {
 
         try {
+
             $route = $this->client->accounts()->timed_routes()->new();
             $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\TimeBasedRoute", $route);
-
             return $route;
         } catch (RuntimeException $e) {
             $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
@@ -136,20 +136,20 @@ class TimeBasedRouteTest extends \PHPUnit_Framework_TestCase {
         }
     }
 
-//    /**
-//     * @test
-//     * @depends testRetrieveAllAndUpdateOne
-//     */
-//    public function testDeleteTimeBasedRoute($route) {
-//
-//        try {
-//            $route->delete();
-//            $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
-//        } catch (RuntimeException $e) {
-//            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
-//        } catch (Exception $e) {
-//            $this->markTestSkipped("Exception: " . $e->getMessage());
-//        }
-//    }
+    /**
+     * @test
+     * @depends testRetrieveAllAndUpdateOne
+     */
+    public function testDeleteTimeBasedRoute($route) {
+
+        try {
+            $route->delete();
+            $this->assertTrue(true);    //TODO, figure out assertion for successful deletion
+        } catch (RuntimeException $e) {
+            $this->markTestSkipped("Runtime Exception: " . $e->getMessage());
+        } catch (Exception $e) {
+            $this->markTestSkipped("Exception: " . $e->getMessage());
+        }
+    }
 
 }

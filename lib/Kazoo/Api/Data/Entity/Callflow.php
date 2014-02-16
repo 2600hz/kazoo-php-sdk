@@ -15,7 +15,7 @@ class Callflow extends AbstractEntity {
     protected static $_callflow_module = "callflow";
 
     public function initDefaultValues() {
-        
+        unset($this->featurecode);  //Dont set feature codes by default
     }
 
     public function getCallflowDefaultData() {
@@ -27,17 +27,6 @@ class Callflow extends AbstractEntity {
         $numbers = $this->numbers;
         $numbers[] = $number;
         $this->numbers = $numbers;
-    }
-
-    //Overriding to see if we have feature codes set
-    public function getData() {
-        $data = $this->_data;
-        if (property_exists($data, 'featurecode')) {
-            if (strlen($data->featurecode->name) == 0 && strlen($data->featurecode->number) == 0) {
-                unset($data->featurecode);
-            }
-        }
-        return $data;
     }
 
     public function getNewCallflowNode(AbstractEntity $entity) {
