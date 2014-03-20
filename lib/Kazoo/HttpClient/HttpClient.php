@@ -6,6 +6,12 @@ use Guzzle\Http\Client as GuzzleClient;
 use Guzzle\Http\ClientInterface;
 use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
+
+use Guzzle\Log\MonologLogAdapter;
+use Monolog\Logger;
+use Guzzle\Plugin\Log\LogPlugin;
+use Guzzle\Log\MessageFormatter;
+
 use Kazoo\Exception\ErrorException;
 use Kazoo\Exception\RuntimeException;
 use Kazoo\HttpClient\Listener\AuthListener;
@@ -38,6 +44,26 @@ class HttpClient implements HttpClientInterface {
         $this->options = array_merge($this->options, $options);
         $client = $client ? : new GuzzleClient($this->options['base_url'], $this->options);
         $this->client = $client;
+
+        $logger = null;
+        switch($this->options['log_type']){
+            case "file":
+                $logger = new Logger('sdk_logger');
+                $logger->pushHandler(new \Monolog\Handler\StreamHandler($this->options['log_file'], LOGGER::DEBUG));
+                break;
+            case "stdout":
+                $logger = new Logger('sdk_logger');
+                $logger->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout', LOGGER::DEBUG));
+                break;
+            default:
+                $logger = null;
+        }
+        
+        if(!is_null($logger)){
+            $adapter = new MonologLogAdapter($logger);
+            $logPlugin = new LogPlugin($adapter, MessageFormatter::DEBUG_FORMAT);
+            $client->addSubscriber($logPlugin);
+        }
 
         $this->addListener('request.error', array(new ErrorListener($this->options), 'onRequestError'));
         $this->clearHeaders();

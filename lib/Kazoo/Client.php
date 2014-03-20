@@ -10,6 +10,8 @@ use Kazoo\Exception\AuthenticationException;
 use Kazoo\HttpClient\HttpClient;
 use Kazoo\HttpClient\HttpClientInterface;
 use Kazoo\HttpClient\Message\ResponseMediator;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 /**
  * PHP Kazoo SDK
@@ -137,6 +139,21 @@ class Client {
 
         foreach ($options as $option_key => $option_val) {
             $this->options[$option_key] = $option_val;
+        }
+
+        switch ($this->options['log_type']) {
+            case "file":
+                $this->logger = new Logger('sdk_logger');
+                $this->logger->pushHandler(new StreamHandler($this->options['log_file'], Logger::DEBUG));
+                break;
+            case "stdout":
+                $this->logger = new Logger('sdk_logger');
+                $this->logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
+                break;
+            default:
+            case null:
+                $this->logger = new Logger('sdk_logger');
+                $this->logger->pushHandler(new StreamHandler('php://stdout', Logger::CRITICAL));
         }
 
         $this->options['base_url'] = $this->options['base_url'] . "/v{api_version}";
