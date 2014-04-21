@@ -65,6 +65,12 @@
          "type":"boolean",
          "default":false
       },
+      "timezone":{
+         "name":"Timezone",
+         "description":"Timezone that the mailbox and messages are in",
+         "type":"string",
+         "default":"America/Los_Angeles"
+      },
       "skip_instructions":{
          "name":"Skip Instructions",
          "description":"Determines if the instructions after the greeting and prior to composing a message should be played",

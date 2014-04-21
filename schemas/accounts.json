@@ -36,10 +36,16 @@
                "type":"object",
                "properties":{
                   "name":{
-                     "name":"Internal Caller ID",
-                     "description":"The caller id name for the object type",
+                     "name":"Internal Caller ID Name",
+                     "description":"The caller ID name for the object type",
                      "type":"string",
                      "maxLength":30
+                  },
+                  "number":{
+                     "name":"Internal Caller ID Number",
+                     "description":"The caller ID number for the object type",
+                     "type":"string",
+                     "maxLength":20
                   }
                }
             },
@@ -48,10 +54,16 @@
                "type":"object",
                "properties":{
                   "name":{
-                     "name":"External Caller ID",
-                     "description":"The caller id name for the object type",
+                     "name":"External Caller ID Name",
+                     "description":"The caller ID name for the object type",
                      "type":"string",
                      "maxLength":15
+                  },
+                  "number":{
+                     "name":"External Caller ID Number",
+                     "description":"The caller ID number for the object type",
+                     "type":"string",
+                     "maxLength":20
                   }
                }
             },
@@ -60,10 +72,16 @@
                "type":"object",
                "properties":{
                   "name":{
-                     "name":"Default Caller ID",
-                     "description":"The caller id name for the object type",
+                     "name":"Default Caller ID Name",
+                     "description":"The caller ID name for the object type",
                      "type":"string",
                      "maxLength":15
+                  },
+                  "number":{
+                     "name":"Default Caller ID Number",
+                     "description":"The caller ID number for the object type",
+                     "type":"string",
+                     "maxLength":20
                   }
                }
             },
@@ -72,10 +90,16 @@
                "type":"object",
                "properties":{
                   "name":{
-                     "name":"Emergency Caller ID",
-                     "description":"The caller id name for the object type",
+                     "name":"Emergency Caller ID Name",
+                     "description":"The caller ID name for the object type",
                      "type":"string",
                      "maxLength":15
+                  },
+                  "number":{
+                     "name":"Emergency Caller ID Number",
+                     "description":"The caller ID number for the object type",
+                     "type":"string",
+                     "maxLength":20
                   }
                }
             }
@@ -446,6 +470,19 @@
          "default":{
 
          }
+      },
+      "available_apps":{
+         "name":"Available Apps in the GUI",
+         "description":"A list of available apps in the GUI for Kazoo UI",
+         "type":"array",
+         "default":[
+             "voip", "accounts", "numbers"
+         ]
+      },
+      "call_restriction":{
+         "name":"Call Restrictions",
+         "type":"object",
+         "description":"Provides the mappings for what number_manager definitions are restricted, based on inheritance."
       }
    }
 }

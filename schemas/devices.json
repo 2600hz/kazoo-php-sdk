@@ -46,10 +46,16 @@
                "type":"object",
                "properties":{
                   "name":{
-                     "name":"Called ID Internal Name",
-                     "description":"The caller id name for the object type",
+                     "name":"Internal Caller ID Name",
+                     "description":"The caller ID name for the object type",
                      "type":"string",
                      "maxLength":30
+                  },
+                  "number":{
+                     "name":"Internal Caller ID Number",
+                     "description":"The caller ID number for the object type",
+                     "type":"string",
+                     "maxLength":20
                   }
                }
             },
@@ -58,10 +64,16 @@
                "type":"object",
                "properties":{
                   "name":{
-                     "name":"Caller ID External Name",
-                     "description":"The caller id name for the object type",
+                     "name":"External Caller ID Name",
+                     "description":"The caller ID name for the object type",
                      "type":"string",
                      "maxLength":15
+                  },
+                  "number":{
+                     "name":"External Caller ID Number",
+                     "description":"The caller ID number for the object type",
+                     "type":"string",
+                     "maxLength":20
                   }
                }
             },
@@ -70,10 +82,16 @@
                "type":"object",
                "properties":{
                   "name":{
-                     "name":"Caller ID Emergency Name",
-                     "description":"The caller id name for the object type",
+                     "name":"Emergency Caller ID Name",
+                     "description":"The caller ID name for the object type",
                      "type":"string",
                      "maxLength":15
+                  },
+                  "number":{
+                     "name":"Emergency Caller ID Number",
+                     "description":"The caller ID number for the object type",
+                     "type":"string",
+                     "maxLength":20
                   }
                }
             }
@@ -366,6 +384,11 @@
          },
          "default":{
          }
+      },
+      "call_restriction":{
+         "name":"Call Restrictions",
+         "type":"object",
+         "description":"Provides the mappings for what number_manager definitions are restricted, based on inheritance."
       }
    }
 }

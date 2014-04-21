@@ -47,6 +47,12 @@
          "type":"boolean",
          "default":true
       },
+      "fax_to_email_enabled":{
+         "name":"Fax To Emain Enabled",
+         "description":"Determines if fax notification should contain the fax attachment",
+         "type":"boolean",
+         "default":true
+      },
       "verified":{
          "name":"Verified",
          "description":"Determines if the user has been verified",
@@ -80,38 +86,56 @@
          "type":"object",
          "properties":{
             "internal":{
-               "name":"Internal Called ID",
                "description":"The default caller ID used when dialing internal extensions",
                "type":"object",
                "properties":{
                   "name":{
-                     "description":"The caller id name for the object type",
+                     "name":"Internal Caller ID Name",
+                     "description":"The caller ID name for the object type",
                      "type":"string",
                      "maxLength":30
+                  },
+                  "number":{
+                     "name":"Internal Caller ID Number",
+                     "description":"The caller ID number for the object type",
+                     "type":"string",
+                     "maxLength":20
                   }
                }
             },
             "external":{
-               "name":"External Caller ID",
                "description":"The default caller ID used when dialing external numbers",
                "type":"object",
                "properties":{
                   "name":{
-                     "description":"The caller id name for the object type",
+                     "name":"External Caller ID Name",
+                     "description":"The caller ID name for the object type",
                      "type":"string",
                      "maxLength":15
+                  },
+                  "number":{
+                     "name":"External Caller ID Number",
+                     "description":"The caller ID number for the object type",
+                     "type":"string",
+                     "maxLength":20
                   }
                }
             },
             "emergency":{
-               "name":"Emergency Caller ID",
                "description":"The caller ID used when external, internal, or emergency is not defined",
                "type":"object",
                "properties":{
                   "name":{
-                     "description":"The caller id name for the object type",
+                     "name":"Emergency Caller ID Name",
+                     "description":"The caller ID name for the object type",
                      "type":"string",
                      "maxLength":15
+                  },
+                  "number":{
+                     "name":"Emergency Caller ID Number",
+                     "description":"The caller ID number for the object type",
+                     "type":"string",
+                     "maxLength":20
                   }
                }
             }
@@ -357,6 +381,17 @@
          "default":{
 
          }
+      },
+      "timezone":{
+         "name":"Timezone",
+         "description":"Timezone that the user and user's devices are in",
+         "type":"string",
+         "default":"America/Los_Angeles"
+      },
+      "call_restriction":{
+         "name":"Call Restrictions",
+         "type":"object",
+         "description":"Provides the mappings for what number_manager definitions are restricted, based on inheritance."
       },
       "directories":{
          "name":"Directories",
