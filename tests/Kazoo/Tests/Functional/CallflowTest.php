@@ -80,7 +80,8 @@ class CallflowTest extends \PHPUnit_Framework_TestCase {
             $callflow->name = $ext . " - New Test Callflow";
             $callflow->addNumber((string)$ext);
             $callflow->addNumber("+1314234" . $ext);
-            $callflow->setFlow($root_node->addDefaultChild($device_node)->addDefaultChild($vm_node)); 
+            $root_node->addDefaultChild($device_node)->addDefaultChild($vm_node);
+            $callflow->setFlow($root_node); 
             $callflow->save();
 
             $this->assertInstanceOf("Kazoo\\Api\\Data\\Entity\\Callflow", $callflow);
