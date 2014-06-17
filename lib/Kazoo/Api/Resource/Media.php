@@ -27,7 +27,7 @@ class Media extends AbstractResource {
 
                 break;
             default:
-                parent::__call($name, $arguments);
+                return parent::__call($name, $arguments);
         }
     }
 }
