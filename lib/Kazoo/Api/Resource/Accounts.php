@@ -30,6 +30,7 @@ class Accounts extends AbstractResource {
         $this->_child_resources[] = array("name" => "clicktocalls", "uri" => "/clicktocall", "resource_class" => "ClickToCalls");
         $this->_child_resources[] = array("name" => "conferences", "uri" => "/conferences", "resource_class" => "Conferences");
         $this->_child_resources[] = array("name" => "devices", "uri" => "/devices", "resource_class" => "Devices");
+        $this->_child_resources[] = array("name" => "limits", "uri" => "/limits", "resource_class" => "Limits");
         $this->_child_resources[] = array("name" => "directories", "uri" => "/directories", "resource_class" => "Directories");
         $this->_child_resources[] = array("name" => "faxes", "uri" => "/faxes", "resource_class" => "Faxes");
         $this->_child_resources[] = array("name" => "groups", "uri" => "/groups", "resource_class" => "RingGroups");

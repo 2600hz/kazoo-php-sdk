@@ -16,6 +16,7 @@ abstract class AbstractEntity {
     protected $_data;
     protected $_state = NULL;
     protected $_default_callflow_data;
+    protected $_single = FALSE;
 
     /**
      *
@@ -51,7 +52,7 @@ abstract class AbstractEntity {
     }   
     
     abstract protected function initDefaultValues();
-            
+        
     public function getUri(){
         return $this->_uri;
     }
@@ -81,6 +82,12 @@ abstract class AbstractEntity {
      */
     private function setData(stdClass $data) {
         $this->_data = (object) array_replace_recursive((array) $this->_data, (array) $data);
+    }
+
+    public function single_entity() {
+        $this->_single = TRUE;
+        $this->_state = self::STATE_HYDRATED;
+
     }
 
     /**
@@ -198,7 +205,7 @@ abstract class AbstractEntity {
     public function __call($name, $arguments) {
         switch (strtolower($name)) {
             case 'save':
-                if(strlen($this->id) > 0){
+                if(strlen($this->id) > 0 || $this->_single){
                     $result = $this->_client->post($this->_uri, $this->getData());
                 } else {
                     $result = $this->_client->put($this->_uri, $this->getData());
