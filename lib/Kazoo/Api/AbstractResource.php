@@ -84,6 +84,11 @@ abstract class AbstractResource {
                             $response = $this->_client->get($this->_uri, array());
                             $collection_type = static::$_entity_collection_class;
                             $raw_entity_list = $this->process_response($response);
+                           
+                            if (static::$_entity_class == "Kazoo\Api\Data\Entity\Limit") {
+                                $entity_class = static::$_entity_class;
+                                return new $entity_class($this->_client, $this->_uri, $raw_entity_list);
+                            }
 
                             $entity_list = array();
                             foreach($raw_entity_list as $raw_entity){
@@ -128,11 +133,12 @@ abstract class AbstractResource {
 
     private function process_response($response) {
         $results = $response->data;
-        if (property_exists($results, "numbers")) {
+        if (is_object($results)
+          && property_exists($results, "numbers")) {
             $results = $results->numbers;
-        }
-        foreach($results as $key => $value) {
-            $results->$key->id = urlencode($key);
+            foreach($results as $key => $value) {
+                $results->$key->id = urlencode($key);
+            }
         }
         return $results;
     }
