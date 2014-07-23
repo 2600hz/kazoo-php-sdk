@@ -93,8 +93,12 @@ abstract class AbstractResource {
                             $entity_list = array();
                             foreach($raw_entity_list as $raw_entity){
                                 $entity_class = static::$_entity_class;
-                                $entityInstance = new $entity_class($this->_client, $this->_uri . "/" . $raw_entity->id);
-                                $entityInstance->partialUpdateFromResult($raw_entity);
+                                if (static::$_entity_class == "Kazoo\Api\Data\Entity\Registration") {
+                                    $entityInstance = new $entity_class($this->_client, $this->_uri, $raw_entity);
+                                } else {
+                                    $entityInstance = new $entity_class($this->_client, $this->_uri . "/" . $raw_entity->id);
+                                    $entityInstance->partialUpdateFromResult($raw_entity);
+                                }
                                 $entity_list[] = $entityInstance;
                             }
 
