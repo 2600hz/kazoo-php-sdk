@@ -35,7 +35,7 @@ class PhoneNumber extends AbstractEntity {
                     }
                     $result = $this->_client->put($uri, $this->getData());
                 }
-                $this->updateFromResult($result->data);
+                if (isset($result->data)) $this->updateFromResult($result->data);
                 break;
             case 'activate':
                 $result = $this->_client->put($uri . '/activate', $this->getData());
