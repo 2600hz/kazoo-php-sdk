@@ -95,13 +95,4 @@ interface HttpClientInterface
      * @param array $headers
      */
     public function setHeaders(array $headers);
-
-    /**
-     * Authenticate a user for all next requests
-     *
-     * @param string      $token Kazoo api session access token
-     *
-     * @throws InvalidArgumentException If no authentication method was given
-     */
-    public function authenticate($token);
 }

@@ -12,7 +12,7 @@ use Kazoo\Exception\RuntimeException;
 use Kazoo\Exception\ValidationFailedException;
 
 /**
- * 
+ *
  */
 class ErrorListener
 {

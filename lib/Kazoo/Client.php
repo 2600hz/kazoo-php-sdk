@@ -46,6 +46,12 @@ class Client {
     protected $perPage;
 
     /**
+     *
+     * @var AuthToken\AuthTokenInterface
+     */
+    private $authToken;
+
+    /**
      * The Buzz instance used to communicate with Kazoo
      *
      * @var HttpClient
@@ -54,27 +60,9 @@ class Client {
 
     /**
      *
-     * @var string
-     */
-    private $username;
-
-    /**
-     *
-     * @var string
-     */
-    private $password;
-
-    /**
-     *
-     * @var \Monolog\Logger 
+     * @var \Monolog\Logger
      */
     private $logger;
-
-    /**
-     *
-     * @var string
-     */
-    private $sipRealm;
 
     /**
      *
@@ -96,7 +84,7 @@ class Client {
 
     /**
      *
-     * @var array 
+     * @var array
      */
     private $baseHeaders = array("Content-Type" => "application/json", "Accept" => "application/json");
 
@@ -108,30 +96,31 @@ class Client {
 
     /**
      *
-     * @var array 
+     * @var \Kazoo\Api\Resource\PhoneNumbers
+     */
+    private $phone_numbers;
+
+    /**
+     *
+     * @var array
      */
     private $uri_tokens = array("api_version");
 
     /**
      *
-     * @var array 
+     * @var array
      */
     private $uri_token_values = array();
 
     /**
-     * 
-     * @param string $username
-     * @param string $password
-     * @param string $sipRealm
+     *
+     *
+     * @param AuthToken\AuthTokenInterface $authToken
      * @param null|array $options
-     * @param null|stdClass $clientState
      * @param null|\Kazoo\HttpClient\HttpClientInterface $httpClient
      */
-    public function __construct($username, $password, $sipRealm, $options = null, $clientState = null, HttpClientInterface $httpClient = null) {
+    public function __construct(AuthToken\AuthTokenInterface $authToken, $options = null, HttpClientInterface $httpClient = null) {
         $this->httpClient = $httpClient;
-        $this->username = $username;
-        $this->password = $password;
-        $this->sipRealm = $sipRealm;
 
         if (is_null($this->options['schema_dir'])) {
             $this->options['schema_dir'] = dirname(__DIR__) . "/../schemas";
@@ -162,53 +151,17 @@ class Client {
 
         $this->setHeaders($this->getBaseHeaders());
 
-        if (!is_null($this->clientState)) {
-            $this->setClientState($clientState);
-        } else {
-            $this->setupClientState();
-        }
-        $this->setAuthToken();
-        $this->setupAccounts();
-    }
+        $this->authToken = $authToken;
+        $this->authToken->setClient($this);
 
-    /**
-     * 
-     * @throws AuthenticationException
-     */
-    private function setupClientState() {
+        $this->setAccountContext($this->authToken->getAccountId());
 
-        $payload = new stdClass();
-        $payload->data = new stdClass();
-        $payload->data->credentials = md5($this->username . ":" . $this->password);
-        $payload->data->realm = $this->sipRealm;
-
-        try {
-            $tokenizedUri = $this->getTokenizedUri($this->options['base_url'] . "/user_auth");
-            $response = ResponseMediator::getContent($this->getHttpClient()->put($tokenizedUri, json_encode($payload)));
-            switch ($response->status) {
-                case "success":
-                    $this->clientState = $response;
-                    break;
-                default:
-                    $message = $response->getStatusCode() . " " . $response->getReasonPhrase() . " " . $response->getProtocol() . $response->getProtocolVersion();
-                    throw new AuthenticationException($message);
-            }
-        } catch (ClientErrorResponseException $e) {
-            die($e->getMessage());
-        } catch (AuthenticationException $e) {
-            die($e->getMessage());
-        }
+        $this->accounts = new \Kazoo\Api\Resource\Accounts($this, "/accounts/{account_id}");
+        $this->phone_numbers = new \Kazoo\Api\Resource\GlobalPhoneNumbers($this, "/phone_numbers");
     }
 
     public function getLogger() {
         return $this->logger;
-    }
-
-    private function setupAccounts() {
-        $this->accounts = new \Kazoo\Api\Resource\Accounts($this, $this->options['base_url'] . "/accounts/{account_id}");
-        $this->phone_numbers = new \Kazoo\Api\Resource\GlobalPhoneNumbers($this, $this->options['base_url'] . "/phone_numbers");
-        $this->baseAccountId = $this->getClientState()->data->account_id;
-        $this->setAccountContext($this->baseAccountId);
     }
 
     public function getBaseHeaders() {
@@ -226,7 +179,7 @@ class Client {
     }
 
     public function getTokenizedUri($uri) {
-        $tokenized_uri = $uri;
+        $tokenized_uri = $this->getOption('base_url') . $uri;
         foreach ($this->uri_tokens as $token) {
             $pattern = "/\{" . $token . "\}/";
             if (array_key_exists($token, $this->uri_token_values)) {
@@ -241,7 +194,7 @@ class Client {
     }
 
     /**
-     * 
+     *
      * @param string $account
      */
     public function setAccountContext($account_id) {
@@ -255,41 +208,7 @@ class Client {
     }
 
     public function resetBaseAccountContext() {
-        $this->curAccount = $this->baseAccountId;
-    }
-
-    /**
-     * 
-     * @param stdClass $clientState
-     */
-    private function setClientState(stdClass $clientState) {
-        $this->clientState = $clientState;
-    }
-
-    /**
-     * 
-     * @return type
-     */
-    public function getClientState() {
-        return $this->clientState;
-    }
-
-    /**
-     * 
-     * @return type
-     */
-    public function getAuthToken() {
-        return $this->getClientState()->auth_token;
-    }
-
-    /**
-     * Authenticate a user for all next requests
-     *
-     * @param string      $token Kazoo auth token
-     *
-     */
-    private function setAuthToken() {
-        $this->getHttpClient()->authenticate($this->getAuthToken());
+        $this->curAccount = $this->authToken->getAccountId();
     }
 
     /**
@@ -351,7 +270,7 @@ class Client {
             throw new InvalidArgumentException(sprintf('Undefined option called: "%s"', $name));
         }
 
-        if ('api_version' == $name && !in_array($value, array('v3', 'beta'))) {
+        if ($name == 'api_version' && !in_array($value, array('1', '2'))) {
             throw new InvalidArgumentException(sprintf('Invalid API version ("%s"), valid are: %s', $name, implode(', ', array('v3', 'beta'))));
         }
 
@@ -384,7 +303,7 @@ class Client {
     public function get($path, array $parameters = array(), $requestHeaders = array()) {
 
         try {
-            
+
             if (null !== $this->perPage && !isset($parameters['per_page'])) {
                 $parameters['per_page'] = $this->perPage;
             }
@@ -395,7 +314,7 @@ class Client {
             $tokenizedUri = $this->getTokenizedUri($path);
             $response = $this->getHttpClient()->get($tokenizedUri, $parameters, $requestHeaders);
             return ResponseMediator::getContent($response);
-            
+
         } catch (ErrorException $e) {
             $this->getLogger()->addCritical($e->getMessage());
         } catch (RuntimeException $e) {
@@ -411,13 +330,13 @@ class Client {
      * @param array $requestHeaders     Request headers.
      */
     public function post($path, $payload, $requestHeaders = array()) {
-        
+
         try {
             $shell = new stdClass();
             $shell->data = $payload;
             $tokenizedUri = $this->getTokenizedUri($path);
             return $this->postRaw($tokenizedUri, $this->createJsonBody($shell), $requestHeaders);
-            
+
         } catch (ErrorException $e) {
             $this->getLogger()->addCritical($e->getMessage());
         } catch (RuntimeException $e) {
@@ -434,13 +353,13 @@ class Client {
      * @return \Guzzle\Http\EntityBodyInterface|mixed|string
      */
     public function postRaw($path, $body, $requestHeaders = array()) {
-        
+
         try {
-            
+
             $tokenizedUri = $this->getTokenizedUri($path);
             $response = $this->getHttpClient()->post($tokenizedUri, $body, $requestHeaders);
             return ResponseMediator::getContent($response);
-            
+
         } catch (ErrorException $e) {
             $this->getLogger()->addCritical($e->getMessage());
         } catch (RuntimeException $e) {
@@ -458,10 +377,10 @@ class Client {
     public function patch($path, $payload, $requestHeaders = array()) {
 
         try {
-            
+
             $response = $this->getHttpClient()->patch($path, $this->createJsonBody($payload), $requestHeaders);
             return ResponseMediator::getContent($response);
-            
+
         } catch (ErrorException $e) {
             $this->getLogger()->addCritical($e->getMessage());
         } catch (RuntimeException $e) {
@@ -479,14 +398,14 @@ class Client {
     public function put($path, $payload, $requestHeaders = array()) {
 
         try {
-            
+
             $shell = new stdClass();
             $shell->data = $payload;
 
             $tokenizedUri = $this->getTokenizedUri($path);
             $response = $this->getHttpClient()->put($tokenizedUri, $this->createJsonBody($shell), $requestHeaders);
             return ResponseMediator::getContent($response);
-            
+
         } catch (ErrorException $e) {
             $this->getLogger()->addCritical($e->getMessage());
         } catch (RuntimeException $e) {
@@ -504,11 +423,11 @@ class Client {
     public function delete($path, array $parameters = null, $requestHeaders = array()) {
 
         try {
-            
+
             $tokenizedUri = $this->getTokenizedUri($path);
             $response = $this->getHttpClient()->delete($tokenizedUri, $this->createJsonBody($parameters), $requestHeaders);
             return ResponseMediator::getContent($response);
-                    
+
         } catch (ErrorException $e) {
             $this->getLogger()->addCritical($e->getMessage());
         } catch (RuntimeException $e) {
@@ -528,13 +447,15 @@ class Client {
 
     public function __call($name, $arguments) {
         switch (strtolower($name)) {
-            case 'accounts':
-                return $this->accounts;
-                break;
-            case 'account':
-                return $this->getAccountContext();
-                break;
+        case 'phone_numbers':
+            return $this->phone_numbers;
+            break;
+        case 'accounts':
+            return $this->accounts;
+            break;
+        case 'account':
+            return $this->getAccountContext();
+            break;
         }
     }
-
 }
