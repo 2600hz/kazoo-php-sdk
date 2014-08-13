@@ -132,6 +132,13 @@ class User implements AuthTokenInterface {
         return $this->getAuthResponse()->auth_token;
     }
 
+    public function reset() {
+        $this->auth_response = null;
+        if ($_SESSION['Kazoo']['AuthToken']['User']) {
+            unset($_SESSION['Kazoo']['AuthToken']['User']);
+        }
+    }
+
     /**
      *
      * @return string
@@ -158,29 +165,19 @@ class User implements AuthTokenInterface {
         $payload->data->credentials = md5($this->username . ":" . $this->password);
         $payload->data->realm = $this->sipRealm;
 
-        try {
-            $this->disabled = true;
-            $tokenizedUri = $this->client->getTokenizedUri("/user_auth");
-            $response = ResponseMediator::getContent($this->client->getHttpClient()->put($tokenizedUri, json_encode($payload)));
-            $this->disabled = false;
+        $this->disabled = true;
+        $tokenizedUri = $this->client->getTokenizedUri("/user_auth");
+        $response = ResponseMediator::getContent($this->client->getHttpClient()->put($tokenizedUri, json_encode($payload)));
+        $this->disabled = false;
 
-            switch ($response->status) {
-                case "success":
-                    $this->auth_response = $response->data;
-                    $this->auth_response->auth_token = $response->auth_token;
-                    break;
-                default:
-                    $message = $response->getStatusCode() . " " . $response->getReasonPhrase() . " " . $response->getProtocol() . $response->getProtocolVersion();
-                    throw new AuthenticationException($message);
-            }
-        } catch (ClientErrorResponseException $e) {
-            die($e->getMessage());
-        } catch (AuthenticationException $e) {
-            die($e->getMessage());
+        switch ($response->status) {
+        case "success":
+            $this->auth_response = $response->data;
+            $this->auth_response->auth_token = $response->auth_token;
+            break;
+        default:
+            $message = $response->getStatusCode() . " " . $response->getReasonPhrase() . " " . $response->getProtocol() . $response->getProtocolVersion();
+            throw new AuthenticationException($message);
         }
-    }
-
-    private function cacheAuthResponse() {
-
     }
 }

@@ -31,4 +31,12 @@ interface AuthTokenInterface
      * @return null|string
      */
     public function getAccountId();
+
+    /**
+     * Removes the current auth token
+     *
+     *
+     *
+     */
+    public function reset();
 }
