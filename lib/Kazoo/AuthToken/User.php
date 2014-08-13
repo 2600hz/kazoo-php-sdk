@@ -14,7 +14,8 @@ use Kazoo\HttpClient\Message\ResponseMediator;
 /**
  *
  */
-class User implements AuthTokenInterface {
+class User implements AuthTokenInterface 
+{
 
     /**
      *
@@ -25,9 +26,9 @@ class User implements AuthTokenInterface {
 
     /**
      *
-     * @var null|\Kazoo\Client
+     * @var null|\Kazoo\SDK
      */
-    private $client;
+    private $sdk;
 
     /**
      *
@@ -85,20 +86,20 @@ class User implements AuthTokenInterface {
     /**
      *
      *
-     * @return null|\Kazoo\Client
+     * @return null|\Kazoo\SDK
      */
-    public function getClient() {
-        return $this->client;
+    public function getSDK() {
+        return $this->sdk;
     }
 
     /**
      *
      *
-     * @param \Kazoo\Client
+     * @param \Kazoo\SDK
      */
-    public function setClient(\Kazoo\Client $client) {
-        $this->client = $client;
-        $this->client->getHttpClient()->addListener('request.before_send', array(
+    public function setSDK(\Kazoo\SDK $sdk) {
+        $this->sdk = $sdk;
+        $this->sdk->getHttpClient()->addListener('request.before_send', array(
             $this, 'onRequestBeforeSend'
         ));
     }
@@ -166,8 +167,8 @@ class User implements AuthTokenInterface {
         $payload->data->realm = $this->sipRealm;
 
         $this->disabled = true;
-        $tokenizedUri = $this->client->getTokenizedUri("/user_auth");
-        $response = ResponseMediator::getContent($this->client->getHttpClient()->put($tokenizedUri, json_encode($payload)));
+        $tokenizedUri = $this->sdk->getTokenizedUri("/user_auth");
+        $response = ResponseMediator::getContent($this->sdk->getHttpClient()->put($tokenizedUri, json_encode($payload)));
         $this->disabled = false;
 
         switch ($response->status) {

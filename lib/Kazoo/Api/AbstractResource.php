@@ -2,148 +2,74 @@
 
 namespace Kazoo\Api;
 
-use Kazoo\HttpClient\Message\ResponseMediator;
+abstract class AbstractResource implements ChainableInterface {
+    private $chain;
+    private $arguments;
+    private $token_values = array();
 
-/**
- * Abstract class for Api classes
- *
- */
-abstract class AbstractResource {
+    protected $url;
 
-    /**
-     * The client
-     *
-     * @var \Kazoo\Client
-     */
-    protected $_client;
 
-    /**
-     * The uri_prefix
-     *
-     * @var null|string
-     */
-    protected $_uri;
-
-    /**
-     * number of items per page (Kazoo pagination)
-     *
-     * @var null|int
-     */
-    protected $perPage;
-
-    /**
-     *
-     * @var array
-     */
-    protected $_child_resources;
-
-    /**
-     *
-     * @param \Kazoo\Client $client
-     * @param null|string $uri
-     */
-    public function __construct(\Kazoo\Client $client, $uri = null) {
-        $this->_client = $client;
-        $this->_uri = $uri;
-
-        $this->_child_resources = array();
-        $this->_child_resource_instances = array();
+    /* CHAINABLE INTERFACE */
+    public function getTokenUri() {
+        return $this->chain->getTokenUri() . $this->url;
     }
 
-    protected function hasChildResource($name) {
-        return array_key_exists($name, $this->_child_resource_instances);
+    public function getSDK() {
+        return $this->chain->getSDK();
     }
 
-    protected function getChildResource($name) {
-        return $this->_child_resource_instances[$name];
+    public function getTokenValues() {
+        return array_merge($this->chain->getTokenValues(), $this->token_values);
+    }
+    /* END OF CHAINABLE INTERFACE */
+
+    public function __construct(ChainableInterface $chain, array $arguments = array()) {
+        $this->chain = $chain;
+        $this->arguments = $arguments;
+        return $this;
     }
 
-    public function initChildInstances() {
-        foreach ($this->_child_resources as $child_resource_definition) {
-            $type = "Kazoo\\Api\\Resource\\" . $child_resource_definition['resource_class'];
-            $name = $child_resource_definition['name'];
-            $uri = $child_resource_definition['uri'];
-            $this->_child_resource_instances[$name] = new $type($this->_client, $this->_uri . $uri);
+    public function getUri($appendUri = null) {
+        $tokenUri = $this->getTokenUri();
+
+        if (!is_null($appendUri)) {
+            $tokenUri .= $appendUri;
         }
+
+        $tokenValues = $this->getTokenValues();
+        return $this->getSDK()->getTokenizedUri($tokenUri, $tokenValues);
     }
 
-    public function __call($name, $arguments) {
-
-        if ($this->hasChildResource($name)) {
-            return $this->getChildResource($name);
+    protected function setToken($token, $value) {
+        if (is_null($value)) {
+            unset($this->token_values[$token]);
         } else {
-            switch (strtolower($name)) {
-                case 'new':
-                    $entity_class = static::$_entity_class;
-                    return new $entity_class($this->_client, $this->_uri);
-                    break;
-                case 'get':
-                case 'retrieve':
-                    switch (count($arguments)) {
-                        case 0:
-                            $response = $this->_client->get($this->_uri, array());
-                            $collection_type = static::$_entity_collection_class;
-                            $raw_entity_list = $this->process_response($response);
-                           
-                            if (static::$_entity_class == "Kazoo\Api\Data\Entity\Limit") {
-                                $entity_class = static::$_entity_class;
-                                return new $entity_class($this->_client, $this->_uri, $raw_entity_list);
-                            }
-
-                            $entity_list = array();
-                            foreach($raw_entity_list as $raw_entity){
-                                $entity_class = static::$_entity_class;
-                                if (static::$_entity_class == "Kazoo\Api\Data\Entity\Registration") {
-                                    $entityInstance = new $entity_class($this->_client, $this->_uri, $raw_entity);
-                                } else {
-                                    $entityInstance = new $entity_class($this->_client, $this->_uri . "/" . $raw_entity->id);
-                                    $entityInstance->partialUpdateFromResult($raw_entity);
-                                }
-                                $entity_list[] = $entityInstance;
-                            }
-
-                            return new $collection_type($entity_list);
-                            break;
-                        case 1:
-                            if (is_string($arguments[0])) {
-                                $resource_id = $arguments[0];
-                                $result = $this->_client->get($this->_uri . "/" . urlencode($resource_id));
-                                $entity_class = static::$_entity_class;
-                                $entityInstance = new $entity_class($this->_client, $this->_uri . "/" . $resource_id);
-                                return $entityInstance->updateFromResult($result->data);
-                            } else if (is_array($arguments[0])) {
-                                $filters = $arguments[0];
-
-                                $response = $this->_client->get($this->_uri, $filters);
-                                $collection_type = static::$_entity_collection_class;
-                                $raw_entity_list = $this->process_response($response);
-
-                                $entity_list = array();
-                                foreach($raw_entity_list as $raw_entity){
-                                    $entity_class = static::$_entity_class;
-                                    $entityInstance = new $entity_class($this->_client, $this->_uri . "/" . $raw_entity->id);
-                                    $entityInstance->partialUpdateFromResult($raw_entity);
-                                    $entity_list[] = $entityInstance;
-                                }
-
-                                return new $collection_type($entity_list);
-                            }
-                            break;
-                    }
-                    break;
-            }
+            $this->token_values[$token] = $value;
         }
     }
 
-    private function process_response($response) {
-        $results = $response->data;
-        if (is_object($results)
-          && property_exists($results, "numbers")) {
-            $results = $results->numbers;
-            foreach($results as $key => $value) {
-                $results->$key->id = urlencode($key);
-            }
-        }
-        return $results;
+    protected function getArguments() {
+        return $this->arguments;
+    }
+
+    protected function get($appendUri = null) {
+        $uri = $this->getUri($appendUri);
+        return $this->getSDK()->get($uri);
+    }
+
+    protected function put($payload) {
+        $path = $this->getUrl();
+        return $this->getSDK()->put($path, $payload);
+    }
+
+    protected function post($payload) {
+        $path = $this->getUrl();
+        return $this->getSDK()->post($path, $payload);
+    }
+
+    protected function delete() {
+        $path = $this->getUrl();
+        return $this->getSDK()->delete($path, $payload);
     }
 }

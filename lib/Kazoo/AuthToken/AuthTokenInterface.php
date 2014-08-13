@@ -12,9 +12,9 @@ interface AuthTokenInterface
      * Set the Kazoo Client using the client
      *
      *
-     * @param \Kazoo\Client
+     * @param \Kazoo\SDK
      */
-    public function setClient(\Kazoo\Client $client);
+    public function setSDK(\Kazoo\SDK $sdk);
 
     /**
      * Get the auth-token
