@@ -49,7 +49,7 @@ Now we can use autoloader from Composer by:
 
 // Install the library via composer or download the .zip file to your project folder.
 // This line loads the library
-require_once "kazoo-php-sdk/lib/Kazoo/Client.php";
+require_once "kazoo-php-sdk/src/Kazoo/SDK.php";
 
 
 $options = array("base_url" => "http://kazoo-crossbar-url:8000");
