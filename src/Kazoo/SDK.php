@@ -392,9 +392,9 @@ class SDK implements ChainableInterface
      */
     protected function setTokenValue($name, $value) {
         if (is_null($value)) {
-            unset($this->name_values[$name]);
+            unset($this->token_values[$name]);
         } else {
-            $this->name_values[$name] = $value;
+            $this->token_values[$name] = $value;
         }
     }
 }

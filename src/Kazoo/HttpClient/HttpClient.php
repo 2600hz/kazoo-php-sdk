@@ -128,7 +128,7 @@ class HttpClient implements HttpClientInterface
      *
      * @param \Guzzle\Http\Client $client
      */
-    private function setClient(Client $client) {
+    private function setClient(GuzzleClient $client) {
         $this->client = $client;
     }
 

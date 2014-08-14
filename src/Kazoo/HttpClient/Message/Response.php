@@ -2,7 +2,7 @@
 
 namespace Kazoo\HttpClient\Message;
 
-use \Guzzle\Http\Message\Response;
+use \Guzzle\Http\Message\Response as GuzzleResponse;
 
 class Response {
     /**
@@ -15,7 +15,7 @@ class Response {
      *
      * @param \Guzzle\Http\Message\Response $response
      */
-    public function __construct(Response $response) {
+    public function __construct(GuzzleResponse $response) {
         $this->response = $response;
     }
 
