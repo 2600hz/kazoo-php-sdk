@@ -6,6 +6,7 @@ namespace Kazoo\Api\Exception;
  * Validation Exception
  *
  */
-class Validation extends ApiException {
+class Validation extends ApiException
+{
 
 }

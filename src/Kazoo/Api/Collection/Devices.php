@@ -2,6 +2,7 @@
 
 namespace Kazoo\Api\Collection;
 
-class Devices extends AbstractCollection {
-    protected $url = '/devices';
+class Devices extends AbstractCollection
+{
+
 }

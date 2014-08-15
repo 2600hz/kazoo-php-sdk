@@ -4,7 +4,7 @@ namespace Kazoo\AuthToken;
 
 use \stdClass;
 
-use Kazoo\SDK;
+use \Kazoo\SDK;
 
 /**
  *

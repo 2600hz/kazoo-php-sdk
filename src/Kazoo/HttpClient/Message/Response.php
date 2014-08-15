@@ -4,7 +4,8 @@ namespace Kazoo\HttpClient\Message;
 
 use \Guzzle\Http\Message\Response as GuzzleResponse;
 
-class Response {
+class Response
+{
     /**
      *
      * @var \Guzzle\Http\Message\Response

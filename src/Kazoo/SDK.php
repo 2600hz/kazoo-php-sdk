@@ -11,7 +11,7 @@ use Kazoo\Common\ChainableInterface;
 use Kazoo\Common\Exception\InvalidArgument;
 use Kazoo\Common\Exception\InvalidUri;
 use Kazoo\AuthToken\AuthTokenInterface;
-use Kazoo\AuthToken\Exception\Unauthorized;
+use Kazoo\AuthToken\Exception\Unauthenticated;
 use Kazoo\HttpClient\HttpClient;
 use Kazoo\HttpClient\HttpClientInterface;
 
@@ -47,13 +47,13 @@ class SDK implements ChainableInterface
      *
      * @var \Kazoo\AuthToken\AuthTokenInterface
      */
-    private $authToken;
+    private $auth_token;
 
     /**
      *
      * @var \Kazoo\HttpClient\HttpClientInterface
      */
-    private $httpClient;
+    private $http_client;
 
     /**
      *
@@ -90,10 +90,10 @@ class SDK implements ChainableInterface
     /**
      *
      *
-     * @param \Kazoo\AuthToken\AuthTokenInterface $authToken
+     * @param \Kazoo\AuthToken\AuthTokenInterface $auth_token
      * @param array $options
      */
-    public function __construct(AuthTokenInterface $authToken, array $options = array()) {
+    public function __construct(AuthTokenInterface $auth_token, array $options = array()) {
         if (is_null($this->options['schema_dir'])) {
             $this->options['schema_dir'] = dirname(__DIR__) . "/../schemas";
         }
@@ -108,7 +108,7 @@ class SDK implements ChainableInterface
 
         $this->setTokenValue('api_version', $this->getOption('api_version'));
 
-        $this->setAuthToken($authToken);
+        $this->setAuthToken($auth_token);
     }
 
     /**
@@ -116,15 +116,15 @@ class SDK implements ChainableInterface
      * @return \Kazoo\HttpClient\HttpClientInterface
      */
     public function getHttpClient() {
-        return $this->httpClient;
+        return $this->http_client;
     }
 
     /**
      *
      * @params \Kazoo\HttpClient\HttpClientInterface
      */
-    public function setHttpClient(HttpClientInterface $httpClient) {
-        $this->httpClient = $httpClient;
+    public function setHttpClient(HttpClientInterface $http_client) {
+        $this->http_client = $http_client;
     }
 
     /**
@@ -132,16 +132,16 @@ class SDK implements ChainableInterface
      * @return \Kazoo\AuthToken\AuthTokenInterface
      */
     public function getAuthToken() {
-        return $this->authToken;
+        return $this->auth_token;
     }
 
     /**
      *
      * @params \Kazoo\AuthToken\AuthTokenInterface
      */
-    public function setAuthToken(AuthTokenInterface $authToken) {
-        $this->authToken = $authToken;
-        $this->authToken->setSDK($this);
+    public function setAuthToken(AuthTokenInterface $auth_token) {
+        $this->auth_token = $auth_token;
+        $this->auth_token->setSDK($this);
     }
 
     /**
@@ -209,7 +209,7 @@ class SDK implements ChainableInterface
             }
 
             if (empty($value) && $token == 'account_id') {
-                $value = $this->authToken->getAccountId();
+                $value = $this->auth_token->getAccountId();
             }
 
             if (is_null($value)) {
@@ -233,8 +233,8 @@ class SDK implements ChainableInterface
     public function get($uri, array $parameters = array(), $requestHeaders = array()) {
         try {
             return $this->executeGet($uri, $parameters, $requestHeaders);
-        } catch (Unauthorized $e) {
-            $this->authToken->reset();
+        } catch (Unauthenticated $e) {
+            $this->auth_token->reset();
             return $this->executeGet($uri, $parameters, $requestHeaders);
         }
     }
@@ -258,8 +258,8 @@ class SDK implements ChainableInterface
     public function post($uri, $content, $requestHeaders = array()) {
         try {
             return $this->executePost($uri, $content, $requestHeaders);
-        } catch (Unauthorized $e) {
-            $this->authToken->reset();
+        } catch (Unauthenticated $e) {
+            $this->auth_token->reset();
             return $this->executePost($uri, $content, $requestHeaders);
         }
     }
@@ -275,8 +275,8 @@ class SDK implements ChainableInterface
     public function postRaw($uri, $content, $requestHeaders = array()) {
         try {
             return $this->executePost($uri, $content, $requestHeaders);
-        } catch (Unauthorized $e) {
-            $this->authToken->reset();
+        } catch (Unauthenticated $e) {
+            $this->auth_token->reset();
             return $this->executePost($uri, $content, $requestHeaders);
         }
     }
@@ -300,8 +300,8 @@ class SDK implements ChainableInterface
     public function patch($uri, $content, $requestHeaders = array()) {
         try {
             return $this->executePatch($uri, $content, $requestHeaders);
-        } catch (Unauthorized $e) {
-            $this->authToken->reset();
+        } catch (Unauthenticated $e) {
+            $this->auth_token->reset();
             return $this->executePatch($uri, $content, $requestHeaders);
         }
     }
@@ -325,8 +325,8 @@ class SDK implements ChainableInterface
     public function put($uri, $content, $requestHeaders = array()) {
         try {
             return $this->executePut($uri, $content, $requestHeaders);
-        } catch (Unauthorized $e) {
-            $this->authToken->reset();
+        } catch (Unauthenticated $e) {
+            $this->auth_token->reset();
             return $this->executePut($uri, $content, $requestHeaders);
         }
     }
@@ -350,8 +350,8 @@ class SDK implements ChainableInterface
     public function delete($uri, $content = null, $requestHeaders = array()) {
         try {
             return $this->executeDelete($uri, $content, $requestHeaders);
-        } catch (Unauthorized $e) {
-            $this->authToken->reset();
+        } catch (Unauthenticated $e) {
+            $this->auth_token->reset();
             return $this->executeDelete($uri, $content, $requestHeaders);
         }
     }
@@ -369,22 +369,22 @@ class SDK implements ChainableInterface
      *
      */
     public function __call($name, $arguments) {
-        $collectionName = '\\Kazoo\\Api\\Collection\\' . $name;
-        if (class_exists($collectionName)) {
-            return new $collectionName($this, $arguments);
+        $collection_name = '\\Kazoo\\Api\\Collection\\' . $name;
+        if (class_exists($collection_name)) {
+            return new $collection_name($this, $arguments);
         }
 
-        $entityName = '\\Kazoo\\Api\\Entity\\' . $name;
-        if (class_exists($entityName)) {
-            return new $entityName($this, $arguments);
+        $entity_name = '\\Kazoo\\Api\\Entity\\' . $name;
+        if (class_exists($entity_name)) {
+            return new $entity_name($this, $arguments);
         }
 
         $backtrace = debug_backtrace();
         $filename = $backtrace[0]['file'];
         $line = $backtrace[0]['line'];
-        $className = get_class($this);
+        $class_name = get_class($this);
 
-        $message = "Call to undefined method $className::$name in $filename on line $line";
+        $message = "Call to undefined method $class_name::$name in $filename on line $line";
         throw new BadFunctionCallException($message);
     }
 

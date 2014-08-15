@@ -2,6 +2,7 @@
 
 namespace Kazoo\Api\Collection;
 
-class Accounts extends AbstractCollection {
-    protected $url = '/accounts';
+class Accounts extends AbstractCollection
+{
+
 }

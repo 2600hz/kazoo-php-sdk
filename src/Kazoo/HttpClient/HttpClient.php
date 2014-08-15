@@ -2,13 +2,13 @@
 
 namespace Kazoo\HttpClient;
 
-use Kazoo\SDK;
-use Kazoo\HttpClient\Message\Response;
-use Kazoo\HttpClient\Listener\ErrorListener;
-use Kazoo\HttpClient\Listener\AuthListener;
+use \Kazoo\SDK;
+use \Kazoo\HttpClient\Message\Response;
+use \Kazoo\HttpClient\Listener\ErrorListener;
+use \Kazoo\HttpClient\Listener\AuthListener;
 
-use Guzzle\Http\Client as GuzzleClient;
-use Guzzle\Http\ClientInterface;
+use \Guzzle\Http\Client as GuzzleClient;
+use \Guzzle\Http\ClientInterface;
 
 /**
  * Performs requests on Kazoo API.

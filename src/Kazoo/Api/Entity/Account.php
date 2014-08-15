@@ -4,9 +4,8 @@ namespace Kazoo\Api\Entity;
 
 use \stdClass;
 
-class Account extends AbstractEntity {
-    protected $url = '/accounts/{account_id}';
-
+class Account extends AbstractEntity
+{
     public function children(array $filter = array()) {
         return $this->get($filter, '/children');
     }

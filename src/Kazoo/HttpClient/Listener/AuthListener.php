@@ -2,9 +2,9 @@
 
 namespace Kazoo\HttpClient\Listener;
 
-use Kazoo\SDK;
+use \Kazoo\SDK;
 
-use Guzzle\Common\Event;
+use \Guzzle\Common\Event;
 
 /**
  *

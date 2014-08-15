@@ -7,10 +7,13 @@ use \Exception;
 use \BadFunctionCallException;
 use \RuntimeException;
 
+use \Kazoo\Common\Utils;
 use \Kazoo\Common\ChainableInterface;
 use \Kazoo\HttpClient\Message\Response;
+use \Kazoo\Api\AbstractResource;
 
-abstract class AbstractEntity extends \Kazoo\Api\AbstractResource {
+abstract class AbstractEntity extends AbstractResource
+{
     /**
      *
      *
@@ -47,22 +50,22 @@ abstract class AbstractEntity extends \Kazoo\Api\AbstractResource {
      *
      */
     public function __call($name, $arguments) {
-        $collectionName = '\\Kazoo\\Api\\Collection\\' . $name;
-        if (class_exists($collectionName)) {
-            return new $collectionName($this, $arguments);
+        $collection_name = '\\Kazoo\\Api\\Collection\\' . $name;
+        if (class_exists($collection_name)) {
+            return new $collection_name($this, $arguments);
         }
 
-        $entityName = '\\Kazoo\\Api\\Entity\\' . $name;
-        if (class_exists($entityName)) {
-            return new $entityName($this, $arguments);
+        $entity_name = '\\Kazoo\\Api\\Entity\\' . $name;
+        if (class_exists($entity_name)) {
+            return new $entity_name($this, $arguments);
         }
 
         $backtrace = debug_backtrace();
         $filename = $backtrace[0]['file'];
         $line = $backtrace[0]['line'];
-        $className = get_class($this);
+        $class_name = get_class($this);
 
-        $message = "Call to undefined method $className::$name in $filename on line $line";
+        $message = "Call to undefined method $class_name::$name in $filename on line $line";
         throw new BadFunctionCallException($message);
     }
 
@@ -129,7 +132,9 @@ abstract class AbstractEntity extends \Kazoo\Api\AbstractResource {
     }
 
     /**
-     *
+     * Explicitly fetch from Kazoo, typicall it lazy-loads.
+     * This could also be used to re-load to ensure the data
+     * is fresh.
      *
      */
     public function fetch() {
@@ -144,7 +149,8 @@ abstract class AbstractEntity extends \Kazoo\Api\AbstractResource {
     }
 
     /**
-     *
+     * Saves the current entity, if it does not have an
+     * id then it will be created.
      *
      */
     public function save() {
@@ -166,7 +172,10 @@ abstract class AbstractEntity extends \Kazoo\Api\AbstractResource {
     }
 
     /**
-     *
+     * Remove the entity.  Note: it is called remove
+     * because the parent has a delete function and
+     * parent::delete() irked me when the reset are
+     * $this->put or $this->post.
      *
      */
     public function remove() {
@@ -177,7 +186,11 @@ abstract class AbstractEntity extends \Kazoo\Api\AbstractResource {
     }
 
     /**
-     *
+     * Allows you to use this entity as a template.
+     * For example, you could create a device with all
+     * the settings you want.  Then using duplicate
+     * could could save 4 variations of that device
+     * without having to re-set the common properties.
      *
      */
     public function duplicate() {
@@ -215,7 +228,8 @@ abstract class AbstractEntity extends \Kazoo\Api\AbstractResource {
     }
 
     /**
-     *
+     * Reset the entity locally, becomes an empty
+     * container to create a new entity.
      *
      */
     public function reset() {
@@ -224,15 +238,39 @@ abstract class AbstractEntity extends \Kazoo\Api\AbstractResource {
     }
 
     /**
+     * Automagic used to determine the URL snippet.
+     * This should be implemented in the entity class if
+     * it is an exception to the standard naming.
      *
+     */
+    protected function getUriSnippet() {
+        $collectionName = $this->getCollectionName();
+        $entityIdName = $this->getEntityIdName();
+        return "/$collectionName/{{$entityIdName}}";
+    }
+
+    /**
+     * Automagic used to determine the entity id name
+     * for use in the URL snippet.  This should
+     * be implemented in the entity class if
+     * it is an exception to the standard naming.
      *
      */
     protected function getEntityIdName() {
-        // Class name without the namespace
-        $className = join('', array_slice(explode('\\', get_class($this)), -1));
-        // Camel case to underscore
-        $className = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $className));
-        return $className . "_id";
+        $entityName = Utils::underscoreClassName($this);
+        return $entityName . "_id";
+    }
+
+    /**
+     * Automagic used to determine the collection name
+     * for use in the URL snippet.  This should
+     * be implemented in the entity class if
+     * it is an exception to the standard naming.
+     *
+     */
+    protected function getCollectionName() {
+        $entityName = Utils::underscoreClassName($this);
+        return Utils::pluralize($entityName);
     }
 
     /**
