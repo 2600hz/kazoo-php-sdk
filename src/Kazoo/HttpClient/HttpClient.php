@@ -40,7 +40,7 @@ class HttpClient implements HttpClientInterface
      */
     public function __construct(SDK $sdk) {
         $this->setSDK($sdk);
-        $this->setClient(new GuzzleClient('', $this->options));
+        $this->setClient(new GuzzleClient('', $sdk->getOptions()));
         $this->addListener('request.before_send', array(new AuthListener($sdk), 'onRequestBeforeSend'));
         $this->addListener('request.error', array(new ErrorListener(), 'onRequestError'));
         $this->resetHeaders();
@@ -77,43 +77,43 @@ class HttpClient implements HttpClientInterface
     /**
      * {@inheritDoc}
      */
-    public function post($uri, $body = null, array $headers = array()) {
-        return $this->request($uri, $body, 'POST', $headers);
+    public function post($uri, $content = null, array $headers = array()) {
+        return $this->request($uri, $content, 'POST', $headers);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function patch($uri, $body = null, array $headers = array()) {
-        return $this->request($uri, $body, 'PATCH', $headers);
+    public function patch($uri, $content = null, array $headers = array()) {
+        return $this->request($uri, $content, 'PATCH', $headers);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function delete($uri, $body = null, array $headers = array()) {
-        return $this->request($uri, $body, 'DELETE', $headers);
+    public function delete($uri, $content = null, array $headers = array()) {
+        return $this->request($uri, $content, 'DELETE', $headers);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function put($uri, $body, array $headers = array()) {
-        return $this->request($uri, $body, 'PUT', $headers);
+    public function put($uri, $content, array $headers = array()) {
+        return $this->request($uri, $content, 'PUT', $headers);
     }
 
     /**
      * {@inheritDoc}
      */
-    private function request($uri, $body = null, $httpMethod = 'GET', array $headers = array(), array $options = array()) {
-        $request = $this->createRequest($httpMethod, $uri, $body, $headers, $options);
+    private function request($uri, $content = null, $httpMethod = 'GET', array $headers = array(), array $options = array()) {
+        $request = $this->createRequest($httpMethod, $uri, $content, $headers, $options);
         $response = $this->getClient()->send($request);
         return new Response($response);
     }
 
-    private function createRequest($httpMethod, $uri, $body = null, array $headers = array(), array $options = array()) {
+    private function createRequest($httpMethod, $uri, $content = null, array $headers = array(), array $options = array()) {
         $merged_headers = array_merge($this->headers, $headers);
-        return $this->getClient()->createRequest($httpMethod, $uri, $merged_headers, $body, $options);
+        return $this->getClient()->createRequest($httpMethod, $uri, $merged_headers, $content, $options);
     }
 
     /**

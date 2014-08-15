@@ -7,24 +7,24 @@ use \stdClass;
 class Account extends AbstractEntity {
     protected $url = '/accounts/{account_id}';
 
-    public function children() {
-        return $this->get('/children');
+    public function children(array $filter = array()) {
+        return $this->get($filter, '/children');
     }
 
-    public function descendants() {
-        return $this->get('/descendants');
+    public function descendants(array $filter = array()) {
+        return $this->get($filter, '/descendants');
     }
 
-    public function siblings() {
-        return $this->get('/siblings');
+    public function siblings(array $filter = array()) {
+        return $this->get($filter, '/siblings');
     }
 
-    public function channels() {
-        return $this->get('/channels');
+    public function channels(array $filter = array()) {
+        return $this->get($filter, '/channels');
     }
 
-    public function apiKey() {
-        return $this->get('/api_key');
+    public function apiKey(array $filter = array()) {
+        return $this->get($filter, '/api_key');
     }
 
     public function move($accountId) {

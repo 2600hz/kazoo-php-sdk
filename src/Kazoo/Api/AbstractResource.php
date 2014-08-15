@@ -54,23 +54,23 @@ abstract class AbstractResource implements ChainableInterface {
         return $this->arguments;
     }
 
-    protected function get($appendUri = null) {
+    protected function get(array $filter = array(), $appendUri = null) {
         $uri = $this->getUri($appendUri);
-        return $this->getSDK()->get($uri)->getData();
+        return $this->getSDK()->get($uri);
     }
 
     protected function put($payload) {
-        $path = $this->getUrl();
-        return $this->getSDK()->put($path, $payload)->getData();
+        $uri = $this->getUri();
+        return $this->getSDK()->put($uri, $payload);
     }
 
     protected function post($payload) {
-        $path = $this->getUrl();
-        return $this->getSDK()->post($path, $payload)->getData();
+        $uri = $this->getUri();
+        return $this->getSDK()->post($uri, $payload);
     }
 
-    protected function delete() {
-        $path = $this->getUrl();
-        return $this->getSDK()->delete($path, $payload)->getData();
+    protected function delete($payload = null) {
+        $uri = $this->getUri();
+        return $this->getSDK()->delete($uri, $payload);
     }
 }

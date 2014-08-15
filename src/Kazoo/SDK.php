@@ -4,7 +4,8 @@ namespace Kazoo;
 
 require_once dirname(__FILE__) . "/../../vendor/autoload.php";
 
-use stdClass;
+use \BadFunctionCallException;
+
 use Kazoo\Common\Log;
 use Kazoo\Common\ChainableInterface;
 use Kazoo\Common\Exception\InvalidArgument;
@@ -90,9 +91,9 @@ class SDK implements ChainableInterface
      *
      *
      * @param \Kazoo\AuthToken\AuthTokenInterface $authToken
-     * @param null|array $options
+     * @param array $options
      */
-    public function __construct(AuthTokenInterface $authToken, $options = array()) {
+    public function __construct(AuthTokenInterface $authToken, array $options = array()) {
         if (is_null($this->options['schema_dir'])) {
             $this->options['schema_dir'] = dirname(__DIR__) . "/../schemas";
         }
@@ -141,6 +142,14 @@ class SDK implements ChainableInterface
     public function setAuthToken(AuthTokenInterface $authToken) {
         $this->authToken = $authToken;
         $this->authToken->setSDK($this);
+    }
+
+    /**
+     *
+     * @return mixed
+     */
+    public function getOptions() {
+        return $this->options;
     }
 
     /**
@@ -197,11 +206,13 @@ class SDK implements ChainableInterface
 
             if (array_key_exists($token, $token_values)) {
                 $value = $token_values[$token];
-            } else if ($token == 'account_id') {
+            }
+
+            if (empty($value) && $token == 'account_id') {
                 $value = $this->authToken->getAccountId();
             }
 
-            if (empty($value)) {
+            if (is_null($value)) {
                 throw new InvalidUri("Missing uri token value for " . $token);
             }
 
@@ -214,10 +225,10 @@ class SDK implements ChainableInterface
     /**
      * Send a GET request with query parameters.
      *
-     * @param string $tokenizedUri              Request path.
-     * @param array $parameters         GET parameters.
-     * @param array $requestHeaders     Request Headers.
-     * @return \Guzzle\Http\EntityBodyInterface|mixed|string
+     * @param string $tokenizedUri   Request path.
+     * @param array  $parameters     GET parameters.
+     * @param array  $requestHeaders Request Headers.
+     * @return \Kazoo\HttpClient\Message\Response
      */
     public function get($uri, array $parameters = array(), $requestHeaders = array()) {
         try {
@@ -239,36 +250,34 @@ class SDK implements ChainableInterface
     /**
      * Send a POST request with JSON-encoded parameters.
      *
-     * @param string $uri              Request path.
-     * @param array $parameters         POST parameters to be JSON encoded.
-     * @param array $requestHeaders     Request headers.
+     * @param string $uri            Request path.
+     * @param array  $content        Post request content
+     * @param array  $requestHeaders Request headers.
+     * @return \Kazoo\HttpClient\Message\Response
      */
-    public function post($uri, $payload, $requestHeaders = array()) {
-        $shell = new stdClass();
-        $shell->data = $payload;
-        $body = $this->createJsonBody($shell);
+    public function post($uri, $content, $requestHeaders = array()) {
         try {
-            return $this->executePost($uri, $body, $requestHeaders);
+            return $this->executePost($uri, $content, $requestHeaders);
         } catch (Unauthorized $e) {
             $this->authToken->reset();
-            return $this->executePost($uri, $body, $requestHeaders);
+            return $this->executePost($uri, $content, $requestHeaders);
         }
     }
 
     /**
      * Send a POST request with raw data.
      *
-     * @param string $uri              Request path.
-     * @param $body                     Request body.
-     * @param array $requestHeaders     Request headers.
-     * @return \Guzzle\Http\EntityBodyInterface|mixed|string
+     * @param string $uri            Request path.
+     * @param array  $content        Post body
+     * @param array  $requestHeaders Request headers.
+     * @return \Kazoo\HttpClient\Message\Response
      */
-    public function postRaw($uri, $body, $requestHeaders = array()) {
+    public function postRaw($uri, $content, $requestHeaders = array()) {
         try {
-            return $this->executePost($uri, $body, $requestHeaders);
+            return $this->executePost($uri, $content, $requestHeaders);
         } catch (Unauthorized $e) {
             $this->authToken->reset();
-            return $this->executePost($uri, $body, $requestHeaders);
+            return $this->executePost($uri, $content, $requestHeaders);
         }
     }
 
@@ -276,26 +285,24 @@ class SDK implements ChainableInterface
      *
      *
      */
-    private function executePost($uri, $body, $requestHeaders) {
-        return $this->getHttpClient()->post($uri, $body, $requestHeaders);
+    private function executePost($uri, $content, $requestHeaders) {
+        return $this->getHttpClient()->post($uri, $content, $requestHeaders);
     }
 
     /**
      * Send a PATCH request with JSON-encoded parameters.
      *
-     * @param string $uri      Request path.
-     * @param array $parameters         POST parameters to be JSON encoded.
-     * @param array $requestHeaders     Request headers.
+     * @param string $uri            Request path.
+     * @param array  $content        Patch request content
+     * @param array  $requestHeaders Request headers.
+     * @return \Kazoo\HttpClient\Message\Response
      */
-    public function patch($uri, $payload, $requestHeaders = array()) {
-        $shell = new stdClass();
-        $shell->data = $payload;
-        $body = $this->createJsonBody($payload);
+    public function patch($uri, $content, $requestHeaders = array()) {
         try {
-            return $this->executePatch($uri, $body, $requestHeaders);
+            return $this->executePatch($uri, $content, $requestHeaders);
         } catch (Unauthorized $e) {
             $this->authToken->reset();
-            return $this->executePatch($uri, $body, $requestHeaders);
+            return $this->executePatch($uri, $content, $requestHeaders);
         }
     }
 
@@ -303,26 +310,24 @@ class SDK implements ChainableInterface
      *
      *
      */
-    private function executePatch($uri, $body, $requestHeaders) {
-        return $this->getHttpClient()->patch($uri, $body, $requestHeaders);
+    private function executePatch($uri, $content, $requestHeaders) {
+        return $this->getHttpClient()->patch($uri, $content, $requestHeaders);
     }
 
     /**
      * Send a PUT request with JSON-encoded parameters.
      *
-     * @param string $uri  Request path.
-     * @param $parameters           POST parameters to be JSON encoded.
-     * @param array $requestHeaders Request headers.
+     * @param string $uri            Request path.
+     * @param array  $content        Put request content
+     * @param array  $requestHeaders Request headers.
+     * @return \Kazoo\HttpClient\Message\Response
      */
-    public function put($uri, $payload, $requestHeaders = array()) {
-        $shell = new stdClass();
-        $shell->data = $payload;
-        $body = $this->createJsonBody($shell);
+    public function put($uri, $content, $requestHeaders = array()) {
         try {
-            return $this->executePut($uri, $body, $requestHeaders);
+            return $this->executePut($uri, $content, $requestHeaders);
         } catch (Unauthorized $e) {
             $this->authToken->reset();
-            return $this->executePut($uri, $body, $requestHeaders);
+            return $this->executePut($uri, $content, $requestHeaders);
         }
     }
 
@@ -330,24 +335,24 @@ class SDK implements ChainableInterface
      *
      *
      */
-    private function executePut($uri, $body, $requestHeaders) {
-        return $this->getHttpClient()->put($uri, $body, $requestHeaders);
+    private function executePut($uri, $content, $requestHeaders) {
+        return $this->getHttpClient()->put($uri, $content, $requestHeaders);
     }
 
     /**
      * Send a DELETE request with JSON-encoded parameters.
      *
-     * @param string $path              Request path.
-     * @param array $parameters         POST parameters to be JSON encoded.
-     * @param array $requestHeaders     Request headers.
+     * @param string $uri            Request path.
+     * @param array  $content        Delete request content
+     * @param array  $requestHeaders Request headers.
+     * @return \Kazoo\HttpClient\Message\Response
      */
-    public function delete($uri, array $parameters = null, $requestHeaders = array()) {
-        $body = $this->createJsonBody($parameters);
+    public function delete($uri, $content = null, $requestHeaders = array()) {
         try {
-            return $this->executeDelete($uri, $body, $requestHeaders);
+            return $this->executeDelete($uri, $content, $requestHeaders);
         } catch (Unauthorized $e) {
             $this->authToken->reset();
-            return $this->executeDelete($uri, $body, $requestHeaders);
+            return $this->executeDelete($uri, $content, $requestHeaders);
         }
     }
 
@@ -355,18 +360,8 @@ class SDK implements ChainableInterface
      *
      *
      */
-    private function executeDelete($uri, $body, $requestHeaders) {
-        return $this->getHttpClient()->delete($uri, $body, $requestHeaders);
-    }
-
-    /**
-     * Create a JSON encoded version of an array of parameters.
-     *
-     * @param array $parameters   Request parameters
-     * @return null|string
-     */
-    protected function createJsonBody($parameters = null) {
-        return ((is_null($parameters)) ? null : json_encode($parameters) );
+    private function executeDelete($uri, $content, $requestHeaders) {
+        return $this->getHttpClient()->delete($uri, $content, $requestHeaders);
     }
 
     /**
@@ -383,6 +378,14 @@ class SDK implements ChainableInterface
         if (class_exists($entityName)) {
             return new $entityName($this, $arguments);
         }
+
+        $backtrace = debug_backtrace();
+        $filename = $backtrace[0]['file'];
+        $line = $backtrace[0]['line'];
+        $className = get_class($this);
+
+        $message = "Call to undefined method $className::$name in $filename on line $line";
+        throw new BadFunctionCallException($message);
     }
 
     /**

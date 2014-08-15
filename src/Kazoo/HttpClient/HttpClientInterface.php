@@ -37,44 +37,44 @@ interface HttpClientInterface
      * Send a POST request
      *
      * @param string $path       Request path
-     * @param mixed  $body       Request body
+     * @param mixed  $content    Request content
      * @param array  $headers    Reconfigure the request headers for this call only
      *
-     * @return array Data
+     * @return \Kazoo\HttpClient\Message\Response
      */
-    public function post($path, $body = null, array $headers = array());
+    public function post($path, $content = null, array $headers = array());
 
     /**
      * Send a PATCH request
      *
      * @param string $path       Request path
-     * @param mixed  $body       Request body
+     * @param mixed  $content    Request content
      * @param array  $headers    Reconfigure the request headers for this call only
      *
      * @internal param array $parameters Request body
-     * @return array Data
+     * @return \Kazoo\HttpClient\Message\Response
      */
-    public function patch($path, $body = null, array $headers = array());
+    public function patch($path, $content = null, array $headers = array());
 
     /**
      * Send a PUT request
      *
      * @param string $path       Request path
-     * @param mixed  $body       Request body
+     * @param mixed  $content    Request content
      * @param array  $headers    Reconfigure the request headers for this call only
      *
-     * @return array Data
+     * @return \Kazoo\HttpClient\Message\Response
      */
-    public function put($path, $body, array $headers = array());
+    public function put($path, $content, array $headers = array());
 
     /**
      * Send a DELETE request
      *
      * @param string $path       Request path
-     * @param mixed  $body       Request body
+     * @param mixed  $content    Request content
      * @param array  $headers    Reconfigure the request headers for this call only
      *
-     * @return array Data
+     * @return \Kazoo\HttpClient\Message\Response
      */
-    public function delete($path, $body = null, array $headers = array());
+    public function delete($path, $content = null, array $headers = array());
 }

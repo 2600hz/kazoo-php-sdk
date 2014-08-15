@@ -9,7 +9,7 @@ use Kazoo\SDK;
 /**
  *
  */
-class User implements AuthTokenInterface
+class ApiKey implements AuthTokenInterface
 {
     /**
      *
@@ -21,19 +21,7 @@ class User implements AuthTokenInterface
      *
      * @var string
      */
-    private $username;
-
-    /**
-     *
-     * @var string
-     */
-    private $password;
-
-    /**
-     *
-     * @var string
-     */
-    private $sipRealm;
+    private $api_key;
 
     /**
      *
@@ -53,11 +41,9 @@ class User implements AuthTokenInterface
      * @param string $password
      * @param string $sipRealm
      */
-    public function __construct($username, $password, $sipRealm) {
+    public function __construct($api_key) {
         session_start();
-        $this->username = $username;
-        $this->password = $password;
-        $this->sipRealm = $sipRealm;
+        $this->api_key = $api_key;
     }
 
     /**
@@ -66,7 +52,7 @@ class User implements AuthTokenInterface
      */
     public function __destruct() {
         if (!is_null($this->auth_response)) {
-            $_SESSION['Kazoo']['AuthToken']['User'] = $this->auth_response;
+            $_SESSION['Kazoo']['AuthToken']['ApiKey'] = $this->auth_response;
         }
     }
 
@@ -108,8 +94,8 @@ class User implements AuthTokenInterface
      */
     public function reset() {
         $this->auth_response = null;
-        if ($_SESSION['Kazoo']['AuthToken']['User']) {
-            unset($_SESSION['Kazoo']['AuthToken']['User']);
+        if ($_SESSION['Kazoo']['AuthToken']['ApiKey']) {
+            unset($_SESSION['Kazoo']['AuthToken']['ApiKey']);
         }
     }
 
@@ -130,8 +116,8 @@ class User implements AuthTokenInterface
      *
      */
     private function checkSessionResponse() {
-        if ($_SESSION['Kazoo']['AuthToken']['User']) {
-            $this->auth_response = $_SESSION['Kazoo']['AuthToken']['User'];
+        if ($_SESSION['Kazoo']['AuthToken']['ApiKey']) {
+            $this->auth_response = $_SESSION['Kazoo']['AuthToken']['ApiKey'];
         } else {
             $this->requestToken();
         }
@@ -148,11 +134,10 @@ class User implements AuthTokenInterface
 
         $payload = new stdClass();
         $payload->data = new stdClass();
-        $payload->data->credentials = md5($this->username . ":" . $this->password);
-        $payload->data->realm = $this->sipRealm;
+        $payload->data->api_key = $this->api_key;
 
         $sdk = $this->getSDK();
-        $tokenizedUri = $sdk->getTokenizedUri($sdk->getTokenUri() . "/user_auth");
+        $tokenizedUri = $sdk->getTokenizedUri($sdk->getTokenUri() . "/api_auth");
 
         $this->disabled = true;
         $response = $sdk->getHttpClient()->put($tokenizedUri, json_encode($payload));
