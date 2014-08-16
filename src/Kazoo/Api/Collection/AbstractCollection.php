@@ -67,14 +67,7 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
      */
     public function rewind() {
         $collection = $this->getCollection();
-
-        if (is_array($collection)) {
-            $this->keys = array_keys($collection);
-        } else if (is_object($collection)) {
-            $this->keys = array_keys((array)$collection);
-        } else {
-            $this->keys = array();
-        }
+        $this->keys = array_keys((array)$collection);
     }
 
     /**
