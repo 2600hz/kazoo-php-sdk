@@ -22,8 +22,11 @@
   </php>
 
   <testsuites>
-    <testsuite name="Kazoo SDK Test Suite">
+    <testsuite name="SDK Functional Tests">
       <directory>Functional</directory>
+    </testsuite>
+    <testsuite name="SDK Unit Tests">
+      <directory>Unit</directory>
     </testsuite>
   </testsuites>
 

@@ -2,12 +2,12 @@
 
 namespace Kazoo\Tests\Functional;
 
-use \Kazoo\Tests\Common\SDKTest;
+use \Kazoo\Tests\Common\FunctionalTest;
 
 /**
  * @group functional
  */
-class DeviceTest extends SDKTest
+class DeviceTest extends FunctionalTest
 {
     /**
      * @test
@@ -34,7 +34,7 @@ class DeviceTest extends SDKTest
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\Device", $device);
         $this->assertTrue((strlen($device->getId()) > 0));
-        $this->assertTrue($device->getId() == $device_id);
+        $this->assertEquals($device->getId(), $device_id);
 
         return $device;
     }
@@ -49,21 +49,21 @@ class DeviceTest extends SDKTest
         $new_name = "SDK Update Test " . rand(100, 1000);
 
         // Ensure our test actually update the name...
-        $this->assertTrue($current_name != $new_name);
+        $this->assertNotEquals($current_name, $new_name);
 
         $device->name = $new_name;
         $device->save();
 
         // Make sure we didn't create a new device
-        $this->assertTrue($device->getId() == $device_id);
+        $this->assertEquals($device->getId(), $device_id);
 
         // The local copy is updated with the result of the
         // API request
-        $this->assertTrue($device->name === $new_name);
+        $this->assertEquals($device->name, $new_name);
 
         // Fetch it from the database again to make sure
         $device->fetch();
-        $this->assertTrue($device->name === $new_name);
+        $this->assertEquals($device->name, $new_name);
     }
 
     /**
@@ -83,7 +83,7 @@ class DeviceTest extends SDKTest
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\Device", $device);
         $this->assertTrue((strlen($device->getId()) > 0));
-        $this->assertTrue($device->getId() == $device_id);
+        $this->assertEquals($device->getId(), $device_id);
 
         return $device->name;
     }
@@ -102,7 +102,7 @@ class DeviceTest extends SDKTest
         $element = $devices->current();
 
         $this->assertTrue((strlen($element->id) > 0));
-        $this->assertTrue($element->id == $device_id);
+        $this->assertEquals($element->id, $device_id);
 
         $filter = array('filter_name' => 'no-such-device');
         $devices = $this->getSDK()->Account()->Devices($filter);

@@ -39,11 +39,12 @@ class Utils
             's' => '');
 
         foreach(array_keys($rules) as $key) {
+
             if(substr($word, (strlen($key) * -1)) != $key) {
                 continue;
             }
 
-            if($key === false) {
+            if($rules[$key] === false) {
                 return $word;
             }
 
@@ -64,7 +65,7 @@ class Utils
         case 'y':
             return substr($word, 0, -1) . 'ies';
         case 's':
-            return $word. ' es';
+            return $word. 'es';
         default:
             return $word . 's';
         }

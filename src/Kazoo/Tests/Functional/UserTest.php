@@ -2,12 +2,12 @@
 
 namespace Kazoo\Tests\Functional;
 
-use \Kazoo\Tests\Common\SDKTest;
+use \Kazoo\Tests\Common\FunctionalTest;
 
 /**
  * @group functional
  */
-class UserTest extends SDKTest
+class UserTest extends FunctionalTest
 {
     /**
      * @test
@@ -35,7 +35,7 @@ class UserTest extends SDKTest
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\User", $user);
         $this->assertTrue((strlen($user->getId()) > 0));
-        $this->assertTrue($user->getId() == $user_id);
+        $this->assertEquals($user->getId(), $user_id);
 
         return $user;
     }
@@ -50,21 +50,21 @@ class UserTest extends SDKTest
         $new_name = "SDK Update First " . rand(100, 1000);
 
         // Ensure our test actually update the name...
-        $this->assertTrue($current_name != $new_name);
+        $this->assertNotEquals($current_name, $new_name);
 
         $user->first_name = $new_name;
         $user->save();
 
         // Make sure we didn't create a new user
-        $this->assertTrue($user->getId() == $user_id);
+        $this->assertEquals($user->getId(), $user_id);
 
         // The local copy is updated with the result of the
         // API request
-        $this->assertTrue($user->first_name === $new_name);
+        $this->assertEquals($user->first_name, $new_name);
 
         // Fetch it from the database again to make sure
         $user->fetch();
-        $this->assertTrue($user->first_name === $new_name);
+        $this->assertEquals($user->first_name, $new_name);
     }
 
     /**
@@ -84,7 +84,7 @@ class UserTest extends SDKTest
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\User", $user);
         $this->assertTrue((strlen($user->getId()) > 0));
-        $this->assertTrue($user->getId() == $user_id);
+        $this->assertEquals($user->getId(), $user_id);
 
         return $user->first_name;
     }
@@ -103,7 +103,7 @@ class UserTest extends SDKTest
         $element = $users->current();
 
         $this->assertTrue((strlen($element->id) > 0));
-        $this->assertTrue($element->id == $user_id);
+        $this->assertEquals($element->id, $user_id);
 
         $filter = array('filter_first_name' => 'no-such-user');
         $users = $this->getSDK()->Account()->Users($filter);

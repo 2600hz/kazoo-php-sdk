@@ -2,12 +2,12 @@
 
 namespace Kazoo\Tests\Functional;
 
-use \Kazoo\Tests\Common\SDKTest;
+use \Kazoo\Tests\Common\FunctionalTest;
 
 /**
  * @group functional
  */
-class AccountTest extends SDKTest
+class AccountTest extends FunctionalTest
 {
     /**
      * @test
@@ -33,7 +33,7 @@ class AccountTest extends SDKTest
         $new_name = "SDK Test " . rand(100, 1000);
 
         // Ensure our test actually update the name...
-        $this->assertTrue($current_name != $new_name);
+        $this->assertNotEquals($current_name, $new_name);
 
         $account->name = $new_name;
         $account->save();
@@ -43,11 +43,11 @@ class AccountTest extends SDKTest
 
         // The local copy is updated with the result of the
         // API request
-        $this->assertTrue($account->name === $new_name);
+        $this->assertEquals($account->name, $new_name);
 
         // Fetch it from the database again to make sure
         $account->fetch();
-        $this->assertTrue($account->name === $new_name);
+        $this->assertEquals($account->name, $new_name);
 
         $account->name = $current_name;
         $account->save();
@@ -78,27 +78,27 @@ class AccountTest extends SDKTest
         $account = $this->getSDK()->Account($account_id);
 
         $this->assertTrue((strlen($account->getId()) > 0));
-        $this->assertTrue($account->getId() == $account_id);
+        $this->assertEquals($account->getId(), $account_id);
 
         $current_name = $account->name;
         $new_name = "SDK Update Test " . rand(100, 1000);
 
         // Ensure our test actually update the name...
-        $this->assertTrue($current_name != $new_name);
+        $this->assertNotEquals($current_name, $new_name);
 
         $account->name = $new_name;
         $account->save();
 
         // Make sure we didn't create a new account
-        $this->assertTrue($account->getId() == $account_id);
+        $this->assertEquals($account->getId(), $account_id);
 
         // The local copy is updated with the result of the
         // API request
-        $this->assertTrue($account->name === $new_name);
+        $this->assertEquals($account->name, $new_name);
 
         // Fetch it from the database again to make sure
         $account->fetch();
-        $this->assertTrue($account->name === $new_name);
+        $this->assertEquals($account->name, $new_name);
     }
 
     /**
@@ -109,7 +109,7 @@ class AccountTest extends SDKTest
         $account = $this->getSDK()->Account($account_id);
 
         $this->assertTrue((strlen($account->getId()) > 0));
-        $this->assertTrue($account->getId() == $account_id);
+        $this->assertEquals($account->getId(), $account_id);
 
         $account->remove();
 

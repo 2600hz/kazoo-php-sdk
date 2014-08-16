@@ -11,7 +11,7 @@ use \Kazoo\AuthToken\Exception\Unauthenticated;
 
 use \Kazoo\Api\Exception\RateLimit;
 
-class SDKTest extends \PHPUnit_Framework_TestCase
+class FunctionalTest extends \PHPUnit_Framework_TestCase
 {
     private $sdk;
 
