@@ -42,7 +42,7 @@ class ApiKey implements AuthTokenInterface
      * @param string $sipRealm
      */
     public function __construct($api_key) {
-        session_start();
+        @session_start();
         $this->api_key = $api_key;
     }
 
@@ -77,7 +77,11 @@ class ApiKey implements AuthTokenInterface
      * @return string
      */
     public function getAccountId() {
-        return $this->getAuthResponse()->account_id;
+        $response = $this->getAuthResponse();
+        if (isset($response->account_id)) {
+            return $response->account_id;
+        }
+        return "";
     }
 
     /**
@@ -85,7 +89,11 @@ class ApiKey implements AuthTokenInterface
      * @return string
      */
     public function getToken() {
-        return $this->getAuthResponse()->auth_token;
+        $response = $this->getAuthResponse();
+        if (isset($response->auth_token)) {
+            return $response->auth_token;
+        }
+        return "";
     }
 
     /**
@@ -94,7 +102,7 @@ class ApiKey implements AuthTokenInterface
      */
     public function reset() {
         $this->auth_response = null;
-        if ($_SESSION['Kazoo']['AuthToken']['ApiKey']) {
+        if (isset($_SESSION['Kazoo']['AuthToken']['ApiKey'])) {
             unset($_SESSION['Kazoo']['AuthToken']['ApiKey']);
         }
     }
@@ -116,7 +124,7 @@ class ApiKey implements AuthTokenInterface
      *
      */
     private function checkSessionResponse() {
-        if ($_SESSION['Kazoo']['AuthToken']['ApiKey']) {
+        if (isset($_SESSION['Kazoo']['AuthToken']['ApiKey'])) {
             $this->auth_response = $_SESSION['Kazoo']['AuthToken']['ApiKey'];
         } else {
             $this->requestToken();

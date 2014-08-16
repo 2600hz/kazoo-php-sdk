@@ -4,32 +4,18 @@ namespace Kazoo\Api\Entity;
 
 use \stdClass;
 
+use \Kazoo\Common\ChainableInterface;
+
 class Account extends AbstractEntity
 {
-    public function children(array $filter = array()) {
-        return $this->get($filter, '/children');
-    }
-
-    public function descendants(array $filter = array()) {
-        return $this->get($filter, '/descendants');
-    }
-
-    public function siblings(array $filter = array()) {
-        return $this->get($filter, '/siblings');
-    }
-
-    public function channels(array $filter = array()) {
-        return $this->get($filter, '/channels');
-    }
-
-    public function apiKey(array $filter = array()) {
-        return $this->get($filter, '/api_key');
-    }
-
-    public function move($accountId) {
-        //TODO: figure out the tmp url thing....
-        //$this->url .= '/move';
-        $payload = new stdClass();
-        //return $this->post($payload);
+    /**
+     *
+     *
+     */
+    public function __construct(ChainableInterface $chain, array $arguments = array()) {
+        if (!array_key_exists(0, $arguments)) {
+            $arguments[0] = $chain->getSDK()->getAuthToken()->getAccountId();
+        }
+        parent::__construct($chain, $arguments);
     }
 }

@@ -33,7 +33,6 @@ abstract class AbstractEntity extends AbstractResource
     public function __construct(ChainableInterface $chain, array $arguments = array()) {
         parent::__construct($chain, $arguments);
         $this->invoke($arguments);
-        return $this;
     }
 
     /**

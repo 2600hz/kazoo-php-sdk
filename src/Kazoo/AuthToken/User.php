@@ -54,7 +54,7 @@ class User implements AuthTokenInterface
      * @param string $sipRealm
      */
     public function __construct($username, $password, $sipRealm) {
-        session_start();
+        @session_start();
         $this->username = $username;
         $this->password = $password;
         $this->sipRealm = $sipRealm;
@@ -91,7 +91,11 @@ class User implements AuthTokenInterface
      * @return string
      */
     public function getAccountId() {
-        return $this->getAuthResponse()->account_id;
+        $response = $this->getAuthResponse();
+        if (isset($response->account_id)) {
+            return $response->account_id;
+        }
+        return "";
     }
 
     /**
@@ -99,7 +103,11 @@ class User implements AuthTokenInterface
      * @return string
      */
     public function getToken() {
-        return $this->getAuthResponse()->auth_token;
+        $response = $this->getAuthResponse();
+        if (isset($response->auth_token)) {
+            return $response->auth_token;
+        }
+        return "";
     }
 
     /**
@@ -108,7 +116,7 @@ class User implements AuthTokenInterface
      */
     public function reset() {
         $this->auth_response = null;
-        if ($_SESSION['Kazoo']['AuthToken']['User']) {
+        if (isset($_SESSION['Kazoo']['AuthToken']['User'])) {
             unset($_SESSION['Kazoo']['AuthToken']['User']);
         }
     }
@@ -130,7 +138,7 @@ class User implements AuthTokenInterface
      *
      */
     private function checkSessionResponse() {
-        if ($_SESSION['Kazoo']['AuthToken']['User']) {
+        if (isset($_SESSION['Kazoo']['AuthToken']['User'])) {
             $this->auth_response = $_SESSION['Kazoo']['AuthToken']['User'];
         } else {
             $this->requestToken();
