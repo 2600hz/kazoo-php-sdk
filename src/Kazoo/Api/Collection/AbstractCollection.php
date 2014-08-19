@@ -15,7 +15,7 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
      *
      *
      */
-    private $elementWrapper;
+    private $element_wrapper;
 
     /**
      *
@@ -33,6 +33,12 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
      *
      *
      */
+    private $default_filter = array();
+
+    /**
+     *
+     *
+     */
     public function __construct(ChainableInterface $chain, array $arguments = array()) {
         parent::__construct($chain, $arguments);
 
@@ -44,9 +50,21 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
         }
 
         if (isset($arguments[0])) {
-            $this->fetch($arguments[0]);
-        } else {
-            $this->fetch();
+            $this->setDefaultFilter($arguments[0]);
+        }
+    }
+
+    /**
+     *
+     *
+     */
+    public function __toString() {
+        try {
+            return $this->toJson();
+        } catch (Exception $e) {
+            // Because php...
+            // Fatal error: Method xxx::__toString() must not throw an exception
+            return json_encode(new stdClass);
         }
     }
 
@@ -55,7 +73,7 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
      *
      */
     public function fetch(array $filter = array()) {
-        $response = $this->get($filter);
+        $response = $this->get($this->getFilter($filter));
         $this->setCollection($response->getData());
         $this->rewind();
         return $this;
@@ -77,7 +95,7 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
     public function current() {
         $key = $this->key();
         $collection = $this->getCollection();
-        $elementWrapper = $this->getElementWrapper();
+        $element_wrapper = $this->getElementWrapper();
 
         if (is_array($collection)) {
             $element = $collection[$key];
@@ -87,7 +105,9 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
             return null;
         }
 
-        return $elementWrapper->setElement($element);
+        $element_wrapper->setElement($element);
+
+        return $element_wrapper;
     }
 
     /**
@@ -95,6 +115,10 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
      *
      */
     public function key() {
+        if (is_null($this->keys)) {
+            $this->fetch();
+        }
+
         return current($this->keys);
     }
 
@@ -103,13 +127,17 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
      *
      */
     public function next() {
+        if (is_null($this->keys)) {
+            $this->fetch();
+        }
+
         next($this->keys);
     }
 
     /**
      *
      *
-     */
+4     */
     public function valid() {
         return $this->key() !== false;
     }
@@ -119,7 +147,43 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
      *
      */
     public function count() {
+        if (is_null($this->keys)) {
+            $this->fetch();
+        }
+
         return count($this->keys);
+    }
+
+    /**
+     *
+     *
+     */
+    public function toJson() {
+        return (string)json_encode($this->getCollection());
+    }
+
+    /**
+     *
+     *
+     */
+    public function getFilter(array $filter = array()) {
+        return array_merge($this->getDefaultFilter(), $filter);
+    }
+
+    /**
+     *
+     *
+     */
+    public function setDefaultFilter(array $filter = array()) {
+        return $this->default_filter = $filter;
+    }
+
+    /**
+     *
+     *
+     */
+    protected function getDefaultFilter() {
+        return $this->default_filter;
     }
 
     /**
@@ -143,7 +207,11 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
      *
      *
      */
-    private function getCollection() {
+    protected function getCollection() {
+        if (is_null($this->collection)) {
+            $this->fetch();
+        }
+
         return $this->collection;
     }
 
@@ -151,7 +219,7 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
      *
      *
      */
-    private function setCollection($collection) {
+    protected function setCollection($collection) {
         $this->collection = $collection;
     }
 
@@ -160,7 +228,7 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
      *
      */
     private function setElementWrapper(ElementWrapper $wrapper) {
-        $this->elementWrapper = $wrapper;
+        $this->element_wrapper = $wrapper;
     }
 
     /**
@@ -168,6 +236,6 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
      *
      */
     private function getElementWrapper() {
-        return $this->elementWrapper;
+        return $this->element_wrapper;
     }
 }

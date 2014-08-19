@@ -95,6 +95,7 @@ abstract class AbstractEntity extends AbstractResource
                 $this->setEntity(new stdClass);
             }
         }
+
         $this->entity->$name = $value;
     }
 
@@ -107,6 +108,7 @@ abstract class AbstractEntity extends AbstractResource
         if(is_null($this->entity) && !empty($id)) {
             $this->fetch();
         }
+
         return $this->entity->$name;
     }
 

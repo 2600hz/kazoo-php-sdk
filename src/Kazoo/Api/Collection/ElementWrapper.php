@@ -30,14 +30,8 @@ class ElementWrapper
      *
      */
     public function __construct(ChainableInterface $chain, $name) {
-        $this->chain = $chain;
-
-        $entity_name = '\\Kazoo\\Api\\Entity\\' . $name;
-        if (!class_exists($entity_name)) {
-            throw new Exception("no such entity $entity_name");
-        }
-
-        $this->entity_name = $entity_name;
+        $this->setChain($chain);
+        $this->setEntityName('\\Kazoo\\Api\\Entity\\' . $name);
     }
 
     /**
@@ -58,26 +52,8 @@ class ElementWrapper
      *
      *
      */
-    public function fetch() {
-        $entity_name = $this->entity_name;
-        // TODO: going to need to figure out how to make the id generic..
-        return new $entity_name($this->chain, array($this->element->id));
-    }
-
-    /**
-     *
-     *
-     */
-    public function setElement(&$element) {
-        $this->element = $element;
-        return $this;
-    }
-
-    /**
-     *
-     *
-     */
     public function __set($name, $value) {
+        // TODO: make this a kazoo sdk specific exception
         throw new Exception("collection elements");
     }
 
@@ -86,7 +62,16 @@ class ElementWrapper
      *
      */
     public function &__get($name) {
-        return $this->element->$name;
+        return $this->getElement()->$name;
+    }
+
+    /**
+     *
+     *
+     */
+    public function fetch() {
+        $entity_name = $this->getEntityName();
+        return new $entity_name($this->getChain(), array($this->getElementId()));
     }
 
     /**
@@ -94,6 +79,68 @@ class ElementWrapper
      *
      */
     public function toJson() {
-        return (string)json_encode($this->element);
+        return (string)json_encode($this->getElement());
+    }
+
+    /**
+     *
+     *
+     */
+    public function setElement(&$element) {
+        $this->element = $element;
+    }
+
+    /**
+     *
+     *
+     */
+    private function getElement() {
+        return $this->element;
+    }
+
+    /**
+     *
+     *
+     */
+    private function getElementId() {
+        // TODO: going to need to figure out how to make the id generic..
+        return $this->element->id;
+    }
+
+    /**
+     *
+     *
+     */
+    private function getEntityName() {
+        return $this->entity_name;
+    }
+
+    /**
+     *
+     *
+     */
+    private function setEntityName($entity_name) {
+        if (!class_exists($entity_name)) {
+            // TODO: make this a kazoo sdk specific exception
+            throw new Exception("no such entity $entity_name");
+        }
+
+        $this->entity_name = $entity_name;
+    }
+
+    /**
+     *
+     *
+     */
+    private function getChain() {
+        return $this->chain;
+    }
+
+    /**
+     *
+     *
+     */
+    private function setChain(ChainableInterface $chain) {
+        $this->chain = $chain;
     }
 }

@@ -113,6 +113,30 @@ class SDK implements ChainableInterface
 
     /**
      *
+     *
+     */
+    public function __call($name, $arguments) {
+        $collection_name = '\\Kazoo\\Api\\Collection\\' . $name;
+        if (class_exists($collection_name)) {
+            return new $collection_name($this, $arguments);
+        }
+
+        $entity_name = '\\Kazoo\\Api\\Entity\\' . $name;
+        if (class_exists($entity_name)) {
+            return new $entity_name($this, $arguments);
+        }
+
+        $backtrace = debug_backtrace();
+        $filename = $backtrace[0]['file'];
+        $line = $backtrace[0]['line'];
+        $class_name = get_class($this);
+
+        $message = "Call to undefined method $class_name::$name in $filename on line $line";
+        throw new BadFunctionCallException($message);
+    }
+
+    /**
+     *
      * @return \Kazoo\HttpClient\HttpClientInterface
      */
     public function getHttpClient() {
@@ -197,7 +221,7 @@ class SDK implements ChainableInterface
         }
 
         if (is_null($token_values)) {
-            $token_values = $this->token_values;
+            $token_values = $this->getTokenValues();
         }
 
         foreach ($tokens[1] as $token) {
@@ -362,30 +386,6 @@ class SDK implements ChainableInterface
      */
     private function executeDelete($uri, $content, $requestHeaders) {
         return $this->getHttpClient()->delete($uri, $content, $requestHeaders);
-    }
-
-    /**
-     *
-     *
-     */
-    public function __call($name, $arguments) {
-        $collection_name = '\\Kazoo\\Api\\Collection\\' . $name;
-        if (class_exists($collection_name)) {
-            return new $collection_name($this, $arguments);
-        }
-
-        $entity_name = '\\Kazoo\\Api\\Entity\\' . $name;
-        if (class_exists($entity_name)) {
-            return new $entity_name($this, $arguments);
-        }
-
-        $backtrace = debug_backtrace();
-        $filename = $backtrace[0]['file'];
-        $line = $backtrace[0]['line'];
-        $class_name = get_class($this);
-
-        $message = "Call to undefined method $class_name::$name in $filename on line $line";
-        throw new BadFunctionCallException($message);
     }
 
     /**

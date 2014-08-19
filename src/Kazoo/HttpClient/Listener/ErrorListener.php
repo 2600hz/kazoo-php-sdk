@@ -8,6 +8,7 @@ use \Kazoo\Api\Exception\ApiException;
 use \Kazoo\Api\Exception\Validation;
 use \Kazoo\Api\Exception\RateLimit;
 use \Kazoo\Api\Exception\Billing;
+use \Kazoo\Api\Exception\Conflict;
 
 use \Kazoo\AuthToken\Exception\Unauthenticated;
 use \Kazoo\AuthToken\Exception\Unauthorized;
@@ -50,6 +51,9 @@ class ErrorListener
         case 405:
             // invalid method
             throw new InvalidMethod($response);
+        case 409:
+            // conflicting documents
+            throw new Conflict($response);
         case 429:
             // too many requests
             throw new RateLimit($response);

@@ -30,7 +30,7 @@ abstract class AbstractResource implements ChainableInterface
      *
      */
     public function getTokenUri() {
-        return $this->chain->getTokenUri() . $this->getUriSnippet();
+        return $this->getChain()->getTokenUri() . $this->getUriSnippet();
     }
 
     /**
@@ -38,7 +38,7 @@ abstract class AbstractResource implements ChainableInterface
      *
      */
     public function getSDK() {
-        return $this->chain->getSDK();
+        return $this->getChain()->getSDK();
     }
 
     /**
@@ -46,7 +46,7 @@ abstract class AbstractResource implements ChainableInterface
      *
      */
     public function getTokenValues() {
-        return array_merge($this->chain->getTokenValues(), $this->token_values);
+        return array_merge($this->getChain()->getTokenValues(), $this->token_values);
     }
     /* END OF CHAINABLE INTERFACE */
 
@@ -55,24 +55,55 @@ abstract class AbstractResource implements ChainableInterface
      *
      */
     public function __construct(ChainableInterface $chain, array $arguments = array()) {
-        $this->chain = $chain;
-        $this->arguments = $arguments;
-        return $this;
+        $this->setChain($chain);
+        $this->setArguments($arguments);
     }
 
     /**
      *
      *
      */
-    public function getUri($appendUri = null) {
-        $tokenUri = $this->getTokenUri();
+    public function getUri($append_uri = null) {
+        $token_uri = $this->getTokenUri();
 
-        if (!is_null($appendUri)) {
-            $tokenUri .= $appendUri;
+        if (!is_null($append_uri)) {
+            $token_uri .= $append_uri;
         }
 
-        $tokenValues = $this->getTokenValues();
-        return $this->getSDK()->getTokenizedUri($tokenUri, $tokenValues);
+        $token_values = $this->getTokenValues();
+        return $this->getSDK()->getTokenizedUri($token_uri, $token_values);
+    }
+
+    /**
+     *
+     *
+     */
+    protected function getChain() {
+        return $this->chain;
+    }
+
+    /**
+     *
+     *
+     */
+    protected function setChain(ChainableInterface $chain) {
+        $this->chain = $chain;
+    }
+
+    /**
+     *
+     *
+     */
+    protected function getArguments() {
+        return $this->arguments;
+    }
+
+    /**
+     *
+     *
+     */
+    protected function setArguments($arguments) {
+        return $this->arguments = $arguments;
     }
 
     /**
@@ -91,16 +122,8 @@ abstract class AbstractResource implements ChainableInterface
      *
      *
      */
-    protected function getArguments() {
-        return $this->arguments;
-    }
-
-    /**
-     *
-     *
-     */
-    protected function get(array $filter = array(), $appendUri = null) {
-        $uri = $this->getUri($appendUri);
+    protected function get(array $filter = array(), $append_uri = null) {
+        $uri = $this->getUri($append_uri);
         return $this->getSDK()->get($uri, $filter);
     }
 
