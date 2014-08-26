@@ -41,6 +41,7 @@ class Accounts extends AbstractResource {
         $this->_child_resources[] = array("name" => "queues", "uri" => "/queues", "resource_class" => "Queues");
         $this->_child_resources[] = array("name" => "registrations", "uri" => "/registrations", "resource_class" => "Registrations");
         $this->_child_resources[] = array("name" => "servers", "uri" => "/servers", "resource_class" => "Servers");
+        $this->_child_resources[] = array("name" => "temporal_rules_sets", "uri" => "/temporal_rules_sets", "resource_class" => "TemporalRulesSets");
         $this->_child_resources[] = array("name" => "timed_routes", "uri" => "/temporal_rules", "resource_class" => "TimeBasedRoutes");
         $this->_child_resources[] = array("name" => "voicemail_boxes", "uri" => "/vmboxes", "resource_class" => "VoicemailBoxes");
         $this->_child_resources[] = array("name" => "webhooks", "uri" => "/webhooks", "resource_class" => "Webhooks");
