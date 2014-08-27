@@ -49,7 +49,7 @@ class Accounts extends AbstractResource {
     }
 
     public function __call($name, $arguments) {
-        
+
         if ($this->hasChildResource($name)) {
             return $this->getChildResource($name);
         } else {
@@ -64,31 +64,39 @@ class Accounts extends AbstractResource {
                             $response = $this->_client->get($this->_uri, array());
                             $collection_type = static::$_entity_collection_class;
                             $raw_entity_list = $response->data;
-                            
+
                             $entity_list = array();
                             foreach($raw_entity_list as $raw_entity){
                                 $entity_class = static::$_entity_class;
                                 $entityInstance = new $entity_class($this->_client, $this->_uri . "/" . $raw_entity->id);
                                 $entityInstance->partialUpdateFromResult($raw_entity);
-                                $entity_list[] = $entityInstance; 
+                                $entity_list[] = $entityInstance;
                             }
-                            
+
                             return new $collection_type($entity_list);
                             break;
                         case 1:
                             if (is_string($arguments[0])) {
                                 $resource_id = $arguments[0];
+
                                 $curAccountContext = $this->_client->getAccountContext();
+
                                 $this->_client->setAccountContext($resource_id);
+
                                 $result = $this->_client->get($this->_uri);
+
                                 $this->_client->setAccountContext($curAccountContext);
+
                                 $entity_class = static::$_entity_class;
+
                                 $entityInstance = new $entity_class($this->_client, $this->_uri);
+
                                 $entityInstance->updateFromResult($result->data);
+
                                 return $entityInstance;
                             } else if (is_array($arguments[0])) {
                                 $filters = $arguments[0];
-                                
+
                                 $response = $this->_client->get($this->_uri, $filters);
                                 $collection_type = static::$_entity_collection_class;
                                 $raw_entity_list = $response->data;
@@ -98,7 +106,7 @@ class Accounts extends AbstractResource {
                                     $entity_class = static::$_entity_class;
                                     $entityInstance = new $entity_class($this->_client, $this->_uri . "/" . $raw_entity->id);
                                     $entityInstance->partialUpdateFromResult($raw_entity);
-                                    $entity_list[] = $entityInstance; 
+                                    $entity_list[] = $entityInstance;
                                 }
 
                                 return new $collection_type($entity_list);

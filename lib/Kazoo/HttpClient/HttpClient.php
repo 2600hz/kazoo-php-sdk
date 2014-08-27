@@ -14,7 +14,6 @@ use Guzzle\Log\MessageFormatter;
 
 use Kazoo\Exception\ErrorException;
 use Kazoo\Exception\RuntimeException;
-use Kazoo\HttpClient\Listener\AuthListener;
 use Kazoo\HttpClient\Listener\ErrorListener;
 
 /**
@@ -58,7 +57,7 @@ class HttpClient implements HttpClientInterface {
             default:
                 $logger = null;
         }
-        
+
         if(!is_null($logger)){
             $adapter = new MonologLogAdapter($logger);
             $logPlugin = new LogPlugin($adapter, MessageFormatter::DEBUG_FORMAT);
@@ -67,6 +66,20 @@ class HttpClient implements HttpClientInterface {
 
         $this->addListener('request.error', array(new ErrorListener($this->options), 'onRequestError'));
         $this->clearHeaders();
+    }
+
+    /**
+     * @return Request
+     */
+    public function getLastRequest() {
+        return $this->lastRequest;
+    }
+
+    /**
+     * @return Response
+     */
+    public function getLastResponse() {
+        return $this->lastResponse;
     }
 
     /**
@@ -136,7 +149,6 @@ class HttpClient implements HttpClientInterface {
      */
     public function request($path, $body = null, $httpMethod = 'GET', array $headers = array(), array $options = array()) {
         $request = $this->createRequest($httpMethod, $path, $body, $headers, $options);
-        //$request->addHeaders($headers);
 
         try {
             $response = $this->client->send($request);
@@ -152,35 +164,8 @@ class HttpClient implements HttpClientInterface {
         return $response;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function authenticate($token) {
-        $this->addListener('request.before_send', array(
-            new AuthListener($token), 'onRequestBeforeSend'
-        ));
-    }
-
-    /**
-     * @return Request
-     */
-    public function getLastRequest() {
-        return $this->lastRequest;
-    }
-
-    /**
-     * @return Response
-     */
-    public function getLastResponse() {
-        return $this->lastResponse;
-    }
-
     protected function createRequest($httpMethod, $path, $body = null, array $headers = array(), array $options = array()) {
         $merged_headers = array_merge($this->headers, $headers);
-//        echo "Path: " . $path . "\n";
-//        echo "HTTP Verb: " . $httpMethod . "\nHeaders:\n";
-//        print_r($merged_headers);
         return $this->client->createRequest($httpMethod, $path, $merged_headers, $body, $options);
     }
-
 }
