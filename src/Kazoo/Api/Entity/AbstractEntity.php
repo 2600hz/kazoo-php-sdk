@@ -278,20 +278,12 @@ abstract class AbstractEntity extends AbstractResource
      *
      *
      */
-    private function invoke(array $arguments) {
-        $entity_id = isset($arguments[0]) ? $arguments[0] : null;
-        $this->setId($entity_id);
-    }
-
-    /**
-     *
-     *
-     */
-    private function setId($entity_id = null) {
-        $this->entity_id = $entity_id;
-
-        if (empty($entity_id)) {
-            unset($this->entity->id);
+    protected function setEntity($entity = null) {
+        $this->entity = $entity;
+        if (!empty($entity->id)) {
+            $this->setId($entity->id);
+        } else {
+            $this->setId();
         }
     }
 
@@ -311,12 +303,20 @@ abstract class AbstractEntity extends AbstractResource
      *
      *
      */
-    private function setEntity($entity = null) {
-        $this->entity = $entity;
-        if (!empty($entity->id)) {
-            $this->setId($entity->id);
-        } else {
-            $this->setId();
+    private function invoke(array $arguments) {
+        $entity_id = isset($arguments[0]) ? $arguments[0] : null;
+        $this->setId($entity_id);
+    }
+
+    /**
+     *
+     *
+     */
+    private function setId($entity_id = null) {
+        $this->entity_id = $entity_id;
+
+        if (empty($entity_id)) {
+            unset($this->entity->id);
         }
     }
 

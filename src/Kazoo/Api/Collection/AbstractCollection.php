@@ -100,7 +100,7 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
         if (is_array($collection)) {
             $element = $collection[$key];
         } else if (is_object($collection)) {
-            $element = $collection[$key];
+            $element = $collection->$key;
         } else {
             return null;
         }

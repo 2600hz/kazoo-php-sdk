@@ -126,4 +126,12 @@ class DeviceTest extends FunctionalTest
 
 //        $device($device_id)->fetch();
     }
+
+    /**
+     * @test
+     */
+    public function testDevicesStatus() {
+        $status = $this->getSDK()->Account()->Devices()->status();
+        $this->assertInstanceOf("\\Kazoo\\Api\\Collection\\Devices", $status);
+    }
 }

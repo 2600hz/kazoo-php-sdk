@@ -240,6 +240,7 @@ class SDK implements ChainableInterface
                 throw new InvalidUri("Missing uri token value for " . $token);
             }
 
+            // TODO: urlencode $value?
             $uri = preg_replace($pattern, $value, $uri);
         }
 

@@ -71,6 +71,11 @@ class ElementWrapper
      */
     public function fetch() {
         $entity_name = $this->getEntityName();
+
+        if (is_null($entity_name)) {
+            throw new Exception("This is a read only API");
+        }
+
         return new $entity_name($this->getChain(), array($this->getElementId()));
     }
 
@@ -104,6 +109,9 @@ class ElementWrapper
      */
     private function getElementId() {
         // TODO: going to need to figure out how to make the id generic..
+        if(!empty($this->element->device_id)) {
+            return $this->element->device_id;
+        }
         return $this->element->id;
     }
 
@@ -121,11 +129,10 @@ class ElementWrapper
      */
     private function setEntityName($entity_name) {
         if (!class_exists($entity_name)) {
-            // TODO: make this a kazoo sdk specific exception
-            throw new Exception("no such entity $entity_name");
+            $this->entity_name = null;
+        } else {
+            $this->entity_name = $entity_name;
         }
-
-        $this->entity_name = $entity_name;
     }
 
     /**

@@ -1,0 +1,15 @@
+cb_cdrs
+cb_menus
+cb_registrations
+cb_resources
+cb_services
+cb_system_configs
+cb_temporal_rules
+cb_temporal_rule_sets
+cb_vmboxes
+cb_webhook
+cb_whitelable
+cb_configs
+cb_phone_numbers
+cb_conferences
+cb_connectivity
