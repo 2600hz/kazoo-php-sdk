@@ -2,7 +2,11 @@
 
 A simple Object Oriented wrapper for Kazoo API, written with PHP5.
 
-[SDK Documentation] (http://kazoo-php-sdk.readthedocs.org)
+## _NOTICE:_ Master is no longer backward compatibile with version 1.x
+
+The master brach of this repo represents a new approach to the SDK, which will become version 2.x.
+
+If you are currently using the SDK the 1.x branches will be maintained until otherwise notified.
 
 ## Features
 
@@ -16,59 +20,93 @@ A simple Object Oriented wrapper for Kazoo API, written with PHP5.
 * [Guzzle](https://github.com/guzzle/guzzle) library,
 * (optional) PHPUnit to run tests.
 
-## Autoload
+Dependencies for the SDK are managed using [Composer](http://getcomposer.org).  For your convience we have included the composer binary in the root directory of the project.
 
-The new version of `kazoo-php-sdk` using [Composer](http://getcomposer.org).
-The first step to use `kazoo-php-sdk` is to download composer:
-
+However, if you would like to install Composer to your local system you can run (optional):
 ```bash
 $ curl -s http://getcomposer.org/installer | php
 ```
 
-Then we have to install our dependencies using:
-```bash
-$ php composer.phar install
-```
-Now we can use autoloader from Composer by:
+## Installing the SDK
+_NOTICE: These instructions are a work-in-progress. Do you have a better way? Let us know!_
+
+* Browse to the GitHub repo for the [Kazoo SDK](https://github.com/2600hz/kazoo-php-sdk) and select the branch which represents the version you wish to use.
+* Click "Download ZIP"
+* Unzip the SDK into your project
+* The SDK follows the PSR-0 convention names for its classes, which means you should be able to easily integrate `kazoo-php-sdk` class loading in your own autoloader.
+
+## Using the SDK (with Composer)
+
+_This assumes basic familiarization with composer.  If you have not used Composer before you might read the [getting started guide](https://getcomposer.org/doc/00-intro.md)._
+
+Add the following require line:
 
 ```yaml
-{
-    "require": {
-        "2600hz/kazoo-php-sdk": "*"
-    },
-    "minimum-stability": "dev"
-}
+"2600hz/kazoo-php-sdk": "dev-master"
 ```
 
-> `kazoo-php-sdk` follows the PSR-0 convention names for its classes, which means you can easily integrate `kazoo-php-sdk` classes loading in your own autoloader.
+Using Composer update or install your project dependencies.
 
-## Basic usage of `kazoo-php-sdk` client
+If your project is already including the auto-generated autloader, then you are done!
+
+## Basic Usage
 
 ```php
 <?php
 
 // Install the library via composer or download the .zip file to your project folder.
 // This line loads the library
-require_once "kazoo-php-sdk/src/Kazoo/SDK.php";
+require_once "vendor/autoload.php";
 
+$options = array('base_url' => 'http://kazoo-crossbar-url:8000');
+$authToken = new \Kazoo\AuthToken\User('username', 'password', 'realm');
+$client = new \Kazoo\SDK($authToken, $options);
 
-$options = array("base_url" => "http://kazoo-crossbar-url:8000");
-$client = new \Kazoo\Client('user', '12341234', 'sip.realm.com', $options);
-$devices = $client->accounts()->devices()->retrieve();
-foreach($devices as $device){
-	echo $device->toJSON();	//Your device configurations for the logged in account
+$users = $client->Account()->Users()->fetch();
+
+$admins = array();
+foreach ($users as $element) {
+    if ($element->priv_level == 'admin') {
+        $admins[] = $element->fetch();
+    }
+}
+
+foreach($admins as $admin) {
+    $admin->require_password_update = true;
+    $admin->save();
 }
 ```
 
-From `$client` object, you can access to all Kazoo.
+From `$client` object, you can access the power of Kazoo!
+
+## We need your help with version 2.x
+* Version 2.x of the SDK needs to have the Entity and Collection classes for each Kazoo API built, with unit tests
+* We need to create documentation
+* We need testers!
+
+Interested?  Heres how to get started!
+* Install your favorite webserver with PHP 5.3.2+
+* Clone the SDK from your fork to your webserver directory, in this example we will use:
+```bash
+$ cd /var/www/html/
+$ git clone git@github.com:{YOUR_GITHUB_ORGANIZATION}/kazoo-php-sdk.git
+```
+* Create a new branch for your changes
+```base
+$ git branch -b MY-FEATURE-BRANCH
+```
+* Make changes!
+* Commit the changes
+```bash
+$ git add .
+$ git commit -m 'added the XXX API'
+$ git push origin MY-FEATURE-BRANCH
+```
+* Login to GitHub, and your should have a "Compare & pull request" button on fork.  Follow the instructions provided by that tool!
 
 ## Documentation
 
 See the `doc` directory for more detailed documentation.
-
-## License
-
-`kazoo-php-sdk` is licensed under the MIT License - see the LICENSE file for details
 
 ## Credits
 
