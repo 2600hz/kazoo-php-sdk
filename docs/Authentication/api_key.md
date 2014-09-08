@@ -16,9 +16,9 @@ require_once "vendor/autoload.php";
 
 $options = array('base_url' => 'http://kazoo-crossbar-url:8000');
 $authToken = new Kazoo\AuthToken\User('username', 'password', 'realm');
-$client = new \Kazoo\SDK($authToken, $options);
+$sdk = new \Kazoo\SDK($authToken, $options);
 
-echo $client->Account()->apiKey();
+echo $sdk->Account()->apiKey();
 
 ```
 
