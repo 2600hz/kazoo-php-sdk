@@ -4,9 +4,9 @@
 The Kazoo API authenticates and authorizes all requests based on a token.  This token is short lived and should be generated for each session.  There are several ways that a Kazoo authentication/authorization token can be generated, but they all involve providing secret credintials.  As such when using the SDK it is first necessary to create a AuthToken object from some set of credintials then provide that object to the SDK.
 
 There are currently three AuthToken objects:
-* (User)[user.md]
-* (API Key)[api_key.md]
-* (None)[none.md]
+* [User](user.md)
+* [API Key](api_key.md)
+* [None](none.md)
 
 ## Automatic Account ID
 When an authentication/authorization token is granted by the Kazoo API, an associated account id is determined.  These token are limited to accessing that account or any sub-account.  As a convience the SDK will automatically use the account id of the authentication token if no other accountid is provided.  This allows a developer to simply use the Account object in API chains without having to specify the account id each time, unless they are attempting to access sub-accounts.
