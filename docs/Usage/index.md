@@ -106,7 +106,7 @@ To access a user's CDRs in another account you would issue the following request
 
 _"From the SDK, in account XXX and for the user YYY get the cdrs."_
 ```php
-$users = $sdk->Account("XXX")->User("YYY")->cdrs();
+$cdrs = $sdk->Account("XXX")->User("YYY")->cdrs();
 ```
 
 # More Info
