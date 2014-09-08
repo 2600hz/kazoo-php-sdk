@@ -1,4 +1,4 @@
-# Authenticating with your API Key
+# API Key
 
 ## How to get your API Key
 _NOTICE: your API key is very sensitive, take precautions to keep it secure!_

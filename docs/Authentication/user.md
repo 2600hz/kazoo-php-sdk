@@ -1,4 +1,4 @@
-# Authenticating with your user credintials
+# User Credentials
 
 ## Creating an AuthToken object
 Replace username, password, and realm with the approriate values.
