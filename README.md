@@ -16,7 +16,9 @@ If you are currently using the SDK the 1.x branches will be maintained until oth
 
 ## Requirements
 
-* PHP >= 5.3.2 with [cURL](http://php.net/manual/en/book.curl.php) extension,
+* PHP >= 5.3.2
+  * [php-xml](http://php.net/manual/en/refs.xml.php) extension
+  * [cURL](http://php.net/manual/en/book.curl.php) extension
 * [Guzzle](https://github.com/guzzle/guzzle) library,
 * (optional) PHPUnit to run tests.
 
