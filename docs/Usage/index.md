@@ -30,14 +30,14 @@ $user = \Kazoo\Api\Entity\User($account, "XXX");
 ```
 
 The standard methods of a entity are:
-* fetch() - Gets all the properties of the entity from the database.  If the entity is newly created (has no id) this will throw an exception.
-* save() - This will store the entity in the Kazoo platform.  It will create a new resource or update an existing if it has an id.
-* remove() - This will delete the entity from the Kazoo platform.  If the entity is newly created (has no id) this will throw an exception.
-* duplicat() - Use the properites of the current entity as a template and create a new instance (with no id).
-* toJson() - Output the JSON representation of the enitity.  If a entity is treated as a string this will automatically be invoked.
-* fromJson($json) - Propulate the entity properties from a JSON representation
-* getId() - Get the entity ID
-* reset() - Remove the entity properties and id from the instance
+* *fetch()* - Gets all the properties of the entity from the database.  If the entity is newly created (has no id) this will throw an exception.
+* *save()* - This will store the entity in the Kazoo platform.  It will create a new resource or update an existing if it has an id.
+* *remove()* - This will delete the entity from the Kazoo platform.  If the entity is newly created (has no id) this will throw an exception.
+* *duplicate()* - Use the properites of the current entity as a template and create a new instance (with no id).
+* *toJson()* - Output the JSON representation of the enitity.  If a entity is treated as a string this will automatically be invoked.
+* *fromJson($json)* - Propulate the entity properties from a JSON representation
+* *getId()* - Get the entity ID
+* *reset()* - Remove the entity properties and id from the instance
 
 Properties of the entity can be read and written via standard PHP syntax.
 
@@ -56,11 +56,11 @@ A collection is a group of elements that represent a entity and have plural clas
 Unlike entities, collections and their elements can not be changed as it is only a partial representation of what is present in the system.
 
 The standard methods of collections are:
-* fetch($filter) - Gets all the elements of a collection from the database.  The filter is an optional array of Kazoo API filters in key/value form.
-* count() - Returns the number of elements in the collection
-* toJson() - Output the JSON representation of the collection.  If a collection is treated as a string this will automatically be invoked.
-* fromJson($json) - Propulate the collection elements from a JSON representation
-* rewind()/current()/key()/next()/valid() - These provide a PHP [iterator](http://php.net/manual/en/class.iterator.php) interface for functions such as `foreach`
+* *fetch($filter)* - Gets all the elements of a collection from the database.  The filter is an optional array of Kazoo API filters in key/value form.
+* *count()* - Returns the number of elements in the collection
+* *toJson()* - Output the JSON representation of the collection.  If a collection is treated as a string this will automatically be invoked.
+* *fromJson($json)* - Propulate the collection elements from a JSON representation
+* *rewind()*/*current()*/*key()*/*next()*/*valid()* - These provide a PHP [iterator](http://php.net/manual/en/class.iterator.php) interface for functions such as `foreach`
 
 Properties of a collection can not be written to, attempting to do so will cause an exception.
 
