@@ -51,7 +51,7 @@ echo $device;
 
 ## Collections
 
-A collection is a group of elements that represent entities or dynamic information.  These have plural class names.
+A collection is a group of elements that represent entities or lists of information.  These have plural class names.
 
 Unlike entities, collections and their elements can not be changed as it is only a partial representation of what is present in the system.
 
