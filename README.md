@@ -19,8 +19,6 @@ If you are currently using the SDK the 1.x branches will be maintained until oth
 * PHP >= 5.3.2
   * [php-xml](http://php.net/manual/en/refs.xml.php) extension
   * [cURL](http://php.net/manual/en/book.curl.php) extension
-* [Guzzle](https://github.com/guzzle/guzzle) library,
-* (optional) PHPUnit to run tests.
 
 Dependencies for the SDK are managed using [Composer](http://getcomposer.org).  For your convience we have included the composer binary in the root directory of the project.
 
