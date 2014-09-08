@@ -35,7 +35,7 @@ _NOTICE: These instructions are a work-in-progress. Do you have a better way? Le
 * Unzip the SDK into your project
 * The SDK follows the PSR-0 convention names for its classes, which means you should be able to easily integrate `kazoo-php-sdk` class loading in your own autoloader.
 
-## Using the SDK (with Composer)
+## Installing the SDK (with Composer)
 
 _This assumes basic familiarization with composer.  If you have not used Composer before you might read the [getting started guide](https://getcomposer.org/doc/00-intro.md)._
 
@@ -49,7 +49,10 @@ Using Composer update or install your project dependencies.
 
 If your project is already including the auto-generated autloader, then you are done!
 
-## Basic Usage
+## Example Usage
+
+In this example we will find all admins of the account belonging to the authenticated user.  It will then set "require_password_update" to `true` for each admin and save it back to the db.
+
 
 ```php
 <?php
@@ -77,7 +80,7 @@ foreach($admins as $admin) {
 }
 ```
 
-From `$client` object, you can access the power of Kazoo!
+This is a basic example, from `$client` object you can access the full power of Kazoo!
 
 ## We need your help with version 2.x
 * Version 2.x of the SDK needs to have the Entity and Collection classes for each Kazoo API built, with unit tests
@@ -109,10 +112,6 @@ $ git push origin MY-FEATURE-BRANCH
 See the `doc` directory for more detailed documentation.
 
 ## Credits
-
-### Sponsored by
-
-[![2600hz](http://2600hz.com/images/logo.png)](http://2600hz.com)
 
 ### Contributors
 - [Ben Wann](https://github.com/tickbw)
