@@ -11,7 +11,6 @@ The Kazoo SDK uses [PHP namespaces](http://php.net/manual/en/language.namespaces
 ```php
 $authToken = new \Kazoo\AuthToken\User('username', 'password', 'realm');
 $sdk = new \Kazoo\SDK($authToken, $options);
-$device = new \Kazoo\Api\Entity\Device($sdk);
 ```
 
 ## Resources
