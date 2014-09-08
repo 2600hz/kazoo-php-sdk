@@ -65,7 +65,7 @@ $options = array('base_url' => 'http://kazoo-crossbar-url:8000');
 $authToken = new \Kazoo\AuthToken\User('username', 'password', 'realm');
 $sdk = new \Kazoo\SDK($authToken, $options);
 
-$users = $sdk->Account()->Users()->fetch();
+$users = $sdk->Account()->Users();
 
 $admins = array();
 foreach ($users as $element) {
