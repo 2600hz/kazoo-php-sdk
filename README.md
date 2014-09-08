@@ -63,9 +63,9 @@ require_once "vendor/autoload.php";
 
 $options = array('base_url' => 'http://kazoo-crossbar-url:8000');
 $authToken = new \Kazoo\AuthToken\User('username', 'password', 'realm');
-$client = new \Kazoo\SDK($authToken, $options);
+$sdk = new \Kazoo\SDK($authToken, $options);
 
-$users = $client->Account()->Users()->fetch();
+$users = $sdk->Account()->Users()->fetch();
 
 $admins = array();
 foreach ($users as $element) {
@@ -80,7 +80,7 @@ foreach($admins as $admin) {
 }
 ```
 
-This is a basic example, from `$client` object you can access the full power of Kazoo!
+This is a basic example, from `$sdk` object you can access the full power of Kazoo!
 
 ## We need your help with version 2.x
 * Version 2.x of the SDK needs to have the Entity and Collection classes for each Kazoo API built, with unit tests
