@@ -14,10 +14,8 @@ require_once "vendor/autoload.php";
 /* Setup your SDK options, most commonly the Kazoo URL. If not provided defaults to localhost */
 $options = array('base_url' => 'http://kazoo-crossbar-url:8000');
 
-/* Get an authentication token using ONE of the provided methods */
-// $authToken = new Kazoo\AuthToken\None(); /* must have IP auth enabled on Kazoo */
-// $authToken = new Kazoo\AuthToken\ApiKey('XXXXX');
-$authToken = new Kazoo\AuthToken\User('username', 'password', 'sip.realm');
+/* Get an authentication token */
+$authToken = new \Kazoo\AuthToken\User('username', 'password', 'sip.realm');
 
 /* Create a new Kazoo SDK object */
 $sdk = new \Kazoo\SDK($authToken, $options);
@@ -40,6 +38,18 @@ echo $devices;
 var_dump("List the registration status for the devices");
 echo $devices->status();
 
+var_dump("Create new device");
+$device = $sdk->Account()->Device();
+$device->name = "Test Device";
+$device->save();
+echo $device;
+
+var_dump("Update the device");
+$device->call_forward->enabled = true;
+$device->call_forward->number = '4158867900';
+$device->save();
+echo $device();
+
 ```
 
 ## Working in different sub-accounts
@@ -55,10 +65,8 @@ $subaccount_id = "9142021acb03d27887e47ff3b858c826";
 /* Setup your SDK options, most commonly the Kazoo URL. If not provided defaults to localhost */
 $options = array('base_url' => 'http://kazoo-crossbar-url:8000');
 
-/* Get an authentication token using ONE of the provided methods */
-// $authToken = new Kazoo\AuthToken\None(); /* must have IP auth enabled on Kazoo */
-// $authToken = new Kazoo\AuthToken\ApiKey('XXXXX');
-$authToken = new Kazoo\AuthToken\User('username', 'password', 'sip.realm');
+/* Get an authentication token */
+$authToken = new \Kazoo\AuthToken\User('username', 'password', 'sip.realm');
 
 /* Create a new Kazoo SDK object */
 $sdk = new \Kazoo\SDK($authToken, $options);
@@ -82,10 +90,8 @@ $user_id = "f5970725ea5907ffd8dd5a2ae9359b65";
 /* Setup your SDK options, most commonly the Kazoo URL. If not provided defaults to localhost */
 $options = array('base_url' => 'http://kazoo-crossbar-url:8000');
 
-/* Get an authentication token using ONE of the provided methods */
-// $authToken = new Kazoo\AuthToken\None(); /* must have IP auth enabled on Kazoo */
-// $authToken = new Kazoo\AuthToken\ApiKey('XXXXX');
-$authToken = new Kazoo\AuthToken\User('username', 'password', 'sip.realm');
+/* Get an authentication token */
+$authToken = new \Kazoo\AuthToken\User('username', 'password', 'sip.realm');
 
 /* Create a new Kazoo SDK object */
 $sdk = new \Kazoo\SDK($authToken, $options);
@@ -109,10 +115,8 @@ require_once "vendor/autoload.php";
 /* Setup your SDK options, most commonly the Kazoo URL. If not provided defaults to localhost */
 $options = array('base_url' => 'http://kazoo-crossbar-url:8000');
 
-/* Get an authentication token using ONE of the provided methods */
-// $authToken = new Kazoo\AuthToken\None(); /* must have IP auth enabled on Kazoo */
-// $authToken = new Kazoo\AuthToken\ApiKey('XXXXX');
-$authToken = new Kazoo\AuthToken\User('username', 'password', 'sip.realm');
+/* Get an authentication token */
+$authToken = new \Kazoo\AuthToken\User('username', 'password', 'sip.realm');;
 
 $account = $sdk->Account();
 $account_id = $account->getId();
