@@ -2,6 +2,8 @@
 
 namespace Kazoo\Api;
 
+use \stdClass;
+
 use Kazoo\HttpClient\Message\ResponseMediator;
 
 /**
@@ -84,7 +86,7 @@ abstract class AbstractResource {
                             $response = $this->_client->get($this->_uri, array());
                             $collection_type = static::$_entity_collection_class;
                             $raw_entity_list = $this->process_response($response);
-                           
+
                             if (static::$_entity_class == "Kazoo\Api\Data\Entity\Limit") {
                                 $entity_class = static::$_entity_class;
                                 return new $entity_class($this->_client, $this->_uri, $raw_entity_list);
@@ -95,6 +97,11 @@ abstract class AbstractResource {
                                 $entity_class = static::$_entity_class;
                                 if (static::$_entity_class == "Kazoo\Api\Data\Entity\Registration") {
                                     $entityInstance = new $entity_class($this->_client, $this->_uri, $raw_entity);
+                                } else if (static::$_entity_class == "Kazoo\Api\Data\Entity\Connectivity") {
+                                    $connectivity = new stdClass();
+                                    $connectivity->id = $raw_entity;
+                                    $entityInstance = new $entity_class($this->_client, $this->_uri . "/" . $raw_entity);
+                                    $entityInstance->partialUpdateFromResult($connectivity);
                                 } else {
                                     $entityInstance = new $entity_class($this->_client, $this->_uri . "/" . $raw_entity->id);
                                     $entityInstance->partialUpdateFromResult($raw_entity);
