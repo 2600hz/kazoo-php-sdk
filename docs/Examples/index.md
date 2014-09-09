@@ -102,7 +102,7 @@ var_dump("List all devices for user $user_id in account $subaccount_id");
 $filter = array('filter_owner_id' => $user_id);                                 
 $devices = $sdk->Account($subaccount_id)->Devices($filter);
 foreach($devices as $element) {
-    echo $element->fetch();
+    echo $element;
 }
 ```
 
