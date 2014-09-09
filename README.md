@@ -57,30 +57,33 @@ In this example we will find all admins of the account belonging to the authenti
 ```php
 <?php
 
-// Install the library via composer or download the .zip file to your project folder.
-// This line loads the library
+/* Install the library via composer or download the .zip file to your project folder. */
+/* This line loads the library */
 require_once "vendor/autoload.php";
 
+/* Setup your SDK options, most commonly the Kazoo URL. If not provided defaults to localhost */
 $options = array('base_url' => 'http://kazoo-crossbar-url:8000');
-$authToken = new \Kazoo\AuthToken\User('username', 'password', 'realm');
+
+/* Get an authentication token using ONE of the provided methods */
+// $authToken = new Kazoo\AuthToken\None(); /* must have IP auth enabled on Kazoo */
+// $authToken = new Kazoo\AuthToken\ApiKey('XXXXX');
+$authToken = new Kazoo\AuthToken\User('username', 'password', 'sip.realm');
+
 $sdk = new \Kazoo\SDK($authToken, $options);
 
-$users = $sdk->Account()->Users();
-
-$admins = array();
+$filter = array('filter_priv_level' => 'admin');
+$users = $sdk->Account()->Users($filter);
 foreach ($users as $element) {
-    if ($element->priv_level == 'admin') {
-        $admins[] = $element->fetch();
-    }
-}
-
-foreach($admins as $admin) {
+    $admin = $element->fetch();
     $admin->require_password_update = true;
     $admin->save();
 }
+
 ```
 
 This is a basic example, from `$sdk` object you can access the full power of Kazoo!
+
+Check out the [examples](docs/Examples/index.md) for more!
 
 ## We need your help with version 2.x
 * Version 2.x of the SDK needs to have the Entity and Collection classes for each Kazoo API built, with unit tests
