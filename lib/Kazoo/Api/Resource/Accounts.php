@@ -32,7 +32,7 @@ class Accounts extends AbstractResource {
         $this->_child_resources[] = array("name" => "directories", "uri" => "/directories", "resource_class" => "Directories");
         $this->_child_resources[] = array("name" => "faxes", "uri" => "/faxes", "resource_class" => "Faxes");
         $this->_child_resources[] = array("name" => "hotdesks", "uri" => "/hotdesks", "resource_class" => "Hotdesks");
-        $this->_child_resources[] = array("name" => "quickcalls", "uri" => "/quickcalls", "resource_class" => "Quickcalls");
+        $this->_child_resources[] = array("name" => "quickcalls", "uri" => "/quickcalls", "resource_class" => "QuickCalls");
         $this->_child_resources[] = array("name" => "menus", "uri" => "/menus", "resource_class" => "Menus");
         $this->_child_resources[] = array("name" => "agents", "uri" => "/agents", "resource_class" => "Agents");
         $this->_child_resources[] = array("name" => "queues", "uri" => "/queues", "resource_class" => "Queues");
