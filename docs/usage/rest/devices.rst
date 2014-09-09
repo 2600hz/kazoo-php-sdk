@@ -7,7 +7,9 @@ Creating a new Device
 
 .. code-block:: php
 
-    $client = new \Kazoo\Client($username, $password, $sipRealm, $options);
+    $options = array("base_url" => "http://kazoo-crossbar-url:8000");
+    $authToken = new \Kazoo\AuthToken\User('username', 'password', 'sip.realm');
+    $client = new \Kazoo\Client($authToken, $options);
 
     $shellDevice = $client->accounts()->devices()->new();
     $num = substr(number_format(time() * rand(),0,'',''),0,4);
@@ -21,7 +23,10 @@ Get a list of sub accounts
 
 .. code-block:: php
 
-    $client = new \Kazoo\Client($username, $password, $sipRealm, $options);
+    $options = array("base_url" => "http://kazoo-crossbar-url:8000");
+    $authToken = new \Kazoo\AuthToken\User('username', 'password', 'sip.realm');
+    $client = new \Kazoo\Client($authToken, $options);
+
     $devices = $this->client->accounts()->devices()->retrieve();
 
 Get a list of sub accounts
@@ -29,7 +34,10 @@ Get a list of sub accounts
 
 .. code-block:: php
 
-    $client = new \Kazoo\Client($username, $password, $sipRealm, $options);
+    $options = array("base_url" => "http://kazoo-crossbar-url:8000");
+    $authToken = new \Kazoo\AuthToken\User('username', 'password', 'sip.realm');
+    $client = new \Kazoo\Client($authToken, $options);
+
     $accounts = $this->client->accounts()->retrieve();
 
 Get an empty Device
@@ -37,5 +45,8 @@ Get an empty Device
 
 .. code-block:: php
 
-    $client = new \Kazoo\Client($username, $password, $sipRealm, $options);
+    $options = array("base_url" => "http://kazoo-crossbar-url:8000");
+    $authToken = new \Kazoo\AuthToken\User('username', 'password', 'sip.realm');
+    $client = new \Kazoo\Client($authToken, $options);
+
     $device = $this->client->accounts()->devices()->new()

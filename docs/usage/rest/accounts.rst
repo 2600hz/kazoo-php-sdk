@@ -7,7 +7,9 @@ Creating a Subaccount
 
 .. code-block:: php
 
-    $client = new \Kazoo\Client($username, $password, $sipRealm, $options);
+    $options = array("base_url" => "http://kazoo-crossbar-url:8000");
+    $authToken = new \Kazoo\AuthToken\User('username', 'password', 'sip.realm');
+    $client = new \Kazoo\Client($authToken, $options);
 
     $newAccount = $client->accounts()->new();
     $newAccount->name = "New Test Account";
@@ -21,7 +23,10 @@ Get a list of sub accounts
 
 .. code-block:: php
 
-    $client = new \Kazoo\Client($username, $password, $sipRealm, $options);
+    $options = array("base_url" => "http://kazoo-crossbar-url:8000");
+    $authToken = new \Kazoo\AuthToken\User('username', 'password', 'sip.realm');
+    $client = new \Kazoo\Client($authToken, $options);
+
     $accounts = $this->client->accounts()->retrieve();
 
 Get an empty Account
@@ -29,5 +34,8 @@ Get an empty Account
 
 .. code-block:: php
 
-    $client = new \Kazoo\Client($username, $password, $sipRealm, $options);
+    $options = array("base_url" => "http://kazoo-crossbar-url:8000");
+    $authToken = new \Kazoo\AuthToken\User('username', 'password', 'sip.realm');
+    $client = new \Kazoo\Client($authToken, $options);
+
     $account = $this->client->accounts()->new();

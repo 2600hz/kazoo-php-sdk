@@ -18,7 +18,9 @@ The following code will create a new Account resource:
 
 .. code-block:: php
 
-    $client = new \Kazoo\Client($username, $password, $sipRealm, $options);
+    $options = array("base_url" => "http://kazoo-crossbar-url:8000");
+    $authToken = new \Kazoo\AuthToken\User('username', 'password', 'sip.realm');
+    $client = new \Kazoo\Client($authToken, $options);
 
     $newAccount = $client->accounts()->new();
     $newAccount->name = "New Test Account";
@@ -38,7 +40,9 @@ The following code will create a new Account resource:
 
 .. code-block:: php
 
-    $client = new \Kazoo\Client($username, $password, $sipRealm, $options);
+    $options = array("base_url" => "http://kazoo-crossbar-url:8000");
+    $authToken = new \Kazoo\AuthToken\User('username', 'password', 'sip.realm');
+    $client = new \Kazoo\Client($authToken, $options);
 
     ...
     ...
@@ -65,6 +69,10 @@ Create a SIP Device
 The following code will create a new Device resource for the Account (or sub-account):
 
 .. code-block:: php
+
+    $options = array("base_url" => "http://kazoo-crossbar-url:8000");
+    $authToken = new \Kazoo\AuthToken\User('username', 'password', 'sip.realm');
+    $client = new \Kazoo\Client($authToken, $options);
 
     $shellDevice = $client->accounts()->devices()->new();
     $num = substr(number_format(time() * rand(),0,'',''),0,4);
@@ -115,14 +123,11 @@ Generating Kazoo JSON
 Account JSON:
 
 .. code-block:: php
-    
-    $username = 'testuser';
-    $password = 'pAssw0rd';
-    $sipRealm = 'sip.realm.com';
-    $options  = array();
-    $options["base_url"] = "http://127.0.0.1:8000";
-    $client = new \Kazoo\Client($username, $password, $sipRealm, $options);
 
+    $options = array("base_url" => "http://kazoo-crossbar-url:8000");
+    $authToken = new \Kazoo\AuthToken\User('username', 'password', 'sip.realm');
+    $client = new \Kazoo\Client($authToken, $options);
+    
     $account = $client->accounts()->new();
     echo "<pre>";
     echo $account;
