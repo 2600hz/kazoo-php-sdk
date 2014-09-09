@@ -9,3 +9,4 @@ nbproject
 venv
 vendors
 vendor/.git
+vendor/
