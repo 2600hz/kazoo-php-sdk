@@ -10,7 +10,7 @@ $options = array('base_url' => 'http://kazoo-crossbar-url:8000');
 /* Get an authentication token using ONE of the provided methods */
 // $authToken = new \Kazoo\AuthToken\None(); /* must have IP auth enabled on Kazoo */
 // $authToken = new \Kazoo\AuthToken\ApiKey('XXXXX');
-$authToken = new \Kazoo\AuthToken\User('username', 'password', 'realm');
+$authToken = new \Kazoo\AuthToken\User('username', 'password', 'sip.realm');
 
 /* Create a new Kazoo SDK object */
 $sdk = new \Kazoo\SDK($authToken, $options);
