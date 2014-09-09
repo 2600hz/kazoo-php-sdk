@@ -38,12 +38,14 @@ echo $devices;
 var_dump("List the registration status for the devices");
 echo $devices->status();
 
-var_dump("Create new device");
+/* create a new device object from the account */
+var_dump("Create a new device");
 $device = $sdk->Account()->Device();
 $device->name = "Test Device";
 $device->save();
 echo $device;
 
+/* update the device created above */
 var_dump("Update the device");
 $device->call_forward->enabled = true;
 $device->call_forward->number = '4158867900';
