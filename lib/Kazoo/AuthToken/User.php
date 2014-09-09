@@ -66,7 +66,7 @@ class User implements AuthTokenInterface {
      * @param string $sipRealm
      */
     public function __construct($username, $password, $sipRealm, $options = null) {
-        session_start();
+        @session_start();
         $this->username = $username;
         $this->password = $password;
         $this->sipRealm = $sipRealm;
@@ -152,7 +152,7 @@ class User implements AuthTokenInterface {
     }
 
     private function checkSessionResponse() {
-        if ($_SESSION['Kazoo']['AuthToken']['User']) {
+        if (!empty($_SESSION['Kazoo']['AuthToken']['User'])) {
             $this->auth_response = $_SESSION['Kazoo']['AuthToken']['User'];
         } else {
             $this->requestToken();
