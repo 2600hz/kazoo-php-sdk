@@ -134,7 +134,7 @@ class User implements AuthTokenInterface {
 
     public function reset() {
         $this->auth_response = null;
-        if ($_SESSION['Kazoo']['AuthToken']['User']) {
+        if (!empty($_SESSION['Kazoo']['AuthToken']['User'])) {
             unset($_SESSION['Kazoo']['AuthToken']['User']);
         }
     }
