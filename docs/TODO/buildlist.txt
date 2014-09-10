@@ -10,4 +10,3 @@ cb_webhook
 cb_whitelable
 cb_configs
 cb_phone_numbers
-cb_conferences
