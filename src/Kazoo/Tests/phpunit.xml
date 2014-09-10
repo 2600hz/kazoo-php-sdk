@@ -15,10 +15,11 @@
          beStrictAboutOutputDuringTests="true"
          >
   <php>
-    <var name="api_key" value="30f916d19c0ea63ff8f3b1cf992904fb6e1c1707b64e4cbf458384ee734baf2e"/>
+    <var name="api_key" value=""/>
     <var name="auth_username" value=""/>
     <var name="auth_password" value=""/>
     <var name="auth_realm" value=""/>
+    <var name="base_url" value=""/>
   </php>
 
   <testsuites>
