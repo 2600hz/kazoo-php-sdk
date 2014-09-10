@@ -27,8 +27,6 @@ class CdrTest extends FunctionalTest
         $outbound_filter = array('filter_call_direction' => 'outbound');
         $outbound_cdrs = $this->getSDK()->Account()->Cdrs($outbound_filter);
 
-
-        $this->assertTrue(count($inbound_cdrs) != count($outbound_cdrs));
         $this->assertTrue((count($inbound_cdrs) + count($outbound_cdrs)) == count($cdrs));
 
         $cdr = current($cdrs)->fetch();
