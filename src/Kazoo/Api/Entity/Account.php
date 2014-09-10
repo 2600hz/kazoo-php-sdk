@@ -21,7 +21,6 @@ class Account extends AbstractEntity
         }
 
         parent::__construct($chain, $arguments);
-
         $this->setTokenValue($this->getEntityIdName(), $this->getId());
     }
 
