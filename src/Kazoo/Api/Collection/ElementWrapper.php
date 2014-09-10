@@ -3,6 +3,8 @@
 namespace Kazoo\Api\Collection;
 
 use \Exception;
+use \stdClass;
+
 use \Kazoo\Common\ChainableInterface;
 
 class ElementWrapper
@@ -92,7 +94,14 @@ class ElementWrapper
      *
      */
     public function setElement(&$element) {
-        $this->element = $element;
+        if(is_string($element)) {
+            // NOTICE: this is a hack for the odd 
+	    //   connectivity API which is an array of strings.....
+            $this->element = new stdClass();
+            $this->element->id = $element;
+        } else {
+            $this->element = $element;
+        }
     }
 
     /**
