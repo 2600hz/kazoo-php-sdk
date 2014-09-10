@@ -160,6 +160,10 @@ class Client {
         $this->phone_numbers = new \Kazoo\Api\Resource\GlobalPhoneNumbers($this, "/phone_numbers");
     }
 
+    public function getAuthToken() {
+        return $this->authToken;
+    }
+
     public function getLogger() {
         return $this->logger;
     }
