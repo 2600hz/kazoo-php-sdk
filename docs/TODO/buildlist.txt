@@ -1,4 +1,3 @@
-cb_cdrs
 cb_menus
 cb_registrations
 cb_resources
