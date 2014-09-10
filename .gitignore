@@ -1,12 +1,7 @@
-.projectile
-docs/_build/
-package.xml
 *.tgz
 *.log
 .DS_Store
 nbproject
-# This is used by the documentation generator
-venv
-vendors
-vendor/.git
 vendor/
+index.php
+composer.lock
