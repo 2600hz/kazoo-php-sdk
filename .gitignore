@@ -2,6 +2,7 @@
 *.log
 .DS_Store
 nbproject
-vendor/
 index.php
 composer.lock
+vendor/
+vendor/*
