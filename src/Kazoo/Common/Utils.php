@@ -64,7 +64,8 @@ class Utils
         switch(strtolower($word[strlen($word) - 1])) {
         case 'y':
             return substr($word, 0, -1) . 'ies';
-        case 's':
+        case 's':        
+        case 'x':
             return $word. 'es';
         default:
             return $word . 's';
