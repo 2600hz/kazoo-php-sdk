@@ -67,8 +67,6 @@ class Utils
         case 's':        
         case 'x':
             return $word. 'es';
-        case 'x':
-            return $word. 'es';
         default:
             return $word . 's';
         }
