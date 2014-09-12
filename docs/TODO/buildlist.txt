@@ -1,10 +1,8 @@
-cb_registrations
 cb_resources
 cb_services
 cb_system_configs
 cb_temporal_rules
 cb_temporal_rule_sets
-cb_vmboxes
 cb_webhook
 cb_whitelable
 cb_configs

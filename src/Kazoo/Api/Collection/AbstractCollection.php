@@ -137,7 +137,7 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
     /**
      *
      *
-4     */
+     */
     public function valid() {
         return $this->key() !== false;
     }
