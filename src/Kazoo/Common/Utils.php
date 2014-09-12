@@ -66,6 +66,8 @@ class Utils
             return substr($word, 0, -1) . 'ies';
         case 's':
             return $word. 'es';
+        case 'x':
+            return $word. 'es';
         default:
             return $word . 's';
         }

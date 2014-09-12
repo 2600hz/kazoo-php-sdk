@@ -55,5 +55,8 @@ class UtilsTest extends UnitTest
 
         $word = Utils::pluralize("account");
         $this->assertEquals($word, "accounts");
+
+        $word = Utils::pluralize("whatdoesthefox");
+        $this->assertEquals($word, "whatdoesthefoxes");
     }
 }
