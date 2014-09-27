@@ -1,8 +1,11 @@
-cb_resources
 cb_services
 cb_system_configs
 cb_temporal_rules
 cb_temporal_rule_sets
+<<<<<<< HEAD
+=======
+cb_vmboxes
+>>>>>>> Completed Resources API
 cb_whitelable
 cb_configs
 cb_phone_numbers
