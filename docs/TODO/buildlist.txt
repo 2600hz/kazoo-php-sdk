@@ -2,13 +2,6 @@ cb_services
 cb_system_configs
 cb_temporal_rules
 cb_temporal_rule_sets
-<<<<<<< HEAD
-=======
-cb_vmboxes
-<<<<<<< HEAD
->>>>>>> Completed Resources API
-=======
->>>>>>> 1ab230a30cba39590a02009ac6d2248941b3a630
 cb_whitelable
 cb_configs
 cb_phone_numbers
