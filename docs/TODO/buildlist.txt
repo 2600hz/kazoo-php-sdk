@@ -1,4 +1,3 @@
-cb_resources
 cb_services
 cb_system_configs
 cb_temporal_rules
