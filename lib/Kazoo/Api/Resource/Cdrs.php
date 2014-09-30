@@ -55,11 +55,13 @@ class Cdrs extends AbstractResource {
                                 $raw_entity_list = $this->process_response($response);
 
                                 $entity_list = array();
-                                foreach($raw_entity_list as $raw_entity){
-                                    $entity_class = static::$_entity_class;
-                                    $entityInstance = new $entity_class($this->_client, $this->_uri . "/" . $raw_entity->id);
-                                    $entityInstance->updateFromResult($raw_entity);
-                                    $entity_list[] = $entityInstance;
+                                if (!empty($raw_entity_list)) {
+                                    foreach($raw_entity_list as $raw_entity){
+                                        $entity_class = static::$_entity_class;
+                                        $entityInstance = new $entity_class($this->_client, $this->_uri . "/" . $raw_entity->id);
+                                        $entityInstance->updateFromResult($raw_entity);
+                                        $entity_list[] = $entityInstance;
+                                    }
                                 }
 
                                 return new $collection_type($entity_list);
