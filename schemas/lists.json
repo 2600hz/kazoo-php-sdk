@@ -1,0 +1,25 @@
+{
+  "_id": "lists",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "required": true,
+  "description": "Schema for a match list",
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "name": "Name",
+      "description": "A friendly match list name",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "entries": {
+      "type": "object",
+      "required": false,
+      "name": "Patterns",
+      "description": "Patterns used by match list",
+      "default": {}
+    }
+  },
+  "additionalProperties": false
+}

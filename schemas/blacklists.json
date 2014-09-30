@@ -1,10 +1,10 @@
 {
-    "_id": "temporal_rules_sets",
+    "_id": "blacklists",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
     "required": true,
-    "name": "Temporal Rule Set",
-    "description": "Schema for a temporal rules sets",
+    "name": "Blacklists",
+    "description": "Schema for a blacklists",
     "properties": {
         "name": {
             "type": "string",
@@ -14,16 +14,11 @@
             "minLength": 1,
             "maxLength": 128
         },
-        "temporal_rules": {
-            "type": "array",
+        "numbers": {
+            "type": "object",
             "required": false,
-            "name": "Temporal Rules",
-            "description": "Rules",
-            "minItems":1,
-            "items": {
-                "type": "string",
-                "required": false
-            }
+            "description": "Map of caller id number to block",
+            "default": {},
+            "properties": {}
         }
     }
-}
