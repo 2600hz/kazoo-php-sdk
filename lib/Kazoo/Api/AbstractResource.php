@@ -102,6 +102,9 @@ abstract class AbstractResource {
                                     $connectivity->id = $raw_entity;
                                     $entityInstance = new $entity_class($this->_client, $this->_uri . "/" . $raw_entity);
                                     $entityInstance->partialUpdateFromResult($connectivity);
+                                } else if (static::$_entity_class == "Kazoo\Api\Data\Entity\Cdr") {
+                                    $entityInstance = new $entity_class($this->_client, $this->_uri . "/" . $raw_entity->id);
+                                    $entityInstance->updateFromResult($raw_entity);
                                 } else {
                                     $entityInstance = new $entity_class($this->_client, $this->_uri . "/" . $raw_entity->id);
                                     $entityInstance->partialUpdateFromResult($raw_entity);
@@ -142,7 +145,7 @@ abstract class AbstractResource {
         }
     }
 
-    protected function process_response($response) {
+    private function process_response($response) {
         $results = $response->data;
         if (is_object($results)
           && property_exists($results, "numbers")) {
