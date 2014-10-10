@@ -142,7 +142,7 @@ abstract class AbstractResource {
         }
     }
 
-    private function process_response($response) {
+    protected function process_response($response) {
         $results = $response->data;
         if (is_object($results)
           && property_exists($results, "numbers")) {
