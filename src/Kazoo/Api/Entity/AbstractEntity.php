@@ -96,6 +96,12 @@ abstract class AbstractEntity extends AbstractResource
             }
         }
 
+        if (!isset($value)) { 
+            unset($this->entity->$name);
+        } else { 
+            $this->entity->$name = $value; 
+        }
+
         $this->entity->$name = $value;
     }
 
