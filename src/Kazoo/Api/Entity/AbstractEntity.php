@@ -101,8 +101,6 @@ abstract class AbstractEntity extends AbstractResource
         } else { 
             $this->entity->$name = $value; 
         }
-
-        $this->entity->$name = $value;
     }
 
     /**
