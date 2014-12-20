@@ -124,6 +124,14 @@ abstract class AbstractEntity extends AbstractResource
      *
      *
      */
+    public function __unset($name) {
+        unset($this->entity->$name);
+    }
+
+    /**
+     *
+     *
+     */
     public function __clone() {
         if (!is_null($this->entity)) {
             $this->entity = clone $this->entity;
