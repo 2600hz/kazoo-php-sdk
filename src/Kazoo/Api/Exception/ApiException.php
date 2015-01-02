@@ -17,8 +17,7 @@ class ApiException extends Exception
     public function __construct(Response $response) {
         $this->response = $response;
 
-        // TODO: log this cleanly...
-        var_dump($this->response);
+        error_log(print_r($this->response,true));
 
         parent::__construct($response->getMessage(), $response->getStatusCode());
     }
