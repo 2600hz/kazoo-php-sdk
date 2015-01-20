@@ -5,13 +5,12 @@ namespace Kazoo\Api\Entity;
 class Notification extends AbstractEntity
 {
 
-    public function preview() {
+    public function preview($data = array()) {
         $id = $this->getId();
-        $payload = $this->getPayload();
 
         $this->setTokenValue($this->getEntityIdName(), $id);
 
-        $this->post($payload, '/notifications/{entity_id}/preview');
+        $this->post($data, '/notifications/{entity_id}/preview');
         return $this;
     }
 }
