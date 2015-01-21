@@ -10,7 +10,7 @@ class Notification extends AbstractEntity
 
         $this->setTokenValue($this->getEntityIdName(), $id);
 
-        $this->post($data, '/notifications/{entity_id}/preview');
+        $this->post($data, '/preview');
         return $this;
     }
 }
