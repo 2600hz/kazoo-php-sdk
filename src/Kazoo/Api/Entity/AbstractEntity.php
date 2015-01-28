@@ -162,14 +162,13 @@ abstract class AbstractEntity extends AbstractResource
      * id then it will be created.
      *
      */
-    public function save() {
+    public function save($append_uri=null) {
         $id = $this->getId();
         $payload = $this->getPayload();
-
         $this->setTokenValue($this->getEntityIdName(), $id);
 
         if (empty($id)) {
-            $response = $this->put($payload);
+            $response = $this->put($payload,$append_uri);
         } else {
             $response = $this->post($payload);
         }

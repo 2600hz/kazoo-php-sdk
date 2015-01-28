@@ -18,6 +18,9 @@ class Utils
      */
     public static function underscoreClassName($class) {
         $class_name = self::shortClassName($class);
+        if ($class_name == "Phonenumber") { 
+            $class_name="phone_number";
+        }
         return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $class_name));
     }
 
