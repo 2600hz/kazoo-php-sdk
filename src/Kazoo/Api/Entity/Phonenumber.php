@@ -1,7 +1,7 @@
 <?php
 namespace Kazoo\Api\Entity;
 
-class Phonenumber extends AbstractEntity
+class PhoneNumber extends AbstractEntity
 { 
     public function getId() {
         $number=parent::getId();

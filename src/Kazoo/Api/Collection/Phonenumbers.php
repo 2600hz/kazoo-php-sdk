@@ -2,7 +2,7 @@
 
 namespace Kazoo\Api\Collection;
 
-class Phonenumbers extends AbstractCollection
+class PhoneNumbers extends AbstractCollection
 {
 
 }
