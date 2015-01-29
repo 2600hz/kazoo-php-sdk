@@ -40,7 +40,7 @@ class JsonSchemaObjectFactory {
                                 }
                             } else {
                                 if (property_exists($property_meta, 'minLength') || property_exists($property_meta, 'maxLength')) {
-                                    if (property_exists($property_meta, 'required')){
+                                    if (property_exists($property_meta, 'required' && $property_meta->required)){
                                         $accumulator->$property_name = "";
                                     }
                                 } else {
