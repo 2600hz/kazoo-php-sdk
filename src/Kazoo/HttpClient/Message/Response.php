@@ -2,6 +2,8 @@
 
 namespace Kazoo\HttpClient\Message;
 
+use \stdClass;
+
 use \Guzzle\Http\Message\Response as GuzzleResponse;
 
 class Response

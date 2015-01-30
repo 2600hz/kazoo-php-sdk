@@ -95,19 +95,14 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
     public function current() {
         $key = $this->key();
         $collection = $this->getCollection();
-        $element_wrapper = $this->getElementWrapper();
 
         if (is_array($collection)) {
-            $element = $collection[$key];
+            return $this->loadElementWrapper($collection[$key], $key);
         } else if (is_object($collection)) {
-            $element = $collection->$key;
-        } else {
-            return null;
+            return $this->loadElementWrapper($collection->$key, $key);
         }
 
-        $element_wrapper->setElement($element);
-
-        return $element_wrapper;
+        return null;
     }
 
     /**
@@ -227,15 +222,25 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
      *
      *
      */
-    private function setElementWrapper(ElementWrapper $wrapper) {
-        $this->element_wrapper = $wrapper;
+    protected function getElementWrapper() {
+        return $this->element_wrapper;
     }
 
     /**
      *
      *
      */
-    private function getElementWrapper() {
-        return $this->element_wrapper;
+    protected function loadElementWrapper($element, $key) {
+        $element_wrapper = $this->getElementWrapper();
+        $element_wrapper->setElement($element);
+        return $element_wrapper;
+    }
+
+    /**
+     *
+     *
+     */
+    private function setElementWrapper(ElementWrapper $wrapper) {
+        $this->element_wrapper = $wrapper;
     }
 }
