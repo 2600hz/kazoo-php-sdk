@@ -6,6 +6,8 @@ use \Exception;
 use \stdClass;
 
 use \Kazoo\Common\ChainableInterface;
+use \Kazoo\Common\Exception\ReadOnly;
+use \Kazoo\Api\Exception\Unfetchable;
 
 class ElementWrapper
 {
@@ -26,6 +28,18 @@ class ElementWrapper
      *
      */
     private $element;
+
+    /**
+     *
+     *
+     */
+    private $element_id;
+
+    /**
+     *
+     *
+     */
+    private $fetchable = TRUE;
 
     /**
      *
@@ -55,8 +69,7 @@ class ElementWrapper
      *
      */
     public function __set($name, $value) {
-        // TODO: make this a kazoo sdk specific exception
-        throw new Exception("collection elements");
+        throw new ReadOnly("Collection elements are read-only");
     }
 
     /**
@@ -72,10 +85,14 @@ class ElementWrapper
      *
      */
     public function fetch() {
+        if (!$this->fetchable) {
+            throw new Unfetchable("This collection element has no corresponing API for the entity");
+        }
+
         $entity_name = $this->getEntityName();
 
         if (is_null($entity_name)) {
-            throw new Exception("This is a read only API");
+            throw new ReadOnly("This is a read only API");
         }
 
         return new $entity_name($this->getChain(), array($this->getElementId()));
@@ -93,15 +110,37 @@ class ElementWrapper
      *
      *
      */
-    public function setElement(&$element) {
-        if(is_string($element)) {
-            // NOTICE: this is a hack for the odd 
-	    //   connectivity API which is an array of strings.....
-            $this->element = new stdClass();
-            $this->element->id = $element;
-        } else {
-            $this->element = $element;
+    public function setElement(&$element, $id = null) {
+        $this->element_id = $id;
+        $this->element = $element;
+
+        // TODO: going to need to figure out how to make the id generic..
+        if(!empty($element->device_id)) {
+            return $this->element_id = $element->device_id;
         }
+
+        // NOTICE: this is a hack for the odd
+        //   connectivity API which is an array of strings.....
+        if(is_string($element)) {
+            $this->element = new stdClass();
+            $this->element_id = $element;
+        }
+    }
+
+    /**
+     *
+     *
+     */
+    public function fetchable() {
+        $this->fetchable = TRUE;
+    }
+
+    /**
+     *
+     *
+     */
+    public function unfetchable() {
+        $this->fetchable = FALSE;
     }
 
     /**
@@ -117,11 +156,11 @@ class ElementWrapper
      *
      */
     private function getElementId() {
-        // TODO: going to need to figure out how to make the id generic..
-        if(!empty($this->element->device_id)) {
-            return $this->element->device_id;
+        if (is_null($this->element_id)) {
+            return $this->element->id;
         }
-        return $this->element->id;
+
+        return $this->element_id;
     }
 
     /**

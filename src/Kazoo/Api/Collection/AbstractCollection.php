@@ -4,12 +4,14 @@ namespace Kazoo\Api\Collection;
 
 use \Iterator;
 use \Countable;
+use \ArrayAccess;
 
 use \Kazoo\Common\Utils;
 use \Kazoo\Common\ChainableInterface;
+use \Kazoo\Common\Exception\ReadOnly;
 use \Kazoo\Api\AbstractResource;
 
-abstract class AbstractCollection extends AbstractResource implements Iterator, Countable
+abstract class AbstractCollection extends AbstractResource implements Iterator, Countable, ArrayAccess
 {
     /**
      *
@@ -72,6 +74,14 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
      *
      *
      */
+    public function __set($name, $value) {
+        throw new ReadOnly("Collections are read-only");
+    }
+
+    /**
+     *
+     *
+     */
     public function fetch(array $filter = array()) {
         $response = $this->get($this->getFilter($filter));
         $this->setCollection($response->getData());
@@ -95,19 +105,14 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
     public function current() {
         $key = $this->key();
         $collection = $this->getCollection();
-        $element_wrapper = $this->getElementWrapper();
 
         if (is_array($collection)) {
-            $element = $collection[$key];
+            return $this->loadElementWrapper($collection[$key], $key);
         } else if (is_object($collection)) {
-            $element = $collection->$key;
-        } else {
-            return null;
+            return $this->loadElementWrapper($collection->$key, $key);
         }
 
-        $element_wrapper->setElement($element);
-
-        return $element_wrapper;
+        return null;
     }
 
     /**
@@ -152,6 +157,56 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
         }
 
         return count($this->keys);
+    }
+
+    /**
+     *
+     *
+     */
+    public function offsetSet($offset, $value) {
+        throw new ReadOnly("Collections are read only");
+    }
+
+    /**
+     *
+     *
+     */
+    public function offsetExists($offset) {
+        return isset($this->keys[$offset]);
+    }
+
+    /**
+     *
+     *
+     */
+    public function offsetUnset($offset) {
+        $collection = $this->getCollection();
+        $key = $this->keys[$offset];
+
+        if (is_array($collection)) {
+            unset($collection[$key]);
+        } else if (is_object($collection)) {
+            unset($collection->$key);
+        }
+
+        unset($this->keys[$offset]);
+    }
+
+    /**
+     *
+     *
+     */
+    public function offsetGet($offset) {
+        $collection = $this->getCollection();
+        $key = $this->keys[$offset];
+
+        if (is_array($collection)) {
+            return $this->loadElementWrapper($collection[$key], $key);
+        } else if (is_object($collection)) {
+            return $this->loadElementWrapper($collection->$key, $key);
+        }
+
+        return null;
     }
 
     /**
@@ -221,6 +276,25 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
      */
     protected function setCollection($collection) {
         $this->collection = $collection;
+        $this->rewind();
+    }
+
+    /**
+     *
+     *
+     */
+    protected function getElementWrapper() {
+        return $this->element_wrapper;
+    }
+
+    /**
+     *
+     *
+     */
+    protected function loadElementWrapper($element, $key) {
+        $element_wrapper = $this->getElementWrapper();
+        $element_wrapper->setElement($element);
+        return $element_wrapper;
     }
 
     /**
@@ -229,13 +303,5 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
      */
     private function setElementWrapper(ElementWrapper $wrapper) {
         $this->element_wrapper = $wrapper;
-    }
-
-    /**
-     *
-     *
-     */
-    private function getElementWrapper() {
-        return $this->element_wrapper;
     }
 }

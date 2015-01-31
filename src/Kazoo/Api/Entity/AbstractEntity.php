@@ -11,6 +11,7 @@ use \Kazoo\Common\Utils;
 use \Kazoo\Common\ChainableInterface;
 use \Kazoo\HttpClient\Message\Response;
 use \Kazoo\Api\AbstractResource;
+use \Kazoo\Common\Exception\ReadOnly;
 
 abstract class AbstractEntity extends AbstractResource
 {
@@ -25,6 +26,12 @@ abstract class AbstractEntity extends AbstractResource
      *
      */
     protected $entity_id;
+
+    /**
+     *
+     *
+     */
+    protected $read_only;
 
     /**
      *
@@ -87,6 +94,10 @@ abstract class AbstractEntity extends AbstractResource
      *
      */
     public function __set($name, $value) {
+        if ($this->read_only) {
+            throw new ReadOnly("The entity is read-only");
+        }
+
         if(is_null($this->entity)) {
             $id = $this->getId();
             if (!empty($id)) {
@@ -125,6 +136,10 @@ abstract class AbstractEntity extends AbstractResource
      *
      */
     public function __unset($name) {
+        if ($this->read_only) {
+            throw new ReadOnly("The entity is read-only");
+        }
+
         unset($this->entity->$name);
     }
 
@@ -146,12 +161,12 @@ abstract class AbstractEntity extends AbstractResource
      * is fresh.
      *
      */
-    public function fetch() {
+    public function fetch($append_uri = null) {
         $this->setTokenValue($this->getEntityIdName(), $this->getId());
 
-        $response = $this->get();
-
+        $response = $this->get(array(), $append_uri);
         $entity = $response->getData();
+
         $this->setEntity($entity);
 
         return $this;
@@ -162,16 +177,19 @@ abstract class AbstractEntity extends AbstractResource
      * id then it will be created.
      *
      */
-    public function save() {
+    public function save($append_uri = null) {
+        if ($this->read_only) {
+            throw new ReadOnly("The entity is read-only");
+        }
+
         $id = $this->getId();
         $payload = $this->getPayload();
-
         $this->setTokenValue($this->getEntityIdName(), $id);
 
         if (empty($id)) {
-            $response = $this->put($payload);
+            $response = $this->put($payload, $append_uri);
         } else {
-            $response = $this->post($payload);
+            $response = $this->post($payload, $append_uri);
         }
 
         $entity = $response->getData();
@@ -188,6 +206,10 @@ abstract class AbstractEntity extends AbstractResource
      *
      */
     public function remove() {
+        if ($this->read_only) {
+            throw new ReadOnly("The entity is read-only");
+        }
+
         $this->setTokenValue($this->getEntityIdName(), $this->getId());
         $this->delete();
         $this->reset();
@@ -299,7 +321,7 @@ abstract class AbstractEntity extends AbstractResource
      *
      *
      */
-    private function getEntity() {
+    protected function getEntity() {
         $id = $this->getId();
         if(is_null($this->entity) && !empty($id)) {
             $this->fetch();
@@ -311,7 +333,7 @@ abstract class AbstractEntity extends AbstractResource
      *
      *
      */
-    private function invoke(array $arguments) {
+    protected function invoke(array $arguments) {
         $entity_id = isset($arguments[0]) ? $arguments[0] : null;
         $this->setId($entity_id);
     }
@@ -320,7 +342,7 @@ abstract class AbstractEntity extends AbstractResource
      *
      *
      */
-    private function setId($entity_id = null) {
+    protected function setId($entity_id = null) {
         $this->entity_id = $entity_id;
 
         if (empty($entity_id)) {
@@ -332,10 +354,26 @@ abstract class AbstractEntity extends AbstractResource
      *
      *
      */
-    private function getPayload() {
+    protected function getPayload() {
         $shell = new stdClass();
         $shell->data = $this->getEntity();
 
         return json_encode($shell);
+    }
+
+    /**
+     *
+     *
+     */
+    protected function readWrite() {
+        $this->read_only = FALSE;
+    }
+
+    /**
+     *
+     *
+     */
+    protected function readOnly() {
+        $this->read_only = TRUE;
     }
 }

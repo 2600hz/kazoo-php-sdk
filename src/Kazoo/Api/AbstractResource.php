@@ -65,7 +65,6 @@ abstract class AbstractResource implements ChainableInterface
      */
     public function getUri($append_uri = null) {
         $token_uri = $this->getTokenUri();
-
         if (!is_null($append_uri)) {
             $token_uri .= $append_uri;
         }
@@ -131,8 +130,8 @@ abstract class AbstractResource implements ChainableInterface
      *
      *
      */
-    protected function put($payload) {
-        $uri = $this->getUri();
+    protected function put($payload, $append_uri = null) {
+        $uri = $this->getUri($append_uri);
         return $this->getSDK()->put($uri, $payload);
     }
 
@@ -140,8 +139,8 @@ abstract class AbstractResource implements ChainableInterface
      *
      *
      */
-    protected function post($payload) {
-        $uri = $this->getUri();
+    protected function post($payload, $append_uri = null) {
+        $uri = $this->getUri($append_uri);
         return $this->getSDK()->post($uri, $payload);
     }
 
@@ -149,8 +148,8 @@ abstract class AbstractResource implements ChainableInterface
      *
      *
      */
-    protected function delete($payload = null) {
-        $uri = $this->getUri();
+    protected function delete($payload = null, $append_uri = null) {
+        $uri = $this->getUri($append_uri);
         return $this->getSDK()->delete($uri, $payload);
     }
 }
