@@ -69,7 +69,6 @@ class ElementWrapper
      *
      */
     public function __set($name, $value) {
-        // TODO: make this a kazoo sdk specific exception
         throw new ReadOnly("Collection elements are read-only");
     }
 
@@ -93,7 +92,7 @@ class ElementWrapper
         $entity_name = $this->getEntityName();
 
         if (is_null($entity_name)) {
-            throw new Exception("This is a read only API");
+            throw new ReadOnly("This is a read only API");
         }
 
         return new $entity_name($this->getChain(), array($this->getElementId()));

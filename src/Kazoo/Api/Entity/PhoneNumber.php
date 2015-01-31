@@ -17,6 +17,9 @@ class PhoneNumber extends AbstractEntity
      */
     public function getId() {
         $id = parent::getId();
+        if (isset($id[0]) and $id[0]=="+") {
+            return substr($id, 1);
+        }
         return urlencode($id);
     }
 

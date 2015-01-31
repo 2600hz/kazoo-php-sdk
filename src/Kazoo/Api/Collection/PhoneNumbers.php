@@ -84,7 +84,7 @@ class PhoneNumbers extends AbstractCollection
         $response = $this->get($this->getFilter($filter));
         $data = $response->getData();
         $this->setCollection($data->numbers);
-        $this->rewind();
+
         return $this;
     }
 

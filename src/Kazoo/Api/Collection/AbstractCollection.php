@@ -4,12 +4,14 @@ namespace Kazoo\Api\Collection;
 
 use \Iterator;
 use \Countable;
+use \ArrayAccess;
 
 use \Kazoo\Common\Utils;
 use \Kazoo\Common\ChainableInterface;
+use \Kazoo\Common\Exception\ReadOnly;
 use \Kazoo\Api\AbstractResource;
 
-abstract class AbstractCollection extends AbstractResource implements Iterator, Countable
+abstract class AbstractCollection extends AbstractResource implements Iterator, Countable, ArrayAccess
 {
     /**
      *
@@ -66,6 +68,14 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
             // Fatal error: Method xxx::__toString() must not throw an exception
             return json_encode(new stdClass);
         }
+    }
+
+    /**
+     *
+     *
+     */
+    public function __set($name, $value) {
+        throw new ReadOnly("Collections are read-only");
     }
 
     /**
@@ -153,6 +163,56 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
      *
      *
      */
+    public function offsetSet($offset, $value) {
+        throw new ReadOnly("Collections are read only");
+    }
+
+    /**
+     *
+     *
+     */
+    public function offsetExists($offset) {
+        return isset($this->keys[$offset]);
+    }
+
+    /**
+     *
+     *
+     */
+    public function offsetUnset($offset) {
+        $collection = $this->getCollection();
+        $key = $this->keys[$offset];
+
+        if (is_array($collection)) {
+            unset($collection[$key]);
+        } else if (is_object($collection)) {
+            unset($collection->$key);
+        }
+
+        unset($this->keys[$offset]);
+    }
+
+    /**
+     *
+     *
+     */
+    public function offsetGet($offset) {
+        $collection = $this->getCollection();
+        $key = $this->keys[$offset];
+
+        if (is_array($collection)) {
+            return $this->loadElementWrapper($collection[$key], $key);
+        } else if (is_object($collection)) {
+            return $this->loadElementWrapper($collection->$key, $key);
+        }
+
+        return null;
+    }
+
+    /**
+     *
+     *
+     */
     public function toJson() {
         return (string)json_encode($this->getCollection());
     }
@@ -216,6 +276,7 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
      */
     protected function setCollection($collection) {
         $this->collection = $collection;
+        $this->rewind();
     }
 
     /**
