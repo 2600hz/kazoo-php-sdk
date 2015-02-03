@@ -173,6 +173,7 @@ class User implements AuthTokenInterface {
         switch ($response->status) {
         case "success":
             $this->auth_response = $response->data;
+            $_SESSION['Kazoo']['AuthToken']['User'] = $this->auth_response;
             $this->auth_response->auth_token = $response->auth_token;
             break;
         default:
