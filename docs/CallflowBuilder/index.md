@@ -136,7 +136,9 @@ timeout -  which sets the amount of time the user will ring before the next call
 
 Voicemail requires the mailbox ID of an existing voicemail box to be created. It has one configuration method **action()** which configures the type of action to be taken on the voicemail box. 
     
-    action() - either compose or check (Default: compose).   
+### action
+
+Options are compose or check (Default: compose).   
 
 ```php
    $voicemail_box_id = $your_voicemail_box->getId();
@@ -194,17 +196,17 @@ Callflow requires the ID of an existing call flow to be created.
 Ring groups require an array of IDs pointed to an array of options. 
 The type option is required but the delay and timeout will use defaults if not set. 
 
-#timeout
+###timeout
 
 The time to ring the lines in the ring group before moving to the next call flow action (Default 20).
 
-#strategy 
+###strategy 
 
 Can be set to single or simultaneous, determiens if all lines should ring simultaneously or individually 
 
 The default is **simultaneous**. 
 
-#endpoints 
+###endpoints 
 
 The lists of entity ID (user or device) to ring in the group, and options that can be set on the endpoints. 
  
