@@ -44,27 +44,33 @@ $voicemail_node   = Voicemail($voicemail_box_id);
 
 ```
 
-Any node can be used as the root element of the call flow. The node invoked first in the node builder chain will be the first element in the callflow, the child element is returned after each addChild, so the calls can be chained to build a call flow. 
+###Chaining call flow nodes
+
+Any node can be used as the root element of the call flow. The node invoked first in the node builder chain will be the root element in the callflow.  
+
 ```php
-$user->addChild($language);
+$user->addChild($user);
+
+```
+The child element is returned after each addChild, so the calls can be chained to build a call flow
+
+```php
+$user->addChild($language)->addChild($voicemail);
 
 ```
 
-Subsequent calls to add child will add additional children to the end of the call flow. 
+Subsequent calls to addLastChild will add additional children to the end of the call flow. 
 
 ```php
-$user->addChild($voicemail); 
+$user->addChild($user);
+$user->addLastChild($language); 
+$user->addLastChild($voicemail); 
 
 ```
 
-Since addChild returns the child object, these can be chained to build a simple call flow.
 
-```php
-$user->addChild($language)->addChild($voicemail); 
-
-```
-
-To construct the final callflow, create a new instance of the builder class using either an array of patterns or an array of phone numbers.
+###Building Callflows
+To construct the callflow, create a new instance of the builder class using either an array of patterns or an array of phone numbers.
 
 ```php
 $phone_numbers = array(1234, 5405551234);
@@ -78,6 +84,8 @@ Build the callflow by invoking the builder build() method, passing the root obje
 $builder->build($user);
 
 ```
+
+###Removing children
 
 Children can be removed from call flows as well by calling the parent object's removeChild() method. The removeChild method will remove the child of the object calling it, preserving rest of the chain by collapsing to remove the child object.  
 
@@ -93,10 +101,10 @@ $user->removeChildren();
 
 ```
 
-Once the flow is completed, it can be built by invoking the builder flow() method, passing the root object used to build the callflow nodes.
+Once the flow is completed, it can be built by invoking the builder build() method, passing the root object used to build the callflow nodes.
 
 ```php
-$builder->flow($user);
+$builder->build($user);
 
 ```
 
