@@ -2,7 +2,7 @@
 
 namespace CallflowBuilder\Node; 
 
-class Conference extends CallflowNodes
+class Conference extends AbstractNode
 {
     public function __construct($id) {
         parent::__construct();

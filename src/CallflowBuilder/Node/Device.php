@@ -2,7 +2,7 @@
 
 namespace CallflowBuilder\Node; 
 
-class Device extends CallflowNodes
+class Device extends AbstractNode
 {
     public function __construct($id) {
         parent::__construct();

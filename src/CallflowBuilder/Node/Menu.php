@@ -2,7 +2,7 @@
 
 namespace CallflowBuilder\Node; 
 
-class Menu extends CallflowNodes
+class Menu extends AbstractNode
 {
     public function __construct($id) {
         parent::__construct();

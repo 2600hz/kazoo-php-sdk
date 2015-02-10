@@ -3,7 +3,7 @@
 namespace CallflowBuilder\Node; 
 
 
-class PlayMedia extends CallflowNodes
+class PlayMedia extends AbstractNode
 {
     public function __construct($id) {
         parent::__construct();

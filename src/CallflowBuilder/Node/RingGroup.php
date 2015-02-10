@@ -2,7 +2,9 @@
 
 namespace CallflowBuilder\Node; 
 
-class RingGroup extends CallflowNodes
+use \stdClass; 
+
+class RingGroup extends AbstractNode
 {
     public function __construct($name) {
         parent::__construct();
@@ -12,28 +14,43 @@ class RingGroup extends CallflowNodes
         $this->setStrategy(); 
     }   
     
-    public function setName($name){
+    public function name($name){
         $this->data->name = $name;
         return $this; 
     }
 
-    public function setStrategy($value = "simultanious"){
+    public function strategy($value = "simultanious"){
          $this->data->strategy = $value;
          return $this;
     }   
 
-    public function setTimeout($timeout = 20){
+    public function timeout($timeout = 20){
         $this->data->timeout = $timeout; 
         return $this; 
     }  
     
-    public function addEndpoint($endpoints){
-        if(!is_array($endpoints){
-            $endpoints = array($endpoints); 
-        }
-  
-        foreach ($endpoints as $endpoint){
+    public function endpoints(array $endpoints){
+        $this->data->endpoints = array(); 
+        
+        foreach ($endpoints as $id => $options){
+            $options = array_merge($this->endpointDefaults  $options);
+         
+            $endpoint = new stdClass(); 
+            $endpoint->type    = $options["type"];
+            $endpoint->delay   = $options["delay"];
+            $endpoint->timeout = $options["timeout"]; 
+            $endpoint->id      = $id;
+
             array_push($this->data->endpoints, $endpoint); 
+            
         }
+        return $this; 
+    }
+    
+    //TODO: This should be based on the overall timeout
+    private function endpointDefaults(){
+         $defaults["delay"]   = "0"; 
+         $defaults["timeout"] = "20";  
+         return $defaults; 
     }
 }
