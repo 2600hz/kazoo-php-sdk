@@ -2,8 +2,6 @@
 
 namespace Kazoo;
 
-require_once dirname(__FILE__) . "/../../vendor/autoload.php";
-
 use \BadFunctionCallException;
 
 use Kazoo\Common\Log;
