@@ -4,7 +4,7 @@ namespace CallflowBuilder\Node;
 
 use \stdClass; 
 
-class RingGroup extends AbstractNode
+class PageGroup extends AbstractNode
 {
     public function __construct($name) {
         parent::__construct();
