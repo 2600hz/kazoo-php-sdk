@@ -17,7 +17,7 @@ class Builder {
        } 
     }
 
-    public function flow (AbstractNode $node){
+    public function build(AbstractNode $node){
         $this->flow = $node->build();  
  
     }
