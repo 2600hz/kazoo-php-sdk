@@ -1,5 +1,6 @@
 # CallFlowBuilder
 
+
 CallflowBuilder adds simple methods to support creation and chaining of complex callflow nodes. 
 
 To build a call flow, first create all the nodes to be used in the call flow, then create the complete callflow with the Builder.
@@ -49,22 +50,22 @@ $voicemail_node   = Voicemail($voicemail_box_id);
 Any node can be used as the root element of the call flow. The node invoked first in the node builder chain will be the root element in the callflow.  
 
 ```php
-$user->addChild($user);
+$user_node->addChild($voicemail_node);
 
 ```
 The child element is returned after each addChild, so the calls can be chained to build a call flow
 
 ```php
-$user->addChild($language)->addChild($voicemail);
+$user_node->addChild($language_node)->addChild($voicemail_node);
 
 ```
 
 Subsequent calls to addLastChild will add additional children to the end of the call flow. 
 
 ```php
-$user->addChild($user);
-$user->addLastChild($language); 
-$user->addLastChild($voicemail); 
+$user_node->addChild($user_node);
+$user_node->addLastChild($language_node); 
+$user_node->addLastChild($voicemail_node); 
 
 ```
 
@@ -81,7 +82,7 @@ $flow_builder  = new Builder( $phone_numbers );
 Build the callflow by invoking the builder build() method, passing the root object used to build the callflow nodes.
 
 ```php
-$builder->build($user);
+$builder->build($user_node);
 
 ```
 
@@ -90,21 +91,21 @@ $builder->build($user);
 Children can be removed from call flows as well by calling the parent object's removeChild() method. The removeChild method will remove the child of the object calling it, preserving rest of the chain by collapsing to remove the child object.  
 
 ```php
-$language->removeChild(); 
+$language_node->removeChild(); 
 
 ```
 
 The removeChildren method will remove all the children below the object calling it.
 
 ```php
-$user->removeChildren(); 
+$user_node->removeChildren(); 
 
 ```
 
 Once the flow is completed, it can be built by invoking the builder build() method, passing the root object used to build the callflow nodes.
 
 ```php
-$builder->build($user);
+$builder_node->build($user);
 
 ```
 
@@ -113,13 +114,14 @@ $builder->build($user);
 Attributes can be set on the individual entities depending on type. For example, the user node's canCallSelf value can be set by calling the user node object's canCallSelf method with the argument TRUE or FALSE. 
 
 ```php
-$user->canCallSelf(FALSE); 
+$user_node->canCallSelf(FALSE); 
 
 ```
 
 #Callflow nodes
 
-## Users and devices: 
+
+## Users and Devices
 
 Users and devices only require a user ID to add. Only two optional configurations are supported. 
 
@@ -137,9 +139,9 @@ The default is **20** seconds.
 ####Example
 
 ```php
-   $user = new User("1232321312");
-   $user->canCallSelf(TRUE); 
-   $user->timeout(10); 
+   $user_node = new User("1232321312");
+   $user_node->canCallSelf(TRUE); 
+   $user_node->timeout(10); 
  
 ```
 
@@ -164,16 +166,16 @@ The default is **compose**.
 Menu requires a name to create. 
 
 ```php
-   $menu   = Menu("MenuName");
+   $menu_node   = Menu("MenuName");
   
 ```
 
 To add options to the menu, use Menu's addChild method to add the next call flow node, specifying either no second argument for default or the menu number for the option.
 
 ```php
-$menu->addChild($option_1, 1);
-$menu->addChild($option_1, 2);
-$menu->addChild($option_default);
+$menu_node->addChild($option_1, 1);
+$menu_node->addChild($option_1, 2);
+$menu_node->addChild($option_default);
 
 ```
 
@@ -182,7 +184,7 @@ $menu->addChild($option_default);
 language requires an existing language identifier (example: en_us) to be created. 
 
 ```php
-   $language = Language("en_us");
+   $language_node = Language("en_us");
   
 ```
 
@@ -191,7 +193,7 @@ language requires an existing language identifier (example: en_us) to be created
 Play media requires a media ID of an existing media file to be created. 
 
 ```php
-   $media = PlayMedia("12146546546546");
+   $media_node = PlayMedia("12146546546546");
   
 ```
 
@@ -200,7 +202,7 @@ Play media requires a media ID of an existing media file to be created.
 Callflow requires the ID of an existing call flow to be created. 
 
 ```php
-   $callflow = Callflow("12146546546546");
+   $callflow_node = Callflow("12146546546546");
   
 ```
 
@@ -243,11 +245,11 @@ The default is **0** seconds.
 
 ###Example
 ```php
-    $ring_group = new RingGroup("MY_RING_GROUP");                                                                            
+    $ring_group_node = new RingGroup("MY_RING_GROUP");                                                                            
    
-    $ring_group->timeout("10");
-    $ring_group->strategy("single"); 
-    $ring_group->endpoints( 
+    $ring_group_node->timeout("10");
+    $ring_group_node->strategy("single"); 
+    $ring_group_node->endpoints( 
         array (
             "23948203984" => array(
                "type" => "user",
