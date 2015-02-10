@@ -33,7 +33,7 @@ class RingGroup extends AbstractNode
         $this->data->endpoints = array(); 
         
         foreach ($endpoints as $id => $options){
-            $options = array_merge($this->endpointDefaults  $options);
+            $options = array_merge($this->endpointDefaults(), $options);
          
             $endpoint = new stdClass(); 
             $endpoint->type    = $options["type"];
