@@ -32,9 +32,13 @@ abstract class AbstractNode
          }   
          return $this->getLast();
     }
+
+    public function addLastChild(AbstractNode $child, $index = '_'){
+        $this->getLast()->children[$index] = $child;
+        return $child; 
+    }
    
     public function addChild(AbstractNode $child, $index = '_') {
-
         $this->children[$index] = $child;
         return $child;
     }   
@@ -67,5 +71,4 @@ abstract class AbstractNode
     public function __toString() {
         return json_encode($this->build());
     }   
-
 }
