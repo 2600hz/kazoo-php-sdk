@@ -2,7 +2,7 @@
 
 namespace CallflowBuilder\Node; 
 
-class Resource extends AbstractNode
+class Offnet extends AbstractNode
 {
     public function __construct() {
         parent::__construct();
