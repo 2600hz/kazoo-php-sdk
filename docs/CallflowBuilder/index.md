@@ -62,7 +62,7 @@ $user_node->addChild($language_node)->addChild($voicemail_node);
 Subsequent calls to addLastChild will add additional children to the end of the call flow. 
 
 ```php
-$user_node->addChild($user_node);
+$user_node->addChild($media_node);
 $user_node->addLastChild($language_node); 
 $user_node->addLastChild($voicemail_node); 
 
