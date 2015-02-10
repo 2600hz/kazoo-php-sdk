@@ -37,7 +37,7 @@ class RingGroup extends AbstractNode
             $endpoint->type    = $options["type"];
             $endpoint->delay   = $options["delay"];
             $endpoint->timeout = $options["timeout"]; 
-            $endpoint->id      = $id;
+            $endpoint->id      = (string)$id;
 
             array_push($this->data->endpoints, $endpoint); 
             
