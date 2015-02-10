@@ -8,7 +8,6 @@ To build a call flow, first create all the nodes to be used in the call flow, th
 ###Import the callflow node builder namespaces
 
 ```php
-//Use the callflow builders for each of the nodes you want to add for your callflow. 
 use \CallflowBuilder\Node\User; 
 use \CallflowBuilder\Node\Device;
 use \CallflowBuilder\Node\Voicemail; 
@@ -99,13 +98,6 @@ The removeChildren method will remove all the children below the object calling 
 
 ```php
 $user_node->removeChildren(); 
-
-```
-
-Once the flow is completed, it can be built by invoking the builder build() method, passing the root object used to build the callflow nodes.
-
-```php
-$builder_node->build($user);
 
 ```
 
@@ -227,7 +219,7 @@ The default is **simultaneous**.
 
 The lists of entity ID (user or device) to ring in the group, and options that can be set on the endpoints. 
  
-**id** 
+**ID** 
  The id of the device or user which is an endpoint in the ring group.   
  This value is **required**.
      
