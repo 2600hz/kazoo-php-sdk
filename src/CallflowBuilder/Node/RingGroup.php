@@ -17,7 +17,7 @@ class RingGroup extends AbstractNode
         return $this; 
     }
 
-    public function strategy($value = "simultanious"){
+    public function strategy($value = "simultaneous"){
          $this->data->strategy = $value;
          return $this;
     }   
