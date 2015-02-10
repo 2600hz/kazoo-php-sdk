@@ -51,10 +51,21 @@ Any node can be used as the root element of the call flow. The node invoked firs
 ```php
 
 $user->addChild($language);
-// subsequent calls to add child will add additional children to the end of the call flow. 
+
+```
+
+Subsequent calls to add child will add additional children to the end of the call flow. 
+
+```php
+
 $user->addChild($voicemail); 
 
-// These can be chained to build a simple call flow.
+```
+
+Since addChild returns the child object, these can be chained to build a simple call flow.
+
+```php
+
 $user->addChild($language)->addChild($voicemail); 
 
 ```
@@ -126,7 +137,6 @@ Users and devices only require a user ID to add. Only two optional configuration
 
 canCallSelf - Which determines the users ability to call their own extension via this callflow (Default: FALSE).  
 timeout -  which sets the amount of time the user will ring before the next call flow is chosen (Default: 20 seconds).
- 
 
 ```php
 
@@ -199,7 +209,6 @@ Callflow requires the ID of an existing call flow to be created.
   
 ```
 
-
 ## Ring Groups
 
 Ring groups require an array of IDs pointed to an array of options. 
@@ -211,9 +220,9 @@ The time to ring the lines in the ring group before moving to the next call flow
 
 #strategy 
 
-Can be set to single or simultanious, determiens if all lines should ring simultaniously or individually 
+Can be set to single or simultaneous, determiens if all lines should ring simultaneously or individually 
 
-The default is **simultanious**. 
+The default is **simultaneous**. 
 
 #endpoints 
 
