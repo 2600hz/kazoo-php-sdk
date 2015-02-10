@@ -198,7 +198,96 @@ Callflow requires the ID of an existing call flow to be created.
   
 ```
 
-## Ring Groups
+## Temporal route
+
+Temporal routes take timezones as arguments. Add the account ID as the index for temporal routes children and default for "all other times".  
+
+
+```php
+   $temporal_route_node = TemporalRoute($timezone); 
+   $temporal_route_node->addChild($user_node, $temporal_route_id); // timeframe specified 
+   $temporal_route_node->addChild($user2_node); // all other times
+
+```
+
+if an action and ruleset is specified, this option can be used to enable, disable or reset time of day routing. 
+
+```php
+ 
+    $rules = array($time_rule1, $time_rule2); 
+    
+    //reset time of day option
+    $temporal_route_node = TemporalRoute(); 
+    $temporal_route_node->action("reset"); 
+    $temporal_route_node->rules($rules);
+  
+    //enable time of day options
+    $temporal_route_node = TemporalRoute(); 
+    $temporal_route_node->action("enable"); 
+    $temporal_route_node->rules($rules);
+
+    //disable time of day routing 
+    $temporal_route_node = TemporalRoute(); 
+    $temporal_route_node->action("disable"); 
+    $temporal_route_node->rules($rules);
+  
+ 
+```
+
+##Resource/Offnet
+
+Carrier resources can be added to a call flow to allow access to either the accounts carriers, a parent accounts carriers or the global offnet resource. The typical call flow for this is to use numbers = array("no_match") and specify the only call flow node as either an account resource or an offnet resource. 
+
+
+```php
+    $offnet_resource_node  = Offnet();
+    $account_resource_node = Resource($account_id);     
+```
+
+##Pivot
+
+Pivot allows calls to external HTTP servers from call flows. This exposes real time call control that can be managed via an external server. 
+
+The pivot module requires four options to configure. 
+
+###method
+   The method used for the http request; 
+###req_timeout
+   The timeout in seconds before an http request is dropped and the next call flow node is selected. 
+###req_format
+   The data payload format to use. 
+   The optiosn are **kazoo** or **twixml**.
+###voice_url
+   The url to send the http request. 
+
+
+```php
+    $pivot_node = Pivot();
+    $pivot_node
+        ->method("POST")
+        ->req_timeout("19")
+        ->req_format("kazoo")
+        ->voice_url("https://your.pivotserver.com:8000");
+
+```
+
+## Page Group
+
+Page groups require an array of epoints containing an associative array of IDs which point to the type of resource. 
+
+```php
+     $page_group_node = PageGroup("page group name");
+     $page_group_node->endpoints(
+          array (
+             "23948203984" => user,
+             "42874298374" => device
+          )
+     );  
+
+
+```
+
+## Ring Group
 
 Ring groups require an array of IDs pointed to an array of options. 
 The type option is required but the delay and timeout will use defaults if not set. 
