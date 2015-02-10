@@ -35,7 +35,7 @@ abstract class AbstractNode
 
     public function addLastChild(AbstractNode $child, $index = '_'){
         $this->getLast()->children[$index] = $child;
-        return $child; 
+        return $this; 
     }
    
     public function addChild(AbstractNode $child, $index = '_') {
