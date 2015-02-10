@@ -81,13 +81,6 @@ $builder->build($user);
 
 ```
 
-The remove method will remove all the object calling it from the call flow.
-
-```php
-$voicemail->remove(); 
-
-```
-
 Children can be removed from call flows as well by calling the parent object's removeChild() method. The removeChild method will remove the child of the object calling it, preserving rest of the chain by collapsing to remove the child object.  
 
 ```php
