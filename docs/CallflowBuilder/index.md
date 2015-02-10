@@ -279,8 +279,8 @@ Page groups require an array of epoints containing an associative array of IDs w
      $page_group_node = PageGroup("page group name");
      $page_group_node->endpoints(
           array (
-             "23948203984" => user,
-             "42874298374" => device
+             "23948203984" => "user",
+             "42874298374" => "device"
           )
      );  
 
