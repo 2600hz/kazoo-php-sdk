@@ -63,10 +63,60 @@ $user->removeChildren();
 //Once the flow is completed, you can build it by invoking the builder flow() method, passing the root object you used to build your flow nodes.
 $builder->flow($user);
 
+```
 
 
+## Users and devices: 
 
+Users and devices only require a user ID to add. Only two optional configurations are supported. 
 
+canCallSelf - Which determines the users ability to call their own extension via this callflow (Default: FALSE).  
+timeout -  which sets the amount of time the user will ring before the next call flow is chosen (Default: 20 seconds).
+ 
+
+```php
+
+   $user = new User("1232321312");
+   $user->canCallSelf(TRUE); 
+   $user->timeout(10); 
 
 
 ```
+
+
+## Ring Groups
+
+Ring groups require an array of IDs pointed to an array of options. 
+The type option is required but the delay and timeout will use defaults if not set. 
+
+timeout - The time to ring the lines in the ring group before moving to the next call flow action (Default 20).
+strategy - single or simultanious, determiens if all lines should ring simultaniously or individually (Default: simultanious). 
+endpoints - the lists of entity ID (user or device) to ring in the group, and options that can be set on the endpoitns: 
+     id - the id of the device or user which is an endpoint in the ring group.   
+     type - (required) either device or user can be set here. 
+     timeeout - how long each entity should ring before timeout.
+     delay - how long to wait before ringing the line. 
+ 
+
+```php
+
+    $ring_group = new RingGroup("MY_RING_GROUP");                                                                                                                           
+
+    $ring_group->timeout("10");
+    $ring_group->strategy("single"); 
+    $ring_group->endpoints( 
+        array (
+             "23948203984" => array(
+                   "type" => "user",
+                   "timeout" => "10"
+              ),  
+              "381028309" => array(
+                   "type" => "device",
+                   "delay" => "10"
+              )   
+         )   
+    );        
+
+``
+
+`
