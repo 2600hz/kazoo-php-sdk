@@ -8,22 +8,18 @@ use CallflowBuilder\Node\AbstractNode;
 
 class Builder {
 
-    public function __construct(array $numbers, array $patterns = array()){
-        $this->numbers = $numbers; 
-        $this->patterns = $patterns; 
+    public function __construct(array $numbers = array(), array $patterns = array()){
+       if (isset($numbers)){
+            $this->numbers = $numbers;
+       if (isset($patterns){ 
+            $this->patterns = $patterns;
+       } 
     }
 
     public function flow (AbstractNode $node){
         $this->flow = $node->build();  
  
     }
-
-
-    public function contactList($exclude = FALSE){
-        $contact_list = new stdClass();
-        $contact_list = $exclude; 
-	$this->data->contact_list = $contact_list;
-    }        
    
      public function __toString() {
           return json_encode($this);
