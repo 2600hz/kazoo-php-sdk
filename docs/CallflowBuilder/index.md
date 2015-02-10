@@ -6,7 +6,7 @@ CallflowBuilder adds simple methods to support creation and chaining of complex 
 
 To build a call flow, first create all the nodes to be used in the call flow, then create the complete callflow with the Builder.
 
-Import the callflow node builder namespaces
+###Import the callflow node builder namespaces
 
 ```php
 //Use the callflow builders for each of the nodes you want to add for your callflow. 
@@ -21,7 +21,7 @@ use \CallflowBuilder\Node\Callflow;
 
 ``` 
 
-Import the callflow builder
+###Import the callflow builder
 
 ```php
 use \CallflowBuilder\Builder;
@@ -29,14 +29,16 @@ use \CallflowBuilder\Builder;
 
 ```
 
-The node builders require you to pass the entity ID for the node, so that the builder can attach the correct ID. The entity ID can be obtained after creation by running $entity->getId(); Using the User ID, create a user callflow node
+The node builders require you to pass the entity ID for the node, so that the builder can attach the correct ID. The entity ID can be obtained after creation by running $entity->getId(); 
+
+###Using the User ID, create a user callflow node
 
 ```php
 $user_id   = $your_user->getId()
 $user_node = User();
 
 ```
-Using the Voicemail box ID to create a callflow
+###Using the Voicemail box ID to create a callflow node
 
 ```php
 $voicemail_box_id = $your_voicemail_box->getId();
@@ -107,7 +109,7 @@ $builder->flow($user);
 
 ```
 
-#Setting Attributes on callflow nodes
+##Setting Attributes on callflow nodes
 
 Attributes can be set on the individual entities depending on type. For example, the user node's canCallSelf value can be set by calling the user node object's canCallSelf method with the argument TRUE or FALSE. 
 
@@ -122,8 +124,18 @@ $user->canCallSelf(FALSE);
 
 Users and devices only require a user ID to add. Only two optional configurations are supported. 
 
-canCallSelf - Which determines the users ability to call their own extension via this callflow (Default: FALSE).  
-timeout -  which sets the amount of time the user will ring before the next call flow is chosen (Default: 20 seconds).
+###canCallSelf 
+Which determines the users ability to call their own extension via this callflow 
+
+The default is **FALSE**
+  
+###timeout 
+
+Sets the amount of time the user will ring before the next call flow is chosen. 
+
+The default is **20** seconds.
+
+####Example
 
 ```php
    $user = new User("1232321312");
@@ -138,7 +150,9 @@ Voicemail requires the mailbox ID of an existing voicemail box to be created. It
     
 ### action
 
-Options are compose or check (Default: compose).   
+Options are **compose** or **check**. 
+
+The default is **compose**.   
 
 ```php
    $voicemail_box_id = $your_voicemail_box->getId();
@@ -198,7 +212,9 @@ The type option is required but the delay and timeout will use defaults if not s
 
 ###timeout
 
-The time to ring the lines in the ring group before moving to the next call flow action (Default 20).
+The time in seconds to ring the lines in the ring group before moving to the next call flow action 
+
+The default is **20** seconds.
 
 ###strategy 
 
@@ -210,10 +226,17 @@ The default is **simultaneous**.
 
 The lists of entity ID (user or device) to ring in the group, and options that can be set on the endpoints. 
  
-     id - the id of the device or user which is an endpoint in the ring group.   
-     type - (required) either device or user can be set here. 
-     timeeout - how long each entity should ring before timeout.
-     delay - how long to wait before ringing the line. 
+     ###id 
+     the id of the device or user which is an endpoint in the ring group.   
+     
+     ###type
+     this value is required, either device or user IDs can be set here. 
+     
+     ###timeeout 
+     How long each entity should ring before timeout.
+     
+     ###delay 
+     how long to wait before ringing the line. 
 
 ```php
     $ring_group = new RingGroup("MY_RING_GROUP");                                                                            
