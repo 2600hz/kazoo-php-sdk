@@ -1,6 +1,4 @@
-# Example
-
-## CallFlowBuilder
+# CallFlowBuilder
 
 CallflowBuilder adds simple methods to support creation and chaining of complex callflow nodes. 
 
@@ -219,18 +217,23 @@ The default is **simultaneous**.
 
 The lists of entity ID (user or device) to ring in the group, and options that can be set on the endpoints. 
  
-     ###id 
-     the id of the device or user which is an endpoint in the ring group.   
+**id** 
+ The id of the device or user which is an endpoint in the ring group.   
+ This value is **required**.
      
-     ###type
-     this value is required, either device or user IDs can be set here. 
+**type**
+The id the ID of a user or device. 
+This value is **required**.
      
-     ###timeeout 
-     How long each entity should ring before timeout.
-     
-     ###delay 
-     how long to wait before ringing the line. 
+**timeeout** 
+How long each entity should ring before timeout.
+The default is **20** seconds.
 
+**delay** 
+How long to wait before ringing the line. 
+The default is **0** seconds. 
+
+###Example
 ```php
     $ring_group = new RingGroup("MY_RING_GROUP");                                                                            
    
