@@ -12,7 +12,7 @@ class Builder {
        if (isset($numbers)){
             $this->numbers = $numbers;
        }
-       if (isset($patterns){ 
+       if (isset($patterns)){ 
             $this->patterns = $patterns;
        } 
     }
