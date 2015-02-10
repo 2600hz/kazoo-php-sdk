@@ -10,8 +10,6 @@ class RingGroup extends AbstractNode
         parent::__construct();
         $this->module = "ring_group";
         $this->name($name); 
-        $this->setTimeout();
-        $this->setStrategy(); 
     }   
     
     public function name($name){
