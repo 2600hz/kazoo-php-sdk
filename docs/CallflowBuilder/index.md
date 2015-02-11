@@ -382,7 +382,7 @@ This either activates or deactivates forwarding based on what is currently set. 
 
 This is generally mapped to **\*74<pattern>*.
 
-Example: ```javascript "^\\*74([0-9]*)$" ```
+Example: ``` "^\\*74([0-9]*)$" ```
 
 ####menu
 This provides a menu that can be used to configure call fowarding. 
@@ -426,14 +426,14 @@ Intercom feature has no configuration methods. This uses a pattern instead of a 
 
 This is generally mapped to **\*0<pattern>**.
 
-Example: ```javascript "^\\*0([0-9]*)$" ````
+Example: ``` "^\\*0([0-9]*)$" ````
 
 ##privacy
 
 Privacy activates caller ID blocking on an outbound call. Since the feature is intended to be used by entering the feature code followed by the destination number, this should use a **pattern** instead of a number.  
 
 This is generally mapped to **\*67<pattern>**.
-Example: ```javascript "^\\*67([0-9]*)$" ```
+Example: ``` "^\\*67([0-9]*)$" ```
 
 ###mode()
 
@@ -454,7 +454,7 @@ If the call is parked, it will retrieve it, if the call is active, it will park 
 
 This is generally mapped to **\*3<pattern>**.
 
-Example: ```javascript "^\\*3([0-9]*)$" ```
+Example: ``` "^\\*3([0-9]*)$" ```
 
 ####valet
 Valet will park the call in the next avialable parking lot number. 
@@ -466,7 +466,7 @@ retrieves a parked call using the parking lot number specified. This feature use
 
 This is generally mapped to **\*5<pattern>**.
 
-Example: ```javascript "^\\*5([0-9]*)$" ```
+Example: ``` "^\\*5([0-9]*)$" ```
 
 #Voicemail
 
@@ -484,6 +484,6 @@ This feature is used to direct a call to another users voicemail. Since invocati
 
 
 This is generally mapped to **\*\*<pattern>**.
-Example: ```javascript "^\\*\\*([0-9]*)$" ```
+Example: ``` "^\\*\\*([0-9]*)$" ```
 
         
