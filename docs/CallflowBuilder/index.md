@@ -205,7 +205,7 @@ Temporal routes take timezones as arguments. Add the account ID as the index for
 
 
 ```php
-   $temporal_route_node = TemporalRoute($timezone); 
+   $temporal_route_node = TemporalRoute("America/Los_Angeles"); 
    $temporal_route_node->addChild($user_node, $temporal_route_id); // timeframe specified 
    $temporal_route_node->addChild($user2_node); // all other times
 
