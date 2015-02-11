@@ -6,7 +6,7 @@ class Device extends AbstractNode
 {
     public function __construct($id) {
         parent::__construct();
-        $this->module = "user";
+        $this->module = "device";
         $this->data->id = $id;
     }   
     
