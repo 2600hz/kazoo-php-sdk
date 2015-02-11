@@ -347,18 +347,143 @@ The default is **0** seconds.
             )   
          )   
     );
+```
 
 # Feature codes
 
+Feature codes are single element call flows. The feature codes support multiple actions which can be set useingthe feature codes action() method. Each action determines which specific sub-feature will be invoked when the feature code is dialed. NOTE: Features which require a feature code follewed by a digit pattern should use **pattern** instead of number when creating the builder.
+
+IE: $builder = new Builder(null, $pattern);
+
 ##Call Forwarding
+
+Call forwarding has multiple actions which can be mapped to feature codes using the action method in the node builder CallFowarding.php. 
+
+###action()
+
+The actions that can be set are 
+
+####activate
+This activates call forwarding on the line invoking the feature code. 
+
+Generally this is mapped to **\*72**
+
+####deactivate
+This deactivates call forwarding on the line invoking the feature. 
+
+Generally this is mapped to **\*73**
+
+####update
+This updates the fowarding number to a new number on the line invoking the feature. 
+
+
+####toggle
+This either activates or deactivates forwarding based on what is currently set. Patterns should be used instead of numbers for this feature code to work properly.  
+
+This is generally mapped to **\*74<pattern>*.
+
+Example: ```javascript "^\\*74([0-9]*)$" ```
+
+####menu
+This provides a menu that can be used to configure call fowarding. 
+
+Generally this is mapped to **\*56** 
+
 
 ##Hotdesk
 
+###action()
+   
+The action method determines which action the feature code will invoke. 
+
+####login
+
+Enable enables the hotdesking feature on the line invoking it, for the extension specified. 
+
+This is generally mapped to **\*11**.
+
+####logout
+
+Disable hotdesking on the line invoking it. 
+
+This is generally mapped to **\*12**.
+
+####toggle
+
+Toggles between login and logout on the line invoking it. 
+
+This is generally mapped to **\*13**.
+
+####bridge
+
+This does... something? Apperently no one knows what this does, if you find out please tell me so I can know too. 
+
+This is generally not exposed but is available. 
+
 ##Intercom
+
+Intercom feature has no configuration methods. This uses a pattern instead of a number so that the additional digits (the intercom destination extension) can be added to the feature code pattern. 
+
+This is generally mapped to **\*0<pattern>**.
+
+Example: ```javascript "^\\*0([0-9]*)$" ````
 
 ##privacy
 
+Privacy activates caller ID blocking on an outbound call. Since the feature is intended to be used by entering the feature code followed by the destination number, this should use a **pattern** instead of a number.  
+
+This is generally mapped to **\*67<pattern>**.
+Example: ```javascript "^\\*67([0-9]*)$" ```
+
+###mode()
+
+this should be set to **full**  
+
 
 ##Park
+
+Parking feature had an action method which determines the behavior when invoked. 
+
+###action()
+
+The available actions are 
+
+####auto
+
+If the call is parked, it will retrieve it, if the call is active, it will park it. This feature uses **patterns** instead of numbers since it is intended to be used to park and retrieve calls from a parking lot input by the user parking the call. 
+
+This is generally mapped to **\*3<pattern>**.
+
+Example: ```javascript "^\\*3([0-9]*)$" ```
+
+####valet
+Valet will park the call in the next avialable parking lot number. 
+
+This is generally mapped to **\*4**
+
+####retrieve
+retrieves a parked call using the parking lot number specified. This feature uses **pattern** instead of number since it is intended to be used to retrieve a parked call from a specific lot.  
+
+This is generally mapped to **\*5<pattern>**.
+
+Example: ```javascript "^\\*5([0-9]*)$" ```
+
+#Voicemail
+
+Using the voicemail class you can define two feature codes, direct to voicemail and check voicemail. These are set via the action() method. These features should NOT have assigned voicemail box as they are intended to be used by all the users on the account using the feature code. 
+
+##action() 
+
+###check
+This is a feature that can be invoked by the user to check voicemail.
+
+This is generally mapped to **\*97**
+
+###compose
+This feature is used to direct a call to another users voicemail. Since invocation of the feature requires the feature code and then an extension, this should use a **pattern** instead of a number. 
+
+
+This is generally mapped to **\*\*<pattern>**.
+Example: ```javascript "^\\*\\*([0-9]*)$" ```
 
         
