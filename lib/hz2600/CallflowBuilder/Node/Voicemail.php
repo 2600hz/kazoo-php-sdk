@@ -4,10 +4,17 @@ namespace CallflowBuilder\Node;
 
 class Voicemail extends AbstractNode
 {
-    public function __construct($id) {
+    public function __construct($id = null) {
         parent::__construct();
         $this->module = "vm_box";
-        $this->data->id = $id;
+        if (isset($id)){
+            $this->id($id);
+        } 
+    }
+
+    public function id($id){
+        $this->data->id = $id; 
+        return $this; 
     }
 
     public function action($action = "compose") {
