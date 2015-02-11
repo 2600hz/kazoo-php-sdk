@@ -263,7 +263,7 @@ The pivot module requires four options to configure.
 
 
 ```php
-    $pivot_node = Pivot();
+    $pivot_node = new Pivot();
     $pivot_node
         ->method("POST")
         ->req_timeout("19")
