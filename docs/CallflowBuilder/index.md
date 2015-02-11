@@ -380,7 +380,7 @@ This updates the fowarding number to a new number on the line invoking the featu
 ####toggle
 This either activates or deactivates forwarding based on what is currently set. Patterns should be used instead of numbers for this feature code to work properly.  
 
-This is generally mapped to **\*74<pattern>*.
+This is generally mapped to ** \*74{pattern} **.
 
 Example: ``` "^\\*74([0-9]*)$" ```
 
@@ -424,7 +424,7 @@ This is generally not exposed but is available.
 
 Intercom feature has no configuration methods. This uses a pattern instead of a number so that the additional digits (the intercom destination extension) can be added to the feature code pattern. 
 
-This is generally mapped to **\*0<pattern>**.
+This is generally mapped to **\*0{pattern}**.
 
 Example: ``` "^\\*0([0-9]*)$" ````
 
@@ -432,7 +432,7 @@ Example: ``` "^\\*0([0-9]*)$" ````
 
 Privacy activates caller ID blocking on an outbound call. Since the feature is intended to be used by entering the feature code followed by the destination number, this should use a **pattern** instead of a number.  
 
-This is generally mapped to **\*67<pattern>**.
+This is generally mapped to **\*67{pattern}**.
 
 Example: ``` "^\\*67([0-9]*)$" ```
 
@@ -453,7 +453,7 @@ The available actions are
 
 If the call is parked, it will retrieve it, if the call is active, it will park it. This feature uses **patterns** instead of numbers since it is intended to be used to park and retrieve calls from a parking lot input by the user parking the call. 
 
-This is generally mapped to **\*3<pattern>**.
+This is generally mapped to **\*3{pattern}**.
 
 Example: ``` "^\\*3([0-9]*)$" ```
 
@@ -465,7 +465,7 @@ This is generally mapped to **\*4**
 ####retrieve
 retrieves a parked call using the parking lot number specified. This feature uses **pattern** instead of number since it is intended to be used to retrieve a parked call from a specific lot.  
 
-This is generally mapped to **\*5<pattern>**.
+This is generally mapped to **\*5{pattern}**.
 
 Example: ``` "^\\*5([0-9]*)$" ```
 
@@ -484,7 +484,7 @@ This is generally mapped to **\*97**
 This feature is used to direct a call to another users voicemail. Since invocation of the feature requires the feature code and then an extension, this should use a **pattern** instead of a number. 
 
 
-This is generally mapped to **\*\*<pattern>**.
+This is generally mapped to **\*\*{pattern}**.
 
 Example: ``` "^\\*\\*([0-9]*)$" ```
 
