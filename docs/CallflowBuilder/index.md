@@ -80,9 +80,10 @@ To construct the callflow, build the callflow by invoking the builder build() me
 
 ```php
 $your_call_flow = $sdk->Account()->Callflow(); 
-$phone_numbers = array(1234, 5405551234);
-$your_call_flow->numbers = ( $phone_numbers );
-$your_call_flow->flow = Builder::build($user_node);
+$phone_numbers  = array(1234, 5405551234);
+
+$builder = new Builder($phone_numbers); 
+$your_call_flow->fromBuilder($builder->build($user_node);
 
 ```
 
