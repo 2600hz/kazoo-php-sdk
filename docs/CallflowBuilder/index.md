@@ -349,7 +349,7 @@ The default is **0** seconds.
     );
 ```
 
-# Feature codes
+# Feature Codes 
 
 Feature codes are single element call flows. The feature codes support multiple actions which can be set useingthe feature codes action() method. Each action determines which specific sub-feature will be invoked when the feature code is dialed. NOTE: Features which require a feature code follewed by a digit pattern should use **pattern** instead of number when creating the builder.
 
@@ -433,6 +433,7 @@ Example: ``` "^\\*0([0-9]*)$" ````
 Privacy activates caller ID blocking on an outbound call. Since the feature is intended to be used by entering the feature code followed by the destination number, this should use a **pattern** instead of a number.  
 
 This is generally mapped to **\*67<pattern>**.
+
 Example: ``` "^\\*67([0-9]*)$" ```
 
 ###mode()
@@ -484,6 +485,7 @@ This feature is used to direct a call to another users voicemail. Since invocati
 
 
 This is generally mapped to **\*\*<pattern>**.
+
 Example: ``` "^\\*\\*([0-9]*)$" ```
 
         
