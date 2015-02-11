@@ -15,11 +15,11 @@ $ ./composer update
   * auth_password
   * auth_realm
 ```bash
-$ vim src/Kazoo/Tests/phpunit.xml
+$ vim lib/hz2600/Kazoo/Tests/phpunit.xml
 ```
 * Run the unit test
 ```bash
-src/Kazoo/Tests/runtests.sh
+lib/hz2600/Kazoo/Tests/runtests.sh
 ```
 
 ## Running Certain Tests
@@ -27,7 +27,7 @@ src/Kazoo/Tests/runtests.sh
 Any arguments provided to `runtests.sh` will be pased along to [phpunit](https://phpunit.de/manual/current/en/textui.html#textui.clioptions).  One of the more useful is `--filter`.  For example, to just test the devices API:
 
 ```bash
-src/Kazoo/Tests/runtests.sh --filter DeviceTest
+lib/hz2600/Kazoo/Tests/runtests.sh --filter DeviceTest
 ```
 
 ## Futher Info
