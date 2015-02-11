@@ -181,12 +181,12 @@ language requires an existing language identifier (example: en-us) to be created
   
 ```
 
-## PlayMedia 
+## Play 
 
-Play media requires a media ID of an existing media file to be created. 
+Play (media) requires a media ID of an existing media file to be created. 
 
 ```php
-   $media_node = PlayMedia("12146546546546");
+   $media_node = Play("12146546546546");
   
 ```
 
