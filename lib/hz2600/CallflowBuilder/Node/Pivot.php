@@ -14,7 +14,6 @@ class Pivot extends AbstractNode
         return $this; 
    }
 
-
    public function req_timeout($timeout){
         $this->data->req_timeout = $timeout; 
         return $this; 
