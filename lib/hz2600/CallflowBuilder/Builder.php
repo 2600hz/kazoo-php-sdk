@@ -18,8 +18,7 @@ class Builder {
     }
 
     public function build(AbstractNode $node){
-        $this->flow = $node->build();  
- 
+        return $this->flow = $node->build();  
     }
    
      public function __toString() {
