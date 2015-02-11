@@ -174,10 +174,10 @@ $menu_node->addChild($option_default);
 
 ## Language
 
-language requires an existing language identifier (example: en_us) to be created. 
+language requires an existing language identifier (example: en-us) to be created. 
 
 ```php
-   $language_node = Language("en_us");
+   $language_node = Language("en-us");
   
 ```
 
