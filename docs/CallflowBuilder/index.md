@@ -273,7 +273,7 @@ The pivot module requires four options to configure.
 
 ```
 
-## Page Group
+## PageGroup
 
 Page groups require an array of epoints containing an associative array of IDs which point to the type of resource. 
 
@@ -289,7 +289,7 @@ Page groups require an array of epoints containing an associative array of IDs w
 
 ```
 
-## Ring Group
+## RingGroup
 
 Ring groups require an array of IDs pointed to an array of options. 
 The type option is required but the delay and timeout will use defaults if not set. 
@@ -426,9 +426,9 @@ Intercom feature has no configuration methods. This uses a pattern instead of a 
 
 This is generally mapped to **\*0{pattern}**.
 
-Example: ``` "^\\*0([0-9]*)$" ````
+Example: ``` "^\\*0([0-9]*)$" ```
 
-##privacy
+##Privacy
 
 Privacy activates caller ID blocking on an outbound call. Since the feature is intended to be used by entering the feature code followed by the destination number, this should use a **pattern** instead of a number.  
 
