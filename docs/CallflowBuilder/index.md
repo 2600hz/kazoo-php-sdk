@@ -345,4 +345,19 @@ The default is **0** seconds.
                "delay" => "10"
             )   
          )   
-    );        
+    );
+
+# Feature codes
+
+##Call Forwarding
+
+##Hotdesk
+
+##Intercom
+
+##privacy
+
+
+##Park
+
+        
