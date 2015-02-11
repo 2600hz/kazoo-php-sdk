@@ -76,18 +76,13 @@ $user_node->addLastChild($voicemail_node);
 
 
 ###Building Callflows
-To construct the callflow, create a new instance of the builder class using either an array of patterns or an array of phone numbers.
+To construct the callflow, build the callflow by invoking the builder build() method, passing the root object used to build the callflow nodes. A flow will be constructed which can be assigned to the SDK callflow object's flow property. 
 
 ```php
+$your_call_flow = $sdk->Account()->Callflow(); 
 $phone_numbers = array(1234, 5405551234);
-$flow_builder  = new Builder( $phone_numbers );
-
-```
-
-Build the callflow by invoking the builder build() method, passing the root object used to build the callflow nodes.
-
-```php
-$builder->build($user_node);
+$your_call_flow->numbers = ( $phone_numbers );
+$your_call_flow->flow = Builder::build($user_node);
 
 ```
 
