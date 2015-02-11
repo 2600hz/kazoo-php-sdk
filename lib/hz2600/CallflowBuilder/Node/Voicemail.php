@@ -6,7 +6,7 @@ class Voicemail extends AbstractNode
 {
     public function __construct($id = null) {
         parent::__construct();
-        $this->module = "vm_box";
+        $this->module = "voicemail";
         if (isset($id)){
             $this->id($id);
         } 
