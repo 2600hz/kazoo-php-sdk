@@ -39,7 +39,7 @@ The node builders require you to pass the entity ID for the node, so that the bu
 
 ```php
 $user_id   = $your_user->getId()
-$user_node = User();
+$user_node = User($user_id);
 
 ```
 ###Using the Voicemail box ID to create a callflow node
