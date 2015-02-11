@@ -380,7 +380,7 @@ This updates the fowarding number to a new number on the line invoking the featu
 ####toggle
 This either activates or deactivates forwarding based on what is currently set. Patterns should be used instead of numbers for this feature code to work properly.  
 
-This is generally mapped to ** \*74{pattern} **.
+This is generally mapped to **\*74{pattern}**.
 
 Example: ``` "^\\*74([0-9]*)$" ```
 
