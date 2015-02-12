@@ -77,7 +77,7 @@ abstract class AbstractNode
      /**
      *
      *
-     * @param /CallflowBuilder/Node/AbstractNode
+     * @param /CallflowBuilder/Node/AbstractNode $child
      * @param string $index
      */
     public function addChild(AbstractNode $child, $index = '_') {
