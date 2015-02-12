@@ -87,7 +87,7 @@ $menu_node->addChild($voicemail_node);
 ```
 
 ###Building Callflows
-To construct the callflow, build the callflow by invoking the builder build() method, passing the root object used to build the callflow nodes. A flow will be constructed which can be assigned to the SDK callflow object's flow property. 
+To construct the callflow, build the callflow by invoking the builder build() method, passing the root object used to build the callflow nodes. A full data payload will be constructed which can be assigned to the SDK callflow object via the SDK callflow entitie method fromBuilder(). 
 
 ```php
 $your_call_flow = $sdk->Account()->Callflow(); 
