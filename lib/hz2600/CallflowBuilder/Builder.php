@@ -26,10 +26,10 @@ class Builder {
      *
      *
      *
-     * @param \CallflowBuilder\Node\AbstractNode
+     * @param \CallflowBuilder\Node\AbstractNode $root_node
      */
-    public function build(AbstractNode $node){
-        $this->flow = $node->build();  
+    public function build(AbstractNode $root_node){
+        $this->flow = $root_node->build();  
         return $this; 
     }
    
@@ -37,7 +37,7 @@ class Builder {
      *
      *
      *
-     * @var $data
+     * 
      */
     public function __toString() {
         return json_encode($this);

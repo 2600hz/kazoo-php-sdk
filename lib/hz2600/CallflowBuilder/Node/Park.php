@@ -2,11 +2,11 @@
 
 namespace CallflowBuilder\Node; 
 
-class Hotdesk extends AbstractNode
+class Park extends AbstractNode
 {
     public function __construct() {
         parent::__construct();
-        $this->module = "hotdesk";
+        $this->module = "park";
     }   
 
     public function action($action){

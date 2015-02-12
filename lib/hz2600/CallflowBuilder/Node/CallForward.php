@@ -6,7 +6,7 @@ class CallForward extends AbstractNode
 {
     public function __construct() {
         parent::__construct();
-        $this->module = "hotdesk";
+        $this->module = "call_forward";
     }   
 
     public function action($action){
