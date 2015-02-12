@@ -157,10 +157,11 @@ The default is **compose**.
 
 ## Menu 
 
-Menu requires a name to create. 
+Menu requires an ID of an existing menu to create the node. 
 
 ```php
-   $menu_node   = Menu("MenuName");
+   $menu_id     = $sdk_menu->getId(); 
+   $menu_node   = Menu($menu_id);
   
 ```
 ###Adding menu options
@@ -172,11 +173,6 @@ $menu_node->addChild($option_1, 2);
 $menu_node->addChild($option_default);
 
 ```
-
-
-
-
-
 
 ## Language
 
@@ -192,7 +188,8 @@ language requires an existing language identifier (example: en-us) to be created
 Play (media) requires a media ID of an existing media file to be created. 
 
 ```php
-   $media_node = Play("12146546546546");
+   $media_id   = $sdk_media->getId();
+   $media_node = Play($sdk_media);
   
 ```
 
@@ -201,7 +198,8 @@ Play (media) requires a media ID of an existing media file to be created.
 Callflow requires the ID of an existing call flow to be created. 
 
 ```php
-   $callflow_node = Callflow("12146546546546");
+   $callflow_id   = $sdk_callflow->getId();
+   $callflow_node = Callflow($callflow_id);
   
 ```
 
@@ -245,34 +243,39 @@ if an action and ruleset is specified, this option can be used to enable, disabl
 
 Carrier resources can be added to a call flow to allow access to either the accounts carriers, a parent accounts carriers or the global offnet resource. The typical call flow for this is to use numbers = array("no_match") and specify the only call flow node as either an account resource or an offnet resource. 
 
+By default the Resources node will be built as offnet if no account_id is specified in the constructor. If an account ID is not specified, the value of use_local_resource is set to FALSE. If the account ID is specified in the constructor, the value use_local_resource is left as default (TRUE) and the account number is assigned to the hunt_account_id value. These parameters can be individually accessed as well via the exposed methods useLocalReesource and HuntAccountId
 
 ```php
     $offnet_resource_node  = new Resources();
-    $offnet_resource_node->useLocalResources(FALSE); 
     $account_resource_node = new Resource($account_id);  
        
 ```
 
 the methods supported by resources are
 
-###to_did
-directs a call to a static DID
+###to_did()
 
-###media
+Directs a call to the specified DID
+
+###media()
+
 Plays a media file prior to connecting the call to resources. 
 Takes a media ID. 
 
-###ringback
+###ringback()
+
 Plays a custom ringback while connecting calls to resources. 
 Takes a ringback ID. 
 
-###formatFromDid
+###formatFromDid()
+
 Accepts TRUE or FALSE
 
-###timeout
+###timeout()
+
 Timeout in seconds. 
 
-####doNotNormalize
+####doNotNormalize()
 
 Accepts TRUE or FALSE
 
@@ -282,36 +285,35 @@ Accepts TRUE or FALSE
 
 ####fromUriRealm()
 
-sets the from URI realm to the string specified. 
+Sets the from URI realm to the string specified. 
 
 ####callerIdType()
 
-sets the caller ID type to what is specified  
+Sets the caller ID type to what is specified  
 
 ####useLocalResources()
 
-TRUE or FALSE
+Accepts TRUE or FALSE
 
 ####huntAccountId()
 
-an account_id
+Accepts an account ID. The specified accounts carrier resources will be used for offnet calling. 
 
 ####emitAccountId()
 
-puts account id in SIP header 
+Puts the specified account id in SIP header. 
 
 ####customSipHeaders()
 
-An associative array of custom sip headers
+An associative array of custom sip headers.
 
 ####ignoreEarlyMedia() 
 
-TRUE or FALSE
+Accepts TRUE or FALSE.
 
 ####outboundFlags()
 
-An array of flags. 
-
+Accepts an array of flags. 
 
 ##Pivot
 
@@ -320,14 +322,21 @@ Pivot allows calls to external HTTP servers from call flows. This exposes real t
 The pivot module requires four options to configure. 
 
 ###method
-   The method used for the http request; 
+
+The method used for the http request.
+
 ###req_timeout
-   The timeout in seconds before an http request is dropped and the next call flow node is selected. 
+
+The timeout in seconds before an http request is dropped and the next call flow node is selected. 
+
 ###req_format
-   The data payload format to use. 
-   The optiosn are **kazoo** or **twixml**.
+
+The data payload format to use. 
+The optiosn are **kazoo** or **twixml**.
+
 ###voice_url
-   The url to send the http request. 
+
+The url to send the http request. 
 
 
 ```php
@@ -378,8 +387,8 @@ The default is **simultaneous**.
 The lists of entity ID (user or device) to ring in the group, and options that can be set on the endpoints. 
  
 **ID** 
- The id of the device or user which is an endpoint in the ring group.   
- This value is **required**.
+The id of the device or user which is an endpoint in the ring group.   
+This value is **required**.
      
 **type**
 The id the ID of a user or device. 
