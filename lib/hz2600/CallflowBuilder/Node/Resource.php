@@ -84,5 +84,10 @@ class Resources extends AbstractNode
         $this->data->ignore_early_media = $value; 
         return $this; 
     }   
+ 
+    public function outboundFlags($flags){
+        $this->data->outbound_flags = $flags;
+        return $this; 
+    }
 
 }

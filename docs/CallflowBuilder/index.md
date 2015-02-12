@@ -163,7 +163,7 @@ Menu requires a name to create.
    $menu_node   = Menu("MenuName");
   
 ```
-
+###Adding menu options
 To add options to the menu, use Menu's addChild method to add the next call flow node, specifying either no second argument for default or the menu number for the option.
 
 ```php
@@ -172,6 +172,11 @@ $menu_node->addChild($option_1, 2);
 $menu_node->addChild($option_default);
 
 ```
+
+
+
+
+
 
 ## Language
 
@@ -236,15 +241,77 @@ if an action and ruleset is specified, this option can be used to enable, disabl
  
 ```
 
-##Resource/Offnet
+##Resources
 
 Carrier resources can be added to a call flow to allow access to either the accounts carriers, a parent accounts carriers or the global offnet resource. The typical call flow for this is to use numbers = array("no_match") and specify the only call flow node as either an account resource or an offnet resource. 
 
 
 ```php
-    $offnet_resource_node  = Offnet();
-    $account_resource_node = Resource($account_id);     
+    $offnet_resource_node  = new Resources();
+    $offnet_resource_node->useLocalResources(FALSE); 
+    $account_resource_node = new Resource($account_id);  
+       
 ```
+
+the methods supported by resources are
+
+###to_did
+directs a call to a static DID
+
+###media
+Plays a media file prior to connecting the call to resources. 
+Takes a media ID. 
+
+###ringback
+Plays a custom ringback while connecting calls to resources. 
+Takes a ringback ID. 
+
+###formatFromDid
+Accepts TRUE or FALSE
+
+###timeout
+Timeout in seconds. 
+
+####doNotNormalize
+
+Accepts TRUE or FALSE
+
+####bypassE164()
+
+Accepts TRUE or FALSE
+
+####fromUriRealm()
+
+sets the from URI realm to the string specified. 
+
+####callerIdType()
+
+sets the caller ID type to what is specified  
+
+####useLocalResources()
+
+TRUE or FALSE
+
+####huntAccountId()
+
+an account_id
+
+####emitAccountId()
+
+puts account id in SIP header 
+
+####customSipHeaders()
+
+An associative array of custom sip headers
+
+####ignoreEarlyMedia() 
+
+TRUE or FALSE
+
+####outboundFlags()
+
+An array of flags. 
+
 
 ##Pivot
 
