@@ -74,6 +74,17 @@ $user_node->addLastChild($voicemail_node);
 
 ```
 
+addChild() supports an index as a second argument. This is useful for adding menu options. By default the index '_' is used, but can be overridden by specifying a second argument in add child. 
+
+```php
+//sets option one for the menu to $user_node.
+$menu_node->addChild($user_node, 1);
+//sets option two for the menu to $other_user_node
+$menu_node->addChild($other_user_node, 2);
+//sets the default option in the menu to $voicemail_node
+$menu_node->addChild($voicemail_node); 
+
+```
 
 ###Building Callflows
 To construct the callflow, build the callflow by invoking the builder build() method, passing the root object used to build the callflow nodes. A flow will be constructed which can be assigned to the SDK callflow object's flow property. 
