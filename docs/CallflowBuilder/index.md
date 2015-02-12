@@ -95,17 +95,27 @@ Children can be removed from call flows as well by calling the parent object's r
 $language_node->removeChild(); 
 
 ```
-
 The removeChildren method will remove all the children below the object calling it.
 
 ```php
 $user_node->removeChildren(); 
 
 ```
+For menus and temporal routes, the removeChild and removeChildren() function supports removal using an optional index argument. 
+
+```php
+//remove the first child for the default option from a menu. 
+$menu_node->removeChild('_');
+//remove all the children at option 2 in a menu.
+$menu_node->removeChilden('2');
+//remove the temporal route for index $time_id 
+$temporal_route_node->removeChild($time_id); 
+
+```
 
 ##Setting Attributes on callflow nodes
 
-Attributes can be set on the individual entities depending on type. For example, the user node's canCallSelf value can be set by calling the user node object's canCallSelf method with the argument TRUE or FALSE. 
+Attributes can be set on the individual node elements depending on the attributes supported by the type of element. For example, the User node's canCallSelf value can be set by calling the User node object's canCallSelf method with the argument TRUE or FALSE. 
 
 ```php
 $user_node->canCallSelf(FALSE); 
