@@ -96,7 +96,9 @@ $your_call_flow = $sdk->Account()->Callflow();
 $phone_numbers  = array(1234, 5405551234);
 
 $builder = new Builder($phone_numbers); 
-$your_call_flow->fromBuilder($builder->build($user_node);
+$data = $builder->build($user_node);
+$your_call_flow->fromBuilder($data);
+$your_call_flow->save(); 
 
 ```
 
