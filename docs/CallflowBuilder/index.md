@@ -117,10 +117,10 @@ $user_node->removeChildren();
 For menus and temporal routes, the removeChild and removeChildren() function supports removal using an optional index argument. 
 
 ```php
-//remove the first child for the default option from a menu. 
+//remove the first child of the default option from menu. 
 $menu_node->removeChild('_');
 //remove all the children at option 2 in a menu.
-$menu_node->removeChilden('2');
+$menu_node->removeChildren('2');
 //remove the temporal route for index $time_id 
 $temporal_route_node->removeChild($time_id); 
 
