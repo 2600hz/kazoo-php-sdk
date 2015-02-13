@@ -33,7 +33,6 @@ use \CallflowBuilder\Node\Privacy;
 ```php
 use \CallflowBuilder\Builder;
 
-
 ```
 
 The node builders require you to pass the entity ID for the node, so that the builder can attach the correct ID. The entity ID can be obtained after creation by running $entity->getId(); 
@@ -41,15 +40,15 @@ The node builders require you to pass the entity ID for the node, so that the bu
 ###Using the User ID, create a user callflow node
 
 ```php
-$user_id   = $your_user->getId()
-$user_node = User($user_id);
+$user_id   = $your_user->getId();
+$user_node = new User($user_id);
 
 ```
 ###Using the Voicemail box ID to create a callflow node
 
 ```php
 $voicemail_box_id = $your_voicemail_box->getId();
-$voicemail_node   = Voicemail($voicemail_box_id);
+$voicemail_node   = new Voicemail($voicemail_box_id);
 
 ```
 
@@ -157,7 +156,8 @@ The default is **20** seconds.
 ####Example
 
 ```php
-   $user_node = new User("1232321312");
+   $user_id   = $your_user->getId();
+   $user_node = new User($user_id);
    $user_node->canCallSelf(TRUE); 
    $user_node->timeout(10); 
  
