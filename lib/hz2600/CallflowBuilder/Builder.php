@@ -14,10 +14,10 @@ class Builder {
      * @param array $patterns
      */
     public function __construct(array $numbers = array(), array $patterns = array()){
-        if (isset($numbers)){
+        if (!empty($numbers)){
             $this->numbers = $numbers;
         }
-        if (isset($patterns)){ 
+        if (!empty($patterns)){ 
             $this->patterns = $patterns;
         } 
     }
