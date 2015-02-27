@@ -123,6 +123,7 @@ See the `doc` directory for more detailed documentation.
 - [Darren Schreiber](https://github.com/dschreiber)
 - [Peter Defebvre](https://github.com/macpie)
 - [Francis Genet](https://github.com/frifri)
+- [Sean Wysor](https://github.com/swysor)
 - Thanks to [KnpLabs/php-github-api](https://github.com/KnpLabs/php-github-api) for their work on the Php github api, which inspired this library
 
 Thanks to GitHub for the high quality API and documentation.

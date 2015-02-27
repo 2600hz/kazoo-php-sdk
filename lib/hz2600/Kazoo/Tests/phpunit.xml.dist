@@ -33,7 +33,7 @@
 
   <filter>
     <whitelist>
-      <directory>../src/Kazoo/</directory>
+      <directory>../lib/hz2600/Kazoo/</directory>
     </whitelist>
   </filter>
 </phpunit>
