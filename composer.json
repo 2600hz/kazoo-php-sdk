@@ -27,6 +27,6 @@
         "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
-        "psr-0": {"Kazoo": "src/"}
+        "psr-0": {"Kazoo": "lib/hz2600", "CallflowBuilder": "lib/hz2600"}
     }
 }
