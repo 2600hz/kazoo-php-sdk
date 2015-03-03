@@ -16,3 +16,4 @@ class SystemConfig extends AbstractEntity
         return $this;
     }   
 }
+
