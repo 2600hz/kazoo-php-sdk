@@ -2,7 +2,7 @@
 
 namespace CallflowBuilder\Node; 
 
-class Resources extends AbstractNode
+class Resource extends AbstractNode
 {
     public function __construct($id = NULL) {
         parent::__construct();
