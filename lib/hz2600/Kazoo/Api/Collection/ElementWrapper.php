@@ -176,7 +176,7 @@ class ElementWrapper
      *
      */
     private function setEntityName($entity_name) {
-        if (!class_exists($entity_name)) {
+        if (!@class_exists($entity_name)) {
             $this->entity_name = null;
         } else {
             $this->entity_name = $entity_name;
