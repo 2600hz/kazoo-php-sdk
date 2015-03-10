@@ -80,6 +80,22 @@ class Response
 
     /**
      *
+     * @return string
+     */
+    public function getHeaders() {
+        return $this->response->getHeaders();
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getHeader($header) {
+        return $this->response->getHeader($header);
+    }
+
+    /**
+     *
      * @return int
      */
     public function getStatusCode() {
