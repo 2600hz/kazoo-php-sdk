@@ -102,6 +102,18 @@ class User implements AuthTokenInterface
      *
      * @return string
      */
+    public function getLoggedInUserId() {
+        $response = $this->getAuthResponse();
+        if (isset($response->owner_id)) {
+            return $response->owner_id;
+        }
+        return "";
+    }
+
+    /**
+     *
+     * @return string
+     */
     public function getToken() {
         $response = $this->getAuthResponse();
         if (isset($response->auth_token)) {
