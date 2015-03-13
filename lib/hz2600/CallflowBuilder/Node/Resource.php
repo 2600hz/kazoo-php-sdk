@@ -27,7 +27,7 @@ class Resource extends AbstractNode
   
     public function ringback($ringback_id){
         $this->data->ringback = $ringback_id;
-        return $this 
+        return $this; 
     } 
 
     public function formatFromDid($value){
