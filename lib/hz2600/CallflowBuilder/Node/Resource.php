@@ -2,7 +2,7 @@
 
 namespace CallflowBuilder\Node; 
 
-class Resources extends AbstractNode
+class Resource extends AbstractNode
 {
     public function __construct($id = NULL) {
         parent::__construct();
@@ -27,7 +27,7 @@ class Resources extends AbstractNode
   
     public function ringback($ringback_id){
         $this->data->ringback = $ringback_id;
-        return $this 
+        return $this; 
     } 
 
     public function formatFromDid($value){
