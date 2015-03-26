@@ -15,6 +15,7 @@ class SystemConfig extends AbstractEntity
 
         return $this;
     }   
+
     public function fetchEcallmgr() {
         $id = $this->getId();
         $this->setTokenValue($this->getEntityIdName(), $id);
