@@ -2,7 +2,7 @@
 namespace Kazoo\Api\Entity;
 
 use \Kazoo\Common\Exception\ReadOnly;
-
+use \Kazoo\Common\ChainableInterface;
 
 class Cdr extends AbstractEntity
 {
