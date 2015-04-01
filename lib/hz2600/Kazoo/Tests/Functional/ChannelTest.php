@@ -62,7 +62,7 @@ class ChannelTest extends FunctionalTest
      * @test
      * @depends testFetchChannel
      */
-    public function testHangupChannel($channel) {
+    public function testTransferChannel($channel) {
         $data = new stdClass();
         $data->action = "transfer";
 
