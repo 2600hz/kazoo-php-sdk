@@ -11,7 +11,6 @@ class Device extends AbstractEntity
         if (!empty($parameters)) {
             $query_string = '?' . http_build_query($parameters);
         }
-        $this->setTokenValue('query_string', $query_string);
         $this->get(array(), '/quickcall/{quickcall_number}' . $query_string);
     }
 }
