@@ -9,6 +9,7 @@
 namespace Kazoo\Tests\Functional;
 
 use \Kazoo\Tests\Common\FunctionalTest;
+use \stdClass; 
 
 /**
  * @group functional
@@ -16,35 +17,39 @@ use \Kazoo\Tests\Common\FunctionalTest;
 class ChannelTest extends FunctionalTest
 {
     // don't run tests against the primary account, it will delete system channels
-    private $account_id = '0a936fc79bdb4a8c38e6089ab44ad030';
+   // private $account_id = '0a936fc79bdb4a8c38e6089ab44ad030';
 
     /**
      * @test
      */
     public function testListingChannels() {
+
+        $this->markTestIncomplete(
+            'This test requires live calls and does bad things to them.'
+        );
+
+
         $channels = $this->getSDK()->Account()->Channels();
 
         $channel = null;
         foreach($channels as $element) {
-            if ($element->id == $channel_id) {
+            if (!empty($element)) {
                 $channel = $element->fetch();
-                break;
             }
         }
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\Channel", $channel);
         $this->assertTrue((strlen($channel->getId()) > 0));
-        $this->assertEquals($channel->getId(), $channel_id);
 
-        return $channel->friendly_name;
+        return $channel->getId();
     }
 
     /**
      * @test
-     * @depends testId
+     * @depends testListingChannels
      */
     public function testFetchChannel($channel_id) {
-        $channel = $this->getSDK()->Account($this->account_id)->Channel($channel_id);
+        $channel = $this->getSDK()->Account()->Channel($channel_id);
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\Channel", $channel);
         $this->assertTrue((strlen($channel->getId()) > 0));
@@ -57,31 +62,10 @@ class ChannelTest extends FunctionalTest
      * @test
      * @depends testFetchChannel
      */
-    public function testHangupChannel($channel) {
+    public function testTransferChannel($channel) {
         $data = new stdClass();
-        $data->action = "hangup";
+        $data->action = "transfer";
 
-        $channel->execute($data);
-    }
-
-    /**
-     * @test
-     * @depends testListingChannels
-     */
-    public function testFilteredListingChannels($channel_id) {
-        $filter = array('filter_direction' => "inbound");
-        $channels = $this->getSDK()->Account($this->account_id)->Channels($filter);
-
-        $this->assertTrue(count($channels) == 1);
-
-        $element = $channels->current();
-
-        $this->assertTrue((strlen($element->id) > 0));
-        $this->assertEquals($element->id, $channel_id);
-
-        $filter = array('filter_direction' => "up");
-        $channels = $this->getSDK()->Account($this->account_id)->Channels($filter);
-
-        $this->assertTrue(count($channels) == 0);
+        $channel->executeCommand($data);
     }
 }
