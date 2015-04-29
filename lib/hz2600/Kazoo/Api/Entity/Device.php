@@ -4,9 +4,10 @@ namespace Kazoo\Api\Entity;
 
 class Device extends AbstractEntity
 {
-    public function quickcall($number) {
+    public function quickcall($number, $auto_answer = true) {
         $this->setTokenValue($this->getEntityIdName(), $this->getId());
         $this->setTokenValue('quickcall_number', $number);
-        $this->get(array(), '/quickcall/{quickcall_number}');
+        $this->setTokenValue('auto_answer', ($auto_answer === 'true'));
+        $this->get(array(), '/quickcall/{quickcall_number}?auto_answer={auto_answer}');
     }
 }
