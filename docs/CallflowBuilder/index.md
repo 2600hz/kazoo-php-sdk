@@ -559,8 +559,8 @@ This is generally mapped to **\*3{pattern}**.
 
 Example: ``` "^\\*3([0-9]*)$" ```
 
-####valet
-Valet will park the call in the next avialable parking lot number. 
+####park
+Action 'park' (aka Valet) will park the call in the next available parking lot number. 
 
 This is generally mapped to **\*4**
 
