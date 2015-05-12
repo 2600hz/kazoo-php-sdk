@@ -4,11 +4,11 @@ namespace CallflowBuilder\Node;
 
 class Conference extends AbstractNode
 {
-    public function __construct($id) {
+    public function __construct($id = null) {
         parent::__construct();
         $this->module = "conference";
-        $this->data->id = $id;
+        if ($id) {
+            $this->data->id = $id;
+        }
     }
 }
-
-
