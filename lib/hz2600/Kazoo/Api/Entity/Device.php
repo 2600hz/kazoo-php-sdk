@@ -15,7 +15,6 @@ class Device extends AbstractEntity
         }
         if(!empty($options['cid-name'])) {
             $url .= '?cid-name=' . $options['cid-name'];
-//            $this->setTokenValue('cid-name', $options['cid-name']);
         }
         $this->setTokenValue($this->getEntityIdName(), $this->getId());
         $this->setTokenValue('quickcall_number', $number);
