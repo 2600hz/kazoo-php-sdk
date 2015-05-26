@@ -180,6 +180,22 @@ The default is **compose**.
    $voicemail_node   = Voicemail($voicemail_box_id);
   
 ```
+## Conference 
+
+Conference requires an ID of an existing conference to create the node. 
+
+```php
+   $conference_id     = $sdk_conference->getId(); 
+   $conference_node   = Conference($conference_id);
+  
+```
+
+Conference Service does NOT require an ID of existince conference.
+
+```php
+   $conference_node   = Conference();
+  
+```
 
 ## Menu 
 
