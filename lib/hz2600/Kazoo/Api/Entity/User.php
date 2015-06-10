@@ -18,7 +18,6 @@ class User extends AbstractEntity
         }
         $this->setTokenValue($this->getEntityIdName(), $this->getId());
         $this->setTokenValue('quickcall_number', $number);
-
         $this->get(array(), $url);
     }
 }
