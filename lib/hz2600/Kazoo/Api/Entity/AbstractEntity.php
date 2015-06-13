@@ -57,12 +57,12 @@ abstract class AbstractEntity extends AbstractResource
      */
     public function __call($name, $arguments) {
         $collection_name = '\\Kazoo\\Api\\Collection\\' . $name;
-        if (class_exists($collection_name)) {
+        if (@class_exists($collection_name)) {
             return new $collection_name($this, $arguments);
         }
 
         $entity_name = '\\Kazoo\\Api\\Entity\\' . $name;
-        if (class_exists($entity_name)) {
+        if (@class_exists($entity_name)) {
             return new $entity_name($this, $arguments);
         }
 

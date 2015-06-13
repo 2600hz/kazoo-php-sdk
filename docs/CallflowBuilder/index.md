@@ -180,6 +180,22 @@ The default is **compose**.
    $voicemail_node   = Voicemail($voicemail_box_id);
   
 ```
+## Conference 
+
+Conference requires an ID of an existing conference to create the node. 
+
+```php
+   $conference_id     = $sdk_conference->getId(); 
+   $conference_node   = Conference($conference_id);
+  
+```
+
+Conference Service does NOT require an ID of existince conference.
+
+```php
+   $conference_node   = Conference();
+  
+```
 
 ## Menu 
 
@@ -559,8 +575,8 @@ This is generally mapped to **\*3{pattern}**.
 
 Example: ``` "^\\*3([0-9]*)$" ```
 
-####valet
-Valet will park the call in the next avialable parking lot number. 
+####park
+Action 'park' (aka Valet) will park the call in the next available parking lot number. 
 
 This is generally mapped to **\*4**
 

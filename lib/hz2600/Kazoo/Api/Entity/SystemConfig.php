@@ -15,4 +15,13 @@ class SystemConfig extends AbstractEntity
 
         return $this;
     }   
+
+    public function fetchEcallmgr() {
+        $id = $this->getId();
+        $this->setTokenValue($this->getEntityIdName(), $id);
+        $response = $this->get(array(),"ecallmgr");
+        $entity=$response->getData();
+        $this->setEntity($entity);
+        return $this;
+    }
 }

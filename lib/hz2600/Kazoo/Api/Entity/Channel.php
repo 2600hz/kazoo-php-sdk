@@ -2,17 +2,18 @@
 
 namespace Kazoo\Api\Entity;
 
+use \stdClass;
+
 class Channel extends AbstractEntity
 {
     public function executeCommand($command) {
         $this->setTokenValue($this->getEntityIdName(), $this->getId());
+         
+        $payload = new stdClass; 
+        $payload->data = new stdClass;
+        $payload->data = $command;
 
-        $data = array("data" => $command);
 
-        $uri = $this->getUri();
-        return $this->getSDK()->post($uri
-                                     ,json_encode($data)
-                                     ,array("content-type", "application/json")
-        );
+        return $this->post(json_encode($payload));
     }
 }
