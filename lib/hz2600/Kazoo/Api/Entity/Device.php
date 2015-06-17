@@ -4,13 +4,21 @@ namespace Kazoo\Api\Entity;
 
 class Device extends AbstractEntity
 {
-    public function quickcall($number, $parameters = array()) {
+    public function quickcall($number, $options = array()) {
+        $url = '/quickcall/{quickcall_number}';
+        //TODO: Breaks when combining. Each consecutive option should be '&', not '?'. Foreach loop where first item has '?' ... ?
+        if(!empty($options['auto_answer'])) {
+            $url .= '?auto_answer=' . $options['auto_answer']; 
+        }
+        if(!empty($options['cid-number'])) {
+            $url .= '?cid-number=' . $options['cid-number'];
+        }
+        if(!empty($options['cid-name'])) {
+            $url .= '?cid-name=' . $options['cid-name'];
+        }
         $this->setTokenValue($this->getEntityIdName(), $this->getId());
         $this->setTokenValue('quickcall_number', $number);
-        $query_string = '';
-        if (!empty($parameters)) {
-            $query_string = '?' . http_build_query($parameters);
-        }
-        $this->get(array(), '/quickcall/{quickcall_number}' . $query_string);
+
+        $this->get(array(), $url);
     }
 }
