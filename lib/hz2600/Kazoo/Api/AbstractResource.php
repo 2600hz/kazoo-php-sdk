@@ -152,4 +152,14 @@ abstract class AbstractResource implements ChainableInterface
         $uri = $this->getUri($append_uri);
         return $this->getSDK()->delete($uri, $payload);
     }
+
+    /**
+     *
+     *
+     */
+    protected function patch($payload, $append_uri = null) {
+        $uri = $this->getUri($append_uri);
+        return $this->getSDK()->patch($uri, $payload);
+    }
+
 }
