@@ -17,8 +17,16 @@ class Utils
      *
      */
     public static function underscoreClassName($class) {
-        $class_name = self::shortClassName($class);
+        $class_name = self::fixResrvedClassName(self::shortClassName($class));
         return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $class_name));
+    }
+
+    /**
+     * Use reserved Class Name
+     *
+     */
+    public static function fixResrvedClassName($class_name) {
+        return str_replace("My","",$class_name);
     }
 
     /**
