@@ -22,7 +22,7 @@ class RingGroup extends AbstractNode
          return $this;
     }   
 
-    public function timeout($timeout = 20){
+    public function timeout($timeout = null){
         $this->data->timeout = $timeout; 
         return $this; 
     }  
@@ -47,7 +47,6 @@ class RingGroup extends AbstractNode
             }
 
             array_push($this->data->endpoints, $endpoint); 
-            
         }
         $this->timeout($absolute_timeout);
         return $this; 
