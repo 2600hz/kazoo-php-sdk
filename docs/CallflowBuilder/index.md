@@ -416,7 +416,7 @@ The type option is required but the delay and timeout will use defaults if not s
 
 The time in seconds to ring the lines in the ring group before moving to the next call flow action 
 
-The default is **20** seconds.
+The default in Kazoo is **20** seconds, but we will add the delay and timeout of each endpoint, then set our timeout to the highest value.
 
 ###strategy 
 
