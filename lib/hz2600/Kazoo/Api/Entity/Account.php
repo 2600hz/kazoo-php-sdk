@@ -24,6 +24,30 @@ class Account extends AbstractEntity
         $this->setTokenValue($this->getEntityIdName(), $this->getId());
     }
 
+    public function image($payload, $type) {
+        $accounts = new Accounts($this->getChain());
+        $accounts->setTokenValue('account_id', $this->getId());
+        return $accounts->image($payload, $type);
+    }
+
+    public function whitelabel_create($payload) {
+        $accounts = new Accounts($this->getChain());
+        $accounts->setTokenValue('account_id', $this->getId());
+        return $accounts->whitelabel_create($payload);
+    }
+
+    public function whitelabel_update($payload) {
+        $accounts = new Accounts($this->getChain());
+        $accounts->setTokenValue('account_id', $this->getId());
+        return $accounts->whitelabel_update($payload);
+    }
+
+    public function whitelabel(array $filter = array()) {
+        $accounts = new Accounts($this->getChain());
+        $accounts->setTokenValue('account_id', $this->getId());
+        return $accounts->whitelabel($filter);
+    }
+
     public function children(array $filter = array()) {
         $accounts = new Accounts($this->getChain());
         $accounts->setTokenValue('account_id', $this->getId());
