@@ -91,7 +91,6 @@ This is a basic example, from `$sdk` object you can access the full power of Kaz
 #
 ############################################################
 
-
 ## We need your help with version 2.x
 * Version 2.x of the SDK needs to have the Entity and Collection classes for each Kazoo API built, with unit tests
 * We need to create documentation
