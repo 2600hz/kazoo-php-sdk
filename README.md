@@ -83,7 +83,10 @@ foreach ($users as $element) {
 
 This is a basic example, from `$sdk` object you can access the full power of Kazoo!
 
-Check out the [examples](docs/Examples/index.md) for more!
+# Check out the [examples](docs/Examples/index.md) for more!
+#
+# To see the lastest Unit testing and great examples of functions that were tested, see:
+# /kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional
 
 ## We need your help with version 2.x
 * Version 2.x of the SDK needs to have the Entity and Collection classes for each Kazoo API built, with unit tests
