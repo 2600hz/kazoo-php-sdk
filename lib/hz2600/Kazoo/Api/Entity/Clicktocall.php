@@ -1,13 +1,11 @@
 <?php
-
 namespace Kazoo\Api\Entity;
 
-class Connectivity extends AbstractEntity
-{
-    protected function getCollectionName(){
-        return "connectivity";
-    }
+use \Kazoo\Common\Exception\ReadOnly;
+use \Kazoo\Common\ChainableInterface;
 
+class Clicktocall extends AbstractEntity
+{
     /**
      * Saves the current entity, if it does not have an
      * id then it will be created.
@@ -17,4 +15,4 @@ class Connectivity extends AbstractEntity
         return parent::save($append_uri,"patch");
     }
 
-}    
+}
