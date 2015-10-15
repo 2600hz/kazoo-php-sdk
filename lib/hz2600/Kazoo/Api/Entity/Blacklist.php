@@ -2,12 +2,8 @@
 
 namespace Kazoo\Api\Entity;
 
-class Connectivity extends AbstractEntity
+class Blacklist extends AbstractEntity
 {
-    protected function getCollectionName(){
-        return "connectivity";
-    }
-
     /**
      * Saves the current entity, if it does not have an
      * id then it will be created.

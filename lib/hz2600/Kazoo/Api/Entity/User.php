@@ -20,4 +20,13 @@ class User extends AbstractEntity
         $this->setTokenValue('quickcall_number', $number);
         $this->get(array(), $url);
     }
+
+    /**
+     * Saves the current entity, if it does not have an
+     * id then it will be created.
+     *
+     */
+    public function save($append_uri = null) {
+        return parent::save($append_uri,"patch");
+    }
 }

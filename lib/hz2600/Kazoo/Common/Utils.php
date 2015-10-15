@@ -61,6 +61,10 @@ class Utils
      *   https://stackoverflow.com/questions/1534127/pluralize-in-php
      */
     public static function pluralize($word) {
+        if ($word == "clicktocall") {
+            return $word;
+        }
+
         switch(strtolower($word[strlen($word) - 1])) {
         case 'y':
             return substr($word, 0, -1) . 'ies';

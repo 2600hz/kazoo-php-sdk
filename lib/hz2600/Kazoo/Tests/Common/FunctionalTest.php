@@ -42,4 +42,8 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
     public function getSDK() {
         return $this->sdk;
     }
+
+    public function testVerify() {
+        $this->assertTrue(TRUE);
+    }
 }
