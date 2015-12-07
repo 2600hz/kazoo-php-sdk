@@ -16,27 +16,10 @@ $authToken = new \Kazoo\AuthToken\User('admin', 'password', 'sip.realm.com');
 $sdk = new \Kazoo\SDK($authToken, $options);
 
 
-/* For the next examples, use a devices variable for convenience */
 $phonenumbers = $sdk->Account()->PhoneNumbers();
 echo $phonenumbers,"\n";
 $find_numbers = $phonenumbers->find('645','15');
 echo $find_numbers,"\n";
 
 
-/* create a new device object from the account */
-/*
-var_dump("Create a new device");
-$device = $sdk->Account()->Device();
-$device->name = "Test Device";
-$device->save();
-echo $device;
-*/
-/* update the device created above */
-/*
-var_dump("Update the device");
-$device->call_forward->enabled = true;
-$device->call_forward->number = ''4158867900;
-$device->save();
-echo $device();
-*/
 ?>
