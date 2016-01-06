@@ -208,7 +208,6 @@ $authToken = new \Kazoo\AuthToken\User('admin', 'password', 'sip.realm.com');
 /* Create a new Kazoo SDK object */
 $sdk = new \Kazoo\SDK($authToken, $options);
 
-/* For the next examples, use a devices variable for convenience */
 $cdrs = $sdk->Account()->Cdrs();
 echo $cdrs;
 ?>
