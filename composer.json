@@ -18,8 +18,7 @@
     "require": {
         "php": ">=5.3.2",
         "ext-curl": "*",
-        "guzzle/guzzle": "3.9.*@dev",
-        "monolog/monolog": "1.7.0"
+        "guzzle/guzzle": "3.9.*@dev"
     },
     "minimum-stability": "stable",
     "preferred-install": "dist",
