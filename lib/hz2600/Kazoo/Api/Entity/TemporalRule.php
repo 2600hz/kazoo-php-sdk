@@ -1,7 +1,8 @@
 <?php
+
 namespace Kazoo\Api\Entity;
 
-class Directory extends AbstractEntity
+class TemporalRule extends AbstractEntity
 {
     /**
      * Saves the current entity, if it does not have an
@@ -12,4 +13,4 @@ class Directory extends AbstractEntity
         return parent::save($append_uri,"patch");
     }
 
-}
+}    

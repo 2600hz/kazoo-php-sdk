@@ -1,7 +1,8 @@
 <?php
+
 namespace Kazoo\Api\Entity;
 
-class Directory extends AbstractEntity
+class Rate extends AbstractEntity
 {
     /**
      * Saves the current entity, if it does not have an
@@ -13,3 +14,4 @@ class Directory extends AbstractEntity
     }
 
 }
+ 

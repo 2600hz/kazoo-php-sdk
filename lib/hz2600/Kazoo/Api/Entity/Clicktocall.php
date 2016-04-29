@@ -1,7 +1,10 @@
 <?php
 namespace Kazoo\Api\Entity;
 
-class Directory extends AbstractEntity
+use \Kazoo\Common\Exception\ReadOnly;
+use \Kazoo\Common\ChainableInterface;
+
+class Clicktocall extends AbstractEntity
 {
     /**
      * Saves the current entity, if it does not have an

@@ -1,7 +1,6 @@
 <?php
+
 namespace Kazoo\Api\Collection;
 
-class Directories extends AbstractCollection
-{
-
+class Directories extends AbstractCollection{
 }

@@ -1,7 +1,8 @@
 <?php
+
 namespace Kazoo\Api\Entity;
 
-class Directory extends AbstractEntity
+class ResourceTemplate extends AbstractEntity
 {
     /**
      * Saves the current entity, if it does not have an
@@ -10,6 +11,10 @@ class Directory extends AbstractEntity
      */
     public function save($append_uri = null) {
         return parent::save($append_uri,"patch");
+    }
+
+    protected function getUriSnippet() {
+        return "/resource/resource_templates/".$this->getId();
     }
 
 }
