@@ -30,16 +30,16 @@ class Account extends AbstractEntity
         return $accounts->image($payload, $type);
     }
 
-    public function whitelabel_create($payload) {
+    public function whitelabelCreate($payload) {
         $accounts = new Accounts($this->getChain());
         $accounts->setTokenValue('account_id', $this->getId());
-        return $accounts->whitelabel_create($payload);
+        return $accounts->whitelabelCreate($payload);
     }
 
-    public function whitelabel_update($payload) {
+    public function whitelabelUpdate($payload) {
         $accounts = new Accounts($this->getChain());
         $accounts->setTokenValue('account_id', $this->getId());
-        return $accounts->whitelabel_update($payload);
+        return $accounts->whitelabelUpdate($payload);
     }
 
     public function whitelabel(array $filter = array()) {

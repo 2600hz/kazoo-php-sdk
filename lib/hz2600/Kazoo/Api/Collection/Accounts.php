@@ -37,7 +37,7 @@ class Accounts extends AbstractCollection
      * PUT request to create a new whitelabel doc
      *
      */
-    public function whitelabel_create($body) {
+    public function whitelabelCreate($body) {
         $payload = new stdClass;
         $payload->data = $body;
         $response = $this->put(json_encode($payload), '/whitelabel');
@@ -53,7 +53,7 @@ class Accounts extends AbstractCollection
      * POST request to update an existing whitelabel doc
      *
      */
-    public function whitelabel_update($body) {
+    public function whitelabelUpdate($body) {
         $payload = new stdClass;
         //$payload->data = new stdClass;
         $payload->data = $body;
