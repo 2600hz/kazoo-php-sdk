@@ -9,7 +9,7 @@
 namespace Kazoo\Tests\Functional;
 
 use \Kazoo\Tests\Common\FunctionalTest;
-use \stdClass; 
+use \stdClass;
 
 /**
  * @group functional

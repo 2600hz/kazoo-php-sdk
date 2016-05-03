@@ -15,6 +15,9 @@ class RateTest extends FunctionalTest
      */
     public function testCreateRate() {
         $rate = $this->getSDK()->Account()->Rate();
+        $this->markTestIncomplete(
+            'This test requires rates to be enabled'
+        );
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\Rate", $rate);
         $this->assertTrue((strlen($rate->getId()) == 0));

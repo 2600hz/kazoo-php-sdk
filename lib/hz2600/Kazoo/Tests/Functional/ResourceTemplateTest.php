@@ -13,6 +13,9 @@ class ResourceTemplateTest extends FunctionalTest
      * @test
      */
     public function testCreateResourceTemplate() {
+        $this->markTestIncomplete(
+            'This test requires resiource template app to be running'
+        );
         $resourcetemplate = $this->getSDK()->Account()->ResourceTemplate();
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\ResourceTemplate", $resourcetemplate);

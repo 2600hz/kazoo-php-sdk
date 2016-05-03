@@ -13,6 +13,9 @@ class TemporalRulesSetTest extends FunctionalTest
      * @test
      */
     public function testCreateTemporalRulesSet() {
+        $this->markTestIncomplete(
+            'This test requires temporal rule sett app to be running'
+        );
         $temporalrulesset = $this->getSDK()->Account()->TemporalRulesSet();
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\TemporalRulesSet", $temporalrulesset);

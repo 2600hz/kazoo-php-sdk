@@ -18,7 +18,7 @@ class ConfigTest extends FunctionalTest
         $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\Config", $config);
         $this->assertTrue((strlen($config->getId()) == 0));
 
-        $config->name = "SDK Create Test " . rand(100, 1000);
+        $config->name = "SDK Create Test " . rand(100, 10000);
         $id_name = "entity".rand(10,99);
         $config->save($id_name);
 
@@ -46,7 +46,7 @@ class ConfigTest extends FunctionalTest
      */
     public function testUpdateConfig($config) {
         $config_id = $config->getId();
-        
+
         $current_name = $config->name;
         $new_name = "SDK Update Test " . rand(100, 1000);
 
@@ -82,6 +82,6 @@ class ConfigTest extends FunctionalTest
         $this->assertTrue((strlen($config->getId()) == 0));
 
         //$config($config_id)->fetch();
-    } 
+    }
 
 }
