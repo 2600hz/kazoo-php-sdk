@@ -172,32 +172,43 @@ abstract class AbstractEntity extends AbstractResource
         return $this;
     }
 
-    /**
-     * Saves the current entity, if it does not have an
-     * id then it will be created.
-     *
-     */
-    public function save($append_uri = null, $method = "post") {
+    public function partialUpdate($append_uri){
         if ($this->read_only) {
             throw new ReadOnly("The entity is read-only");
         }
 
         $id = $this->getId();
+        $payload = $this->getPayload();
 
-        if ($method == "post") {
-            $payload = $this->getPayload();
-        } else {
-            $shell = new stdClass();
-            $shell->data = $this->entity;
-            $payload = json_encode($shell);
+        $this->setTokenValue($this->getEntityIdName(), $id);
+
+        $response = $this->patch($payload, $append_uri);
+
+        $entity = $response->getData();
+        $this->setEntity($entity);
+
+        return $this;
+    }
+
+    /**
+     * Saves the current entity, if it does not have an
+     * id then it will be created.
+     *
+     */
+    public function save($append_uri = null) {
+        if ($this->read_only) {
+            throw new ReadOnly("The entity is read-only");
         }
+
+        $id = $this->getId();
+        $payload = $this->getPayload();
 
         $this->setTokenValue($this->getEntityIdName(), $id);
 
         if (empty($id)) {
             $response = $this->put($payload, $append_uri);
         } else {
-            $response = $this->$method($payload, $append_uri);
+            $response = $this->post($payload, $append_uri);
         }
 
         $entity = $response->getData();

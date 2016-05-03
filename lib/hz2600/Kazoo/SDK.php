@@ -34,7 +34,7 @@ class SDK implements ChainableInterface
         'accept' => 'application/json',
         'timeout' => 10,
         'api_limit' => 5000,
-        'api_version' => '1',
+        'api_version' => '2',
         'log_type' => null,
         'log_file' => null,
         'cache_dir' => null,

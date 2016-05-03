@@ -7,13 +7,17 @@ use \Kazoo\Tests\Common\FunctionalTest;
 /**
  * @group functional
  */
-class ClicktocallTest extends FunctionalTest
+class ClickToCallTest extends FunctionalTest
 {
     /**
      * @test
      */
-    public function testCreateClicktocall() {
+    public function testCreateClickToCall() {
         $clicktocall = $this->getSDK()->Account()->Clicktocall();
+
+        $this->markTestIncomplete(
+            'This test requires live calls'
+        );
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\Clicktocall", $clicktocall);
         $this->assertTrue((strlen($clicktocall->getId()) == 0));
