@@ -172,6 +172,24 @@ abstract class AbstractEntity extends AbstractResource
         return $this;
     }
 
+    public function partialUpdate($append_uri){
+        if ($this->read_only) {
+            throw new ReadOnly("The entity is read-only");
+        }
+
+        $id = $this->getId();
+        $payload = $this->getPayload();
+
+        $this->setTokenValue($this->getEntityIdName(), $id);
+
+        $response = $this->patch($payload, $append_uri);
+
+        $entity = $response->getData();
+        $this->setEntity($entity);
+
+        return $this;
+    }
+
     /**
      * Saves the current entity, if it does not have an
      * id then it will be created.
@@ -184,6 +202,7 @@ abstract class AbstractEntity extends AbstractResource
 
         $id = $this->getId();
         $payload = $this->getPayload();
+
         $this->setTokenValue($this->getEntityIdName(), $id);
 
         if (empty($id)) {

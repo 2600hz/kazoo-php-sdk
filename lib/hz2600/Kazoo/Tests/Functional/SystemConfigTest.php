@@ -14,8 +14,11 @@ class SystemConfigTest extends FunctionalTest
      * @test
      */
     public function testGetSystemConfig(){
+        $this->markTestIncomplete(
+            'This test requires the system config module to be running'
+        );
         $systemconfig = $this->getSDK()->Account()->SystemConfig();
-        $this->assertInstanceOf("\\Kazoo\\Api\\Collection\\SystemConfig", $systemconfig);
+        $this->assertInstanceOf("\\Kazoo\\Api\\Collection\\SystemConfigs", $systemconfig);
 
     }
 

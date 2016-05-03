@@ -1,6 +1,7 @@
 <?php
+
 namespace Kazoo\Api\Entity;
 
-class Directory extends AbstractEntity
+class Group extends AbstractEntity
 {
 }

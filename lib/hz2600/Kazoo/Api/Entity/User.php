@@ -8,7 +8,7 @@ class User extends AbstractEntity
         $url = '/quickcall/{quickcall_number}';
         //TODO: Breaks when combining. Each consecutive option should be '&', not '?'. Foreach loop where first item has '?' ... ?
         if(!empty($options['auto_answer'])) {
-            $url .= '?auto_answer=' . $options['auto_answer']; 
+            $url .= '?auto_answer=' . $options['auto_answer'];
         }
         if(!empty($options['cid-number'])) {
             $url .= '?cid-number=' . $options['cid-number'];

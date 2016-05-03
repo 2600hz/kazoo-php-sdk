@@ -2,11 +2,9 @@
 
 namespace Kazoo\Api\Collection;
 
-class Connectivities extends AbstractCollection
+class Faxes extends AbstractCollection
 {
     protected function getUriSnippet() {
-        return '/connectivity';
+        return "/faxes/outgoing";
     }
 }
-
-
