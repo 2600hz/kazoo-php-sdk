@@ -9,6 +9,22 @@ use \Kazoo\Tests\Common\FunctionalTest;
  */
 class AccountTest extends FunctionalTest
 {
+    private $test_object = '{
+        "company_name":"Test11",
+        "name": "NameTest11",
+        "nav":{
+            "help":"",
+            "learn_more":""},
+            "hide_powered":true,
+            "hide_registration":false,
+            "hide_credits":false,
+            "domain":"test.11.test",
+            "fake_api_url":"",
+            "port":{"loa":"","resporg":"","support_email":"","features":"","terms":""},
+            "inbound_trunks_price":"",
+            "twoway_trunks_price":""
+    }';
+
     /**
      * @test
      */
@@ -99,6 +115,51 @@ class AccountTest extends FunctionalTest
         // Fetch it from the database again to make sure
         $account->fetch();
         $this->assertEquals($account->name, $new_name);
+    }
+
+    /**
+     * @test
+     * @depends testCreateChildAccount
+     */
+    public function testImage($account_id) {
+        $account = $this->getSDK()->Account($account_id);
+        $this->assertEquals($account->getId(), $account_id);
+        
+        //TODO: Requires a base64 image
+        //$account->image('','logo');
+    }
+
+    /**
+     * @test
+     * @depends testCreateChildAccount
+     */
+    public function testCreateWhitelabel($account_id) {
+        $account = $this->getSDK()->Account($account_id);
+        $this->assertEquals($account->getId(), $account_id);
+        
+        $this->assertTrue(is_object($account->whitelabelCreate(json_decode($this->test_object))));
+    }
+
+    /**
+     * @test
+     * @depends testCreateChildAccount
+     */
+    public function testWhitelabel($account_id) {
+        $account = $this->getSDK()->Account($account_id);
+        $this->assertEquals($account->getId(), $account_id);
+
+        $this->assertTrue(is_object($account->whitelabel()));
+    }
+
+    /**
+     * @test
+     * @depends testCreateChildAccount
+     */
+    public function testUpdateWhitelabel($account_id) {
+        $account = $this->getSDK()->Account($account_id);
+        $this->assertEquals($account->getId(), $account_id);
+
+        $this->assertTrue(is_object($account->whitelabelUpdate(json_decode($this->test_object))));
     }
 
     /**
