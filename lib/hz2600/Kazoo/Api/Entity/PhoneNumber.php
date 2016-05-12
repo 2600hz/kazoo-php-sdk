@@ -65,15 +65,24 @@ class PhoneNumber extends AbstractEntity
      *
      *
      */
+    public function setNewNumber($value) {
+         $this->new_number = $value;
+    }
+
+    /**
+     *
+     *
+     */
     public function fetch($append_uri = null) {
         $id = $this->getId();
-
+ 
         try {
             parent::fetch($append_uri);
         } catch (ServerErrorResponseException $e) {
-            $this->setEntity(new stdClass);
+            $this->setEntity(new stdClass);    
             $this->new_number = TRUE;
         }
+        parent::fetch($append_uri);
 
         $this->setId($id);
 
