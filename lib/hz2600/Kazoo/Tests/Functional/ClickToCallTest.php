@@ -13,13 +13,13 @@ class ClickToCallTest extends FunctionalTest
      * @test
      */
     public function testCreateClickToCall() {
-        $clicktocall = $this->getSDK()->Account()->Clicktocall();
+        $clicktocall = $this->getSDK()->Account()->ClickToCall();
 
         $this->markTestIncomplete(
             'This test requires live calls'
         );
 
-        $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\Clicktocall", $clicktocall);
+        $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\ClickToCall", $clicktocall);
         $this->assertTrue((strlen($clicktocall->getId()) == 0));
 
         $clicktocall->name = "SDK Create Test " . rand(100, 1000);
