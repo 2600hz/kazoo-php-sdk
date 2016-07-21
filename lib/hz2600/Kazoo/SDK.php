@@ -29,7 +29,6 @@ class SDK implements ChainableInterface
      */
     private $options = array(
         'base_url' => 'http://127.0.0.1:8000',
-        'debug' => true,
         'headers' => array(
             'user_agent' => 'kazoo-php-sdk (http://github.com/2600hz/kazoo-php-sdk)',
             'content_type' => 'application/json',
