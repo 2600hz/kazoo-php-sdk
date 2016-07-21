@@ -7,8 +7,8 @@ use \Kazoo\HttpClient\Message\Response;
 use \Kazoo\HttpClient\Listener\ErrorListener;
 use \Kazoo\HttpClient\Listener\AuthListener;
 
-use \Guzzle\Http\Client as GuzzleClient;
-use \Guzzle\Http\ClientInterface;
+use \GuzzleHttp\Client as GuzzleClient;
+use \GuzzleHttp\ClientInterface;
 
 /**
  * Performs requests on Kazoo API.
@@ -18,7 +18,7 @@ class HttpClient implements HttpClientInterface
 {
     /**
      *
-     * @var \Guzzle\Http\Client
+     * @var \GuzzleHttp\Client
      */
     private $client;
 
@@ -40,9 +40,9 @@ class HttpClient implements HttpClientInterface
      */
     public function __construct(SDK $sdk) {
         $this->setSDK($sdk);
-        $this->setClient(new GuzzleClient('', $sdk->getOptions()));
-        $this->addListener('request.before_send', array(new AuthListener($sdk), 'onRequestBeforeSend'));
-        $this->addListener('request.error', array(new ErrorListener(), 'onRequestError'));
+        $this->setClient(new GuzzleClient($sdk->getOptions()));
+        $this->addListener('before', array(new AuthListener($sdk), 'onRequestBeforeSend'));
+        $this->addListener('error', array(new ErrorListener(), 'onRequestError'));
         $this->resetHeaders();
     }
 
@@ -59,11 +59,11 @@ class HttpClient implements HttpClientInterface
      *
      */
     public function resetHeaders() {
-        $sdk = $this->getSDK();
+        $headers = $this->getSDK()->getOption('headers');
         $this->headers = array(
-            'Accept' => $sdk->getOption('accept'),
-            'Content-Type' => $sdk->getOption('content_type'),
-            'User-Agent' => $sdk->getOption('user_agent'),
+            'Accept' => $headers['accept'],
+            'Content-Type' => $headers['content_type'],
+            'User-Agent' => $headers['user_agent'],
         );
     }
 
@@ -113,12 +113,14 @@ class HttpClient implements HttpClientInterface
 
     private function createRequest($httpMethod, $uri, $content = null, array $headers = array(), array $options = array()) {
         $merged_headers = array_merge($this->headers, $headers);
-        return $this->getClient()->createRequest($httpMethod, $uri, $merged_headers, $content, $options);
+        $options['body'] = $content;
+        $options['headers'] = $merged_headers;
+        return $this->getClient()->createRequest($httpMethod, $uri, $options);
     }
 
     /**
      *
-     * @return \Guzzle\Http\Client $client
+     * @return \GuzzleHttp\Client $client
      */
     private function getClient() {
         return $this->client;
@@ -126,7 +128,7 @@ class HttpClient implements HttpClientInterface
 
     /**
      *
-     * @param \Guzzle\Http\Client $client
+     * @param \GuzzleHttp\Client $client
      */
     private function setClient(GuzzleClient $client) {
         $this->client = $client;
@@ -154,6 +156,6 @@ class HttpClient implements HttpClientInterface
      * @param string|array $listener
      */
     public function addListener($eventName, $listener) {
-        $this->getClient()->getEventDispatcher()->addListener($eventName, $listener);
+        $this->getClient()->getEmitter()->on($eventName, $listener);
     }
 }

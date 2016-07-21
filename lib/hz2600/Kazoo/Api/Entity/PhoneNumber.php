@@ -3,7 +3,7 @@ namespace Kazoo\Api\Entity;
 
 use \stdClass;
 
-use \Guzzle\Http\Exception\ServerErrorResponseException;
+use \GuzzleHttp\Exception\ServerErrorResponseException;
 
 use \Kazoo\Common\Exception\ReadOnly;
 

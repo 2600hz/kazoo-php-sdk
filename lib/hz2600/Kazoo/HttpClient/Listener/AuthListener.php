@@ -4,7 +4,7 @@ namespace Kazoo\HttpClient\Listener;
 
 use \Kazoo\SDK;
 
-use \Guzzle\Common\Event;
+use \GuzzleHttp\Event\BeforeEvent;
 
 /**
  *
@@ -27,11 +27,11 @@ class AuthListener
 
     /**
      *
-     * @param \Guzzle\Common\Event $event
+     * @param \Guzzle\Event\BeforeEvent $event
      */
-    public function onRequestBeforeSend(Event $event) {
+    public function onRequestBeforeSend(BeforeEvent $event) {
         $token = $this->getSDK()->getAuthToken()->getToken();
-        $event['request']->setHeader('X-Auth-Token', $token);
+        $event->getRequest()->addHeader('X-Auth-Token', $token);
     }
 
     /**
