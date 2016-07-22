@@ -363,7 +363,6 @@ abstract class AbstractEntity extends AbstractResource
      */
     protected function setId($entity_id = null) {
         $this->entity_id = $entity_id;
-
         if (empty($entity_id)) {
             unset($this->entity->id);
         }
@@ -376,7 +375,6 @@ abstract class AbstractEntity extends AbstractResource
     protected function getPayload() {
         $shell = new stdClass();
         $shell->data = $this->getEntity();
-
         return json_encode($shell);
     }
 

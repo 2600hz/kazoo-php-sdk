@@ -44,6 +44,7 @@ class Utils
             'oes' => 'o',
             'ies' => 'y',
             'ves' => 'f',
+            'hes' => 'h',
             's' => '');
 
         foreach(array_keys($rules) as $key) {
@@ -76,7 +77,8 @@ class Utils
         switch(strtolower($word[strlen($word) - 1])) {
         case 'y':
             return substr($word, 0, -1) . 'ies';
-        case 's':        
+        case 's':
+        case 'h':
         case 'x':
             return $word. 'es';
         default:
