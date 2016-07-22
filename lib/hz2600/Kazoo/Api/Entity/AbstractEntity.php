@@ -224,13 +224,13 @@ abstract class AbstractEntity extends AbstractResource
      * $this->put or $this->post.
      *
      */
-    public function remove() {
+    public function remove($append_uri = null) {
         if ($this->read_only) {
             throw new ReadOnly("The entity is read-only");
         }
 
         $this->setTokenValue($this->getEntityIdName(), $this->getId());
-        $this->delete();
+        $this->delete(null, $append_uri);
         $this->reset();
         return $this;
     }
