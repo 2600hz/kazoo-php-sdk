@@ -16,9 +16,6 @@ class AclTest extends FunctionalTest
      * @expectedExceptionDisabled \Exception
      */
     public function testGetAcls() {
-        $this->markTestIncomplete(
-            'This test requires admin account'
-        );
         $acls = $this->getSDK()->Account()->Acls();
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Collection\\Acls", $acls);
