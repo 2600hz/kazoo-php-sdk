@@ -3,7 +3,7 @@ namespace Kazoo\Api\Entity;
 
 use \stdClass;
 
-use \GuzzleHttp\Exception\ServerErrorResponseException;
+use \kazoo\HttpClient\Exception\HttpException;
 
 use \Kazoo\Common\Exception\ReadOnly;
 
@@ -70,7 +70,7 @@ class PhoneNumber extends AbstractEntity
 
         try {
             parent::fetch($append_uri);
-        } catch (ServerErrorResponseException $e) {
+        } catch (HttpException $e) {
             $this->setEntity(new stdClass);
             $this->new_number = TRUE;
         }
