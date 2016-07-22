@@ -17,6 +17,7 @@ class SystemConfigTest extends FunctionalTest
     public function testListSystemConfig(){
         $system_config = $this->getSDK()->SystemConfigs();
         $this->assertInstanceOf("\\Kazoo\\Api\\Collection\\SystemConfigs", $system_config);
+        return $system_config;
     }
 
     /**
@@ -96,4 +97,14 @@ class SystemConfigTest extends FunctionalTest
         return $new_fax;
     }
 
+    /**
+     * @test
+     * @depends testListSystemConfig
+     */
+    public function testFetchAllSystemConfigApis($listing){
+        foreach ($listing as $element){
+            $entity = $element->fetch();
+            $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\SystemConfig", $entity);
+        }
+    }
 }
