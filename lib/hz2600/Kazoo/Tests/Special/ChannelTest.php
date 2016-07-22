@@ -6,13 +6,13 @@
  *     sup crossbar_maintenance start_module cb_channels // enable the API endpont
  */
 
-namespace Kazoo\Tests\Functional;
+namespace Kazoo\Tests\Special;
 
 use \Kazoo\Tests\Common\FunctionalTest;
 use \stdClass;
 
 /**
- * @group functional
+ * @group special
  */
 class ChannelTest extends FunctionalTest
 {

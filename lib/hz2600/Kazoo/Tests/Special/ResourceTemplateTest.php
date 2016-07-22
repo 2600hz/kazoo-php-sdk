@@ -1,11 +1,11 @@
 <?php
 
-namespace Kazoo\Tests\Functional;
+namespace Kazoo\Tests\Special;
 
 use \Kazoo\Tests\Common\FunctionalTest;
 
 /**
- * @group functional
+ * @group special
  */
 class ResourceTemplateTest extends FunctionalTest
 {
@@ -13,9 +13,6 @@ class ResourceTemplateTest extends FunctionalTest
      * @test
      */
     public function testCreateResourceTemplate() {
-        $this->markTestIncomplete(
-            'This test requires resiource template app to be running'
-        );
         $resourcetemplate = $this->getSDK()->Account()->ResourceTemplate();
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\ResourceTemplate", $resourcetemplate);

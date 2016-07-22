@@ -12,7 +12,7 @@ namespace Kazoo\Tests\Functional;
 use \Kazoo\Tests\Common\FunctionalTest;
 
 /**
- * @group functional
+ * @group special
  */
 class NotificationTest extends FunctionalTest
 {
