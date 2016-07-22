@@ -17,7 +17,7 @@ use \Kazoo\HttpClient\Exception\HttpException;
 use \Kazoo\HttpClient\Exception\NotFound;
 use \Kazoo\HttpClient\Exception\InvalidMethod;
 
-use \Guzzle\Common\Event;
+use \GuzzleHttp\Event\ErrorEvent;
 
 /**
  *
@@ -26,11 +26,10 @@ class ErrorListener
 {
     /**
      *
-     * @param \Guzzle\Common\Event $event
+     * @param \Guzzle\Event\ErrorEvent $event
      */
-    public function onRequestError(Event $event) {
-        $request = $event['request'];
-        $response = new Response($request->getResponse());
+    public function onRequestError(ErrorEvent $event) {
+        $response = new Response($event->getResponse());
         $code = $response->getStatusCode();
 
         switch ($code) {
