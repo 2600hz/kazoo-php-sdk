@@ -1,11 +1,11 @@
 <?php
 
-namespace Kazoo\Tests\Functional;
+namespace Kazoo\Tests\Special;
 
 use \Kazoo\Tests\Common\FunctionalTest;
 
 /**
- * @group functional
+ * @group special
  */
 class TemporalRulesTest extends FunctionalTest
 {
@@ -13,9 +13,6 @@ class TemporalRulesTest extends FunctionalTest
      * @test
      */
     public function testCreateTemporalRule() {
-        $this->markTestIncomplete(
-            'This test requires temporal rule app to be running'
-        );
         $temporalrule = $this->getSDK()->Account()->TemporalRule();
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\TemporalRule", $temporalrule);

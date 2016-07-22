@@ -120,7 +120,7 @@ class ElementWrapper
         }
 
         if (!empty($element->uuid)){
-           return $this->element_id = $element->uuid; 
+           return $this->element_id = $element->uuid;
         }
 
 

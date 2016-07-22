@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+cd `dirname $0`
+
+#print formatting and logging func
+green='\e[0;32m'
+red='\e[0;31m'
+yellow='\e[0;33m'
+NC='\e[0m'
+blue='\e[0;36m'
+
+dbg(){
+    echo -e " - ${green}$* ${NC} "
+}
+
+info(){
+    echo -e "${blue}$* ${NC} "
+}
+
+error(){
+    error_msg="$*"
+    echo
+    error="${red}${error_msg} ${NC} "
+    echo -e "$error" 1>&2
+}
+
+warn(){
+    echo -e "${yellow}$* ${NC} ";
+    echo -e "${yellow}$* ${NC} " >> $logfile
+}
+
+info  "Searching for php syntax errors..."
+err=$( { find lib/ -type f -name '*.php' -exec php -l {} \; | egrep -v "No syntax"; } 2>&1 )
+    error "$err"
+
+info  "Searching for vim swap files..."
+err=$(find lib/ -regex ".*\.sw." -print | xargs -r ls -l)
+    error "$err"
+
+info  "Searching for echos..."
+err=$(grep -iRn echo lib/*)
+    error "$err"
+
+info  "Searching for var_dumps..."
+err=$(grep -iRn var_dump src/*)
+    error "$err"

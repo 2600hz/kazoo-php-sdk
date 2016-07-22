@@ -224,13 +224,13 @@ abstract class AbstractEntity extends AbstractResource
      * $this->put or $this->post.
      *
      */
-    public function remove() {
+    public function remove($append_uri = null) {
         if ($this->read_only) {
             throw new ReadOnly("The entity is read-only");
         }
 
         $this->setTokenValue($this->getEntityIdName(), $this->getId());
-        $this->delete();
+        $this->delete(null, $append_uri);
         $this->reset();
         return $this;
     }
@@ -363,7 +363,6 @@ abstract class AbstractEntity extends AbstractResource
      */
     protected function setId($entity_id = null) {
         $this->entity_id = $entity_id;
-
         if (empty($entity_id)) {
             unset($this->entity->id);
         }
@@ -376,7 +375,6 @@ abstract class AbstractEntity extends AbstractResource
     protected function getPayload() {
         $shell = new stdClass();
         $shell->data = $this->getEntity();
-
         return json_encode($shell);
     }
 

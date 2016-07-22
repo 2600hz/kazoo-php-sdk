@@ -1,11 +1,11 @@
 <?php
 
-namespace Kazoo\Tests\Functional;
+namespace Kazoo\Tests\Special;
 
 use \Kazoo\Tests\Common\FunctionalTest;
 
 /**
- * @group functional
+ * @group special
  */
 class ClickToCallTest extends FunctionalTest
 {
@@ -13,12 +13,10 @@ class ClickToCallTest extends FunctionalTest
      * @test
      */
     public function testCreateClickToCall() {
-        $clicktocall = $this->getSDK()->Account()->ClickToCall();
-
         $this->markTestIncomplete(
-            'This test requires live calls'
+            'This test requires live calls to be available'
         );
-
+        $clicktocall = $this->getSDK()->Account()->ClickToCall();
         $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\ClickToCall", $clicktocall);
         $this->assertTrue((strlen($clicktocall->getId()) == 0));
 

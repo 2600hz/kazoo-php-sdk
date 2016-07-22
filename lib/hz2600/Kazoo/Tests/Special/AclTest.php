@@ -1,13 +1,13 @@
 <?php
 
-namespace Kazoo\Tests\Functional;
+namespace Kazoo\Tests\Special;
 
 use \Exception;
 
 use \Kazoo\Tests\Common\FunctionalTest;
 
 /**
- * @group functional
+ * @group special
  */
 class AclTest extends FunctionalTest
 {
@@ -16,14 +16,9 @@ class AclTest extends FunctionalTest
      * @expectedExceptionDisabled \Exception
      */
     public function testGetAcls() {
-        $this->markTestIncomplete(
-            'This test requires admin account'
-        );
         $acls = $this->getSDK()->Account()->Acls();
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Collection\\Acls", $acls);
         $this->assertTrue((count($acls) > 0));
-
-        // $acls->fetch();
     }
 }

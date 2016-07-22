@@ -1,12 +1,12 @@
 <?php
 
-namespace Kazoo\Tests\Functional;
+namespace Kazoo\Tests\Special;
 
 use \Kazoo\Tests\Common\FunctionalTest;
 
 
 /**
- * @rate functional
+ * @rate special
  */
 class RateTest extends FunctionalTest
 {
