@@ -40,4 +40,60 @@ class SystemConfigTest extends FunctionalTest
         $this->assertTrue($new_ecallmgr->test);
     }
 
+    /**
+     * @test
+     */
+    public function testGetFax(){
+        $fax = $this->getSDK()->SystemConfig('fax');
+        $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\SystemConfig", $fax);
+        return $fax;
+    }
+
+    /**
+     * @test
+     * @depends testGetFax
+     */
+    public function testUpdateFax($fax){
+        $fax->test = true;
+        $fax->save();
+        $new_fax = $this->getSDK()->SystemConfig('fax');
+        $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\SystemConfig", $new_fax);
+        $this->assertTrue($new_fax->test);
+    }
+
+    /**
+     * @test
+     */
+    public function testAddPerNodeFaxOverride(){
+        $fax = $this->getSDK()->SystemConfig('fax');
+        $fax->test_override = true;
+        $fax->save("/whistle_apps@test.test.com");
+        $new_fax = $this->getSDK()->SystemConfig('fax')->fetch("/whistle_apps@test.test.com");
+        $this->assertTrue($new_fax->test);
+        return $new_fax;
+    }
+
+    /**
+     * @test
+     * @depends testAddPerNodeFaxOverride
+     */
+    public function testUpdatePerNodeFaxOverride($fax){
+        $fax->test_update_override = true;
+        $fax->save("/whistle_apps@test.test.com");
+        $this->assertTrue($fax->test_update_override);
+        $new_fax = $this->getSDK()->SystemConfig('fax')->fetch("/whistle_apps@test.test.com");
+        $this->assertTrue($new_fax->test_update_override);
+    }
+
+    /**
+     * @test
+     * @depends testAddPerNodeFaxOverride
+     */
+    public function testDeletePerNodeFaxOverride($fax){
+        $fax = $this->getSDK()->SystemConfig('fax')->remove("/whistle_apps@test.test.com");
+        $new_fax = $this->getSDK()->SystemConfig('fax')->fetch("/whistle_apps@test.test.com");
+        $this->assertEmpty($new_fax->test_override);
+        return $new_fax;
+    }
+
 }
