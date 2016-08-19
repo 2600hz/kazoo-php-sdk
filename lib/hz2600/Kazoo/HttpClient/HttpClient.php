@@ -4,11 +4,11 @@ namespace Kazoo\HttpClient;
 
 use \Kazoo\SDK;
 use \Kazoo\HttpClient\Message\Response;
-use \Kazoo\HttpClient\Listener\ErrorListener;
-use \Kazoo\HttpClient\Listener\AuthListener;
 
-use \GuzzleHttp\Client as GuzzleClient;
-use \GuzzleHttp\ClientInterface;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Psr7\Request;
 
 /**
  * Performs requests on Kazoo API.
@@ -40,10 +40,17 @@ class HttpClient implements HttpClientInterface
      */
     public function __construct(SDK $sdk) {
         $this->setSDK($sdk);
-        $this->setClient(new GuzzleClient($sdk->getOptions()));
-        $this->addListener('before', array(new AuthListener($sdk), 'onRequestBeforeSend'));
-        $this->addListener('error', array(new ErrorListener(), 'onRequestError'));
-        $this->resetHeaders();
+        $sdk = $this->getSDK();
+        $options = $sdk->getOptions();
+
+        $handler = HandlerStack::create();
+        $handler->push(Middleware::mapRequest(function (Request $request) {
+            $sdk = $this->getSDK();
+            $token = $sdk->getAuthToken()->getToken();
+            return $request->withHeader('X-Auth-Token', $token);
+        }));
+        $options['handler'] = $handler;
+        $this->setClient(new GuzzleClient($options));
     }
 
     /**
@@ -113,9 +120,7 @@ class HttpClient implements HttpClientInterface
 
     private function createRequest($httpMethod, $uri, $content = null, array $headers = array(), array $options = array()) {
         $merged_headers = array_merge($this->headers, $headers);
-        $options['body'] = $content;
-        $options['headers'] = $merged_headers;
-        return $this->getClient()->createRequest($httpMethod, $uri, $options);
+        return new Request($httpMethod, $uri, $merged_headers, $content);
     }
 
     /**
