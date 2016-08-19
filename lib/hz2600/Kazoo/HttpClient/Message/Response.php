@@ -10,13 +10,13 @@ class Response
 {
     /**
      *
-     * @var \GuzzleHttp\Message\Response
+     * @var \GuzzleHttp\Psr7\Response
      */
     private $response;
 
     /**
      *
-     * @param \GuzzleHttp\Message\Response $response
+     * @param \GuzzleHttp\Psr7\Response $response
      */
     public function __construct(GuzzleResponse $response) {
         $this->response = $response;
