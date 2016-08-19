@@ -4,19 +4,19 @@ namespace Kazoo\HttpClient\Message;
 
 use \stdClass;
 
-use \GuzzleHttp\Message\Response as GuzzleResponse;
+use \GuzzleHttp\Psr7\Response as GuzzleResponse;
 
 class Response
 {
     /**
      *
-     * @var \GuzzleHttp\Message\Response
+     * @var \GuzzleHttp\Psr7\Response
      */
     private $response;
 
     /**
      *
-     * @param \GuzzleHttp\Message\Response $response
+     * @param \GuzzleHttp\Psr7\Response $response
      */
     public function __construct(GuzzleResponse $response) {
         $this->response = $response;
@@ -75,7 +75,7 @@ class Response
      * @return string
      */
     public function getBody() {
-        return $this->response->getBody(true);
+        return $this->response->getBody();
     }
 
     /**
@@ -121,7 +121,7 @@ class Response
 
     /**
      *
-     * @return \GuzzleHttp\Message\Response
+     * @return \GuzzleHttp\Psr7\Response
      */
     private function getResponse() {
         return $this->response;
