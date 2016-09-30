@@ -16,15 +16,15 @@
         }
     ],
     "require": {
-        "php": ">=5.3.2",
+        "php": ">=5.5",
         "ext-curl": "*",
-        "guzzlehttp/guzzle": "5.3.*@dev",
+        "guzzlehttp/guzzle": ">=6.2.1",
         "monolog/monolog": "~1.17"
     },
     "minimum-stability": "stable",
     "preferred-install": "dist",
     "require-dev": {
-        "phpunit/phpunit": "3.7.*"
+        "phpunit/phpunit": "4.8.*"
     },
     "autoload": {
         "psr-0": {"Kazoo": "lib/hz2600", "CallflowBuilder": "lib/hz2600"}

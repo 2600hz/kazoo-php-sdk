@@ -123,7 +123,7 @@ abstract class AbstractResource implements ChainableInterface
      */
     protected function get(array $filter = array(), $append_uri = null) {
         $uri = $this->getUri($append_uri);
-        return $this->getSDK()->get($uri, $filter);
+        return $this->getSDK()->get($uri . "?" . http_build_query($filter));
     }
 
     /**
