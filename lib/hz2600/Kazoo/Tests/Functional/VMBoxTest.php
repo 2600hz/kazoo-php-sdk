@@ -126,4 +126,14 @@ class VMBoxTest extends FunctionalTest
         $this->assertTrue((strlen($vmbox->getId()) == 0));
 
     }
+
+    /**
+     * @test
+     * @depends testFetchVMBox
+     */
+    public function testFetchMessages($vmbox) {
+        $messages = $vmbox->Messages();
+        $this->assertEmpty($messages);
+    }
+
 }
