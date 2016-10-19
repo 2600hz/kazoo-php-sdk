@@ -11,4 +11,10 @@ class Device extends AbstractEntity
 
         $this->get($options, $url);
     }
+
+    public function sync() {
+        $url = '/sync';
+        $this->setTokenValue($this->getEntityIdName(), $this->getId());
+        $this->post(array(), $url);
+    }
 }
