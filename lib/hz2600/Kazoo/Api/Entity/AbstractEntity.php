@@ -217,6 +217,25 @@ abstract class AbstractEntity extends AbstractResource
         return $this;
     }
 
+    public function update($append_uri = null) {
+        if ($this->read_only) {
+            throw new ReadOnly("The entity is read-only");
+        }
+
+        $id = $this->getId();
+        $payload = $this->getPayload();
+
+        $this->setTokenValue($this->getEntityIdName(), $id);
+
+        $response = $this->post($payload, $append_uri);
+
+        $entity = $response->getData();
+        $this->setEntity($entity);
+
+        return $this;
+    }
+
+
     /**
      * Remove the entity.  Note: it is called remove
      * because the parent has a delete function and
