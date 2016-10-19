@@ -9,7 +9,7 @@ use \Kazoo\Common\Exception\ReadOnly;
 
 class PhoneNumber extends AbstractEntity
 {
-    private $new_number = FALSE;
+    private $new_number = TRUE;
 
     /**
      *
@@ -30,7 +30,7 @@ class PhoneNumber extends AbstractEntity
     public function activate() {
         $id = $this->getId();
         $this->setTokenValue($this->getEntityIdName(), $id);
-        $this->put(array(), "/activate");
+        $this->put('', "/activate");
     }
 
     /**
@@ -40,7 +40,7 @@ class PhoneNumber extends AbstractEntity
     public function reserve() {
         $id = $this->getId();
         $this->setTokenValue($this->getEntityIdName(), $id);
-        $this->put(array(), "/reserve");
+        $this->put('', "/reserve");
     }
 
     /**
