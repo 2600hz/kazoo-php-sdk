@@ -16,11 +16,11 @@ class Media extends AbstractEntity
         $uri = $this->getURI('/raw');
         $x   = $this->getSDK()->get($uri, array(), array('accept'=>'audio/*', 'content_type'=>'audio/*'));
 
-        header('Content-Type: '.$x->getHeader('Content-Type'));
-        header('content-length: '.$x->getHeader('content-length'));
+        header('Content-Type: '.$x->getHeader('Content-Type')[0]);
+        header('content-length: '.$x->getHeader('content-length')[0]);
 
         if (!$stream) {
-            header('Content-Disposition: '.$x->getHeader('Content-Disposition'));
+            header('Content-Disposition: '.$x->getHeader('Content-Disposition')[0]);
         }
         echo $x->getBody();
     }
