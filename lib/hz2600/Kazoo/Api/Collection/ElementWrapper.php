@@ -119,10 +119,10 @@ class ElementWrapper
             return $this->element_id = $element->device_id;
         }
 
-        if (!empty($element->uuid)){
-           return $this->element_id = $element->uuid;
+        // TODO: when conference is live, then return object has uuid set, what breaks api
+        if (empty($element->id) && !empty($element->uuid)){
+            return $this->element_id = $element->uuid;
         }
-
 
         // NOTICE: this is a hack for the odd
         //   connectivity API which is an array of strings.....
