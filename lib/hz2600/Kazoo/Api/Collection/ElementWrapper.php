@@ -120,10 +120,9 @@ class ElementWrapper
         }
 
         // TODO: when conference is live, then return object has uuid set, what breaks api
-        if (empty($element->participant_count) && !empty($element->uuid)){
+        if (empty($element->id) && !empty($element->uuid)){
             return $this->element_id = $element->uuid;
         }
-
 
         // NOTICE: this is a hack for the odd
         //   connectivity API which is an array of strings.....
