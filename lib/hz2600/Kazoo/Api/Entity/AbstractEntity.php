@@ -187,7 +187,6 @@ abstract class AbstractEntity extends AbstractResource
         $entity = $response->getData();
         $this->setEntity($entity);
 
-
         return $this;
     }
 
