@@ -42,7 +42,8 @@ class SDK implements ChainableInterface
         'log_type' => null,
         'log_file' => null,
         'cache_dir' => null,
-        'schema_dir' => null
+        'schema_dir' => null,
+        'logger' => null
     );
 
     /**
@@ -271,6 +272,7 @@ class SDK implements ChainableInterface
      *
      */
     private function executeGet($uri, $parameters, $requestHeaders) {
+        $this->logMessage("debug", "get %s", $uri);
         return $this->getHttpClient()->get($uri, $parameters, $requestHeaders);
     }
 
@@ -313,6 +315,7 @@ class SDK implements ChainableInterface
      *
      */
     private function executePost($uri, $content, $requestHeaders) {
+        $this->logMessage("debug", "post %s", $uri);
         return $this->getHttpClient()->post($uri, $content, $requestHeaders);
     }
 
@@ -338,6 +341,7 @@ class SDK implements ChainableInterface
      *
      */
     private function executePatch($uri, $content, $requestHeaders) {
+        $this->logMessage("debug", "patch %s", $uri);
         return $this->getHttpClient()->patch($uri, $content, $requestHeaders);
     }
 
@@ -363,6 +367,7 @@ class SDK implements ChainableInterface
      *
      */
     private function executePut($uri, $content, $requestHeaders) {
+        $this->logMessage("debug", "put %s", $uri);
         return $this->getHttpClient()->put($uri, $content, $requestHeaders);
     }
 
@@ -388,6 +393,7 @@ class SDK implements ChainableInterface
      *
      */
     private function executeDelete($uri, $content, $requestHeaders) {
+        $this->logMessage("debug", "delete %s", $uri);
         return $this->getHttpClient()->delete($uri, $content, $requestHeaders);
     }
 
@@ -403,4 +409,16 @@ class SDK implements ChainableInterface
             $this->token_values[$name] = $value;
         }
     }
+
+    // logMessage($severity, $sprintf_format, $arg1, ... )
+    public function logMessage() {
+        if (is_null($this->options['logger'])) {
+            return;
+        }
+        $arguments = func_get_args();
+        $severity = array_shift($arguments);
+        $format = array_shift($arguments);
+        call_user_func_array($this->options['logger'], [$severity, vsprintf($format, $arguments)]);
+    }
+
 }

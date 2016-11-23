@@ -12,6 +12,7 @@ use \Kazoo\Common\ChainableInterface;
 use \Kazoo\HttpClient\Message\Response;
 use \Kazoo\Api\AbstractResource;
 use \Kazoo\Common\Exception\ReadOnly;
+use \MakeBusy\Common\Log;
 
 abstract class AbstractEntity extends AbstractResource
 {
@@ -187,6 +188,7 @@ abstract class AbstractEntity extends AbstractResource
         $entity = $response->getData();
         $this->setEntity($entity);
 
+
         return $this;
     }
 
@@ -347,6 +349,9 @@ abstract class AbstractEntity extends AbstractResource
      *
      */
     protected function setEntity($entity = null) {
+        if (isset($_ENV['DUMP_ENTITIES'])) {
+            Log::dump("set entity", $entity);
+        }
         $this->entity = $entity;
         if (!empty($entity->id)) {
             $this->setId($entity->id);
