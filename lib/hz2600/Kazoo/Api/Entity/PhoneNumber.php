@@ -23,6 +23,10 @@ class PhoneNumber extends AbstractEntity
         return urlencode($id);
     }
 
+    public function notNew() {
+        $this->new_number = FALSE;
+    }
+
     /**
      *
      *
@@ -74,7 +78,6 @@ class PhoneNumber extends AbstractEntity
             $this->setEntity(new stdClass);
             $this->new_number = TRUE;
         }
-
         $this->setId($id);
 
         return $this;
