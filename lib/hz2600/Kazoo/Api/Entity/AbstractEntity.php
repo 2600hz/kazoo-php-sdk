@@ -347,9 +347,7 @@ abstract class AbstractEntity extends AbstractResource
      *
      */
     protected function setEntity($entity = null) {
-        if (isset($_ENV['DUMP_ENTITIES'])) {
-            $this->getSDK()->logMessage("debug", "set entity: %s", print_r($entity, true));
-        }
+        $this->getSDK()->logEntity("debug", "setEntity", $entity);
         $this->entity = $entity;
         if (!empty($entity->id)) {
             $this->setId($entity->id);

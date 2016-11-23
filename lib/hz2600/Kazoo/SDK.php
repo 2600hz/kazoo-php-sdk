@@ -43,7 +43,8 @@ class SDK implements ChainableInterface
         'log_file' => null,
         'cache_dir' => null,
         'schema_dir' => null,
-        'logger' => null
+        'logger' => null,
+        'entity_logger' => null
     );
 
     /**
@@ -420,5 +421,13 @@ class SDK implements ChainableInterface
         $format = array_shift($arguments);
         call_user_func_array($this->options['logger'], [$severity, vsprintf($format, $arguments)]);
     }
+
+    public function logEntity() {
+        if (is_null($this->options['entity_logger'])) {
+            return;
+        }
+        call_user_func_array($this->options['entity_logger'], func_get_args());
+    }
+
 
 }
