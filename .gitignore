@@ -8,3 +8,7 @@ vendor/
 vendor/*
 *~
 lib/hz2600/Kazoo/Tests/phpunit.xml
+.idea/deployment.xml
+.idea/kazoo-php-sdk.iml
+.idea/modules.xml
+.idea/workspace.xml
