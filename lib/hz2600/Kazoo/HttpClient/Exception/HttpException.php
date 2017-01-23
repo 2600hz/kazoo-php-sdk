@@ -14,9 +14,10 @@ class HttpException extends \Exception {
 
     public function __construct(Response $response) {
         $this->response = $response;
-
-        error_log(print_r($this->response,true));
-
         parent::__construct($response->getMessage(), $response->getStatusCode());
+    }
+
+    public function getResponse() {
+        return $this->response;
     }
 }
