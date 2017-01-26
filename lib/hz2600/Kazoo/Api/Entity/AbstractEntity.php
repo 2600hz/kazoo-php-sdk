@@ -351,7 +351,7 @@ abstract class AbstractEntity extends AbstractResource
         $this->entity = $entity;
         if (!empty($entity->id)) {
             $this->setId($entity->id);
-        } else {
+        } elseif (empty($this->entity_id)) {
             $this->setId();
         }
     }
