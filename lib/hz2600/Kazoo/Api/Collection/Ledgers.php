@@ -16,4 +16,18 @@ class Ledgers extends AbstractCollection {
         return $this;
     }
 
+    public function per_minute_voip(array $filter = array()) {
+        $filter = $this->getFilter($filter);
+        $response = $this->get($filter, '/per-minute-voip');
+        $this->setCollection($response->getData());
+        return $this;
+    }
+
+    public function per_minute_voip_csv(array $filter = array()) {
+        $filter["accept"] = "csv";
+        $filter = $this->getFilter($filter);
+        $response = $this->get($filter, '/per-minute-voip');
+        return $response;
+    }
+
 }
