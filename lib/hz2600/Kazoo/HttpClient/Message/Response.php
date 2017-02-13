@@ -123,7 +123,7 @@ class Response
      *
      * @return \GuzzleHttp\Psr7\Response
      */
-    private function getResponse() {
+    public function getResponse() {
         return $this->response;
     }
 }
