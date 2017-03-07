@@ -49,6 +49,16 @@ class User implements AuthTokenInterface
 
     /**
      *
+     * @var string
+     *
+     * Optional value that can be set so that username and password
+     * can remain secret
+     */
+    private $credentials_hash = '';
+
+
+    /**
+     *
      * @param string $username
      * @param string $password
      * @param string $sipRealm
@@ -168,7 +178,7 @@ class User implements AuthTokenInterface
 
         $payload = new stdClass();
         $payload->data = new stdClass();
-        $payload->data->credentials = md5($this->username . ":" . $this->password);
+        $payload->data->credentials = ($this->credentials_hash == '') ? ($this->username . ":" . $this->password) : $this->credentials_hash;
         $payload->data->realm = $this->sipRealm;
 
         $sdk = $this->getSDK();
@@ -180,5 +190,12 @@ class User implements AuthTokenInterface
 
         $this->auth_response = $response->getData();
         $this->auth_response->auth_token = $response->getAuthToken();
+    }
+
+    /**
+     * @param string $hash
+     */
+    public function setCredentialsHash($hash) {
+        $this->credentials_hash = $hash;
     }
 }

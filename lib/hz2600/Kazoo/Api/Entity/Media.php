@@ -14,7 +14,7 @@ class Media extends AbstractEntity
     {
         $this->setTokenValue($this->getEntityIdName(), $this->getId());
         $uri = $this->getURI('/raw');
-        $x   = $this->getSDK()->get($uri, array(), array('accept'=>'audio/*', 'content_type'=>'audio/*'));
+        $x   = $this->getSDK()->get($uri, array(), array('accept'=>'*/*', 'content_type'=>'audio/*'));
 
         header('Content-Type: '.$x->getHeader('Content-Type')[0]);
         header('content-length: '.$x->getHeader('content-length')[0]);
