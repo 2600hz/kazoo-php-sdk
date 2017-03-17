@@ -68,7 +68,6 @@ abstract class AbstractResource implements ChainableInterface
         if (!is_null($append_uri)) {
             $token_uri .= $append_uri;
         }
-
         $token_values = $this->getTokenValues();
         return $this->getSDK()->getTokenizedUri($token_uri, $token_values);
     }
@@ -123,7 +122,12 @@ abstract class AbstractResource implements ChainableInterface
      */
     protected function get(array $filter = array(), $append_uri = null) {
         $uri = $this->getUri($append_uri);
-        return $this->getSDK()->get($uri . "?" . http_build_query($filter));
+        // FIXME: if append_uri has ? sign, this will produce invalid uri
+        if(! empty($filter)) {
+            return $this->getSDK()->get($uri . "?" . http_build_query($filter));
+        } else {
+            return $this->getSDK()->get($uri);
+        }
     }
 
     /**
