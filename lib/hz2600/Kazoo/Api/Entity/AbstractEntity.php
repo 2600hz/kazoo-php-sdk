@@ -347,7 +347,6 @@ abstract class AbstractEntity extends AbstractResource
      *
      */
     protected function setEntity($entity = null) {
-        $this->getSDK()->logEntity("debug", "setEntity", $entity);
         $this->entity = $entity;
         if (!empty($entity->id)) {
             $this->setId($entity->id);
@@ -434,7 +433,7 @@ abstract class AbstractEntity extends AbstractResource
     }
 
     public function set(array $keys, $value) {
-        self::mset($this->fetch(), $keys, $value);
+        self::mset($this, $keys, $value);
         return $this;
     }
 
