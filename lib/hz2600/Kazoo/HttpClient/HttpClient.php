@@ -58,11 +58,13 @@ class HttpClient implements HttpClientInterface
         $handler = HandlerStack::create();
         $handler->push(Middleware::mapRequest(function (Request $request) {
             $sdk = $this->getSDK();
+            $sdk->logEntity("request", $request);
             $token = $sdk->getAuthToken()->getToken();
             return $request->withHeader('X-Auth-Token', $token);
         }));
         $handler->push(Middleware::mapResponse(function (GuzzleResponse $guzzleResponse) {
             $response = new Response($guzzleResponse);
+            $this->getSDK()->logEntity("response", $response);
             $code = $response->getStatusCode();
             switch ($code) {
             case 400:
