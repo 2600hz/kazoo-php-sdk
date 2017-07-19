@@ -16,10 +16,10 @@
          >
   <php>
     <var name="api_key" value=""/>
-    <var name="auth_username" value="bret@2600hz.com"/>
-    <var name="auth_password" value="thisisforadmin"/>
-    <var name="auth_realm" value="517f14.sip.2600hz.com"/>
-    <var name="base_url" value="http://159.203.242.118:8000"/>
+    <var name="auth_username" value=""/>
+    <var name="auth_password" value=""/>
+    <var name="auth_realm" value=""/>
+    <var name="base_url" value=""/>
   </php>
 
   <testsuites>
