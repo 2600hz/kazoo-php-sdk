@@ -23,7 +23,7 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
         } else {
             $auth_token = new ApiKey($GLOBALS['api_key']);
         }
-        
+
         if(empty($GLOBALS['base_url'])){
             $options = array();
         } else {

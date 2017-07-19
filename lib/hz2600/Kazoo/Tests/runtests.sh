@@ -2,4 +2,4 @@
 
 cd `dirname $0`
 
-php ../../../../vendor/phpunit/phpunit/phpunit.php --configuration phpunit.xml $@
+php ../../../../vendor/phpunit/phpunit/phpunit --configuration phpunit.xml $@
