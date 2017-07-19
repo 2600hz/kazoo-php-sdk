@@ -1,0 +1,528 @@
+PHPUnit 4.8.36 by Sebastian Bergmann and contributors.
+
+Runtime:	PHP 7.0.21-1~ubuntu14.04.1+deb.sury.org+1
+Configuration:	/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/phpunit.xml
+Warning:	Deprecated configuration setting "strict" used
+
+EEESSESSSSSE.ESSSSSESSSESSSSESSSSSE.ESSSSESSSSSESSSSSESSSSSESSS  63 / 124 ( 50%)
+SSESSSESSSSSE.ESSSSSE.ESSSSSESSSSSSESSSSS....
+
+Time: 574 ms, Memory: 8.00MB
+
+There were 23 errors:
+
+1) Kazoo\Tests\Functional\AccountTest::testGetMyAccount
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/AccountTest.php:16
+
+2) Kazoo\Tests\Functional\AccountTest::testUpdateMyAccount
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/AccountTest.php:26
+
+3) Kazoo\Tests\Functional\AccountTest::testCreateChildAccount
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:240
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/AbstractResource.php:72
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/AbstractResource.php:138
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/AbstractEntity.php:209
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/AccountTest.php:66
+
+4) Kazoo\Tests\Functional\BlacklistTest::testCreateBlacklist
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/BlacklistsTest.php:16
+
+5) Kazoo\Tests\Functional\CdrTest::testGetCdrs
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/CdrTest.php:16
+
+6) Kazoo\Tests\Functional\ConferenceTest::testCreateConference
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/ConferenceTest.php:16
+
+7) Kazoo\Tests\Functional\ConfigTest::testCreateConfig
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/ConfigsTest.php:16
+
+8) Kazoo\Tests\Functional\ConnectivityTest::testCreateConnectivity
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/ConnectivityTest.php:17
+
+9) Kazoo\Tests\Functional\DeviceTest::testCreateDevice
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/DeviceTest.php:16
+
+10) Kazoo\Tests\Functional\DeviceTest::testDevicesStatus
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/DeviceTest.php:134
+
+11) Kazoo\Tests\Functional\DirectoryTest::testCreateDirectory
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/DirectoryTest.php:16
+
+12) Kazoo\Tests\Functional\FaxesTest::testCreateFax
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/FaxesTest.php:16
+
+13) Kazoo\Tests\Functional\GroupTest::testCreateGroup
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/GroupsTest.php:17
+
+14) Kazoo\Tests\Functional\MediaTest::testCreateMedia
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/MediaTest.php:16
+
+15) Kazoo\Tests\Functional\MenuTest::testCreateMenu
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/MenuTest.php:16
+
+16) Kazoo\Tests\Functional\PortRequestTest::testCreatePortRequest
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/PortRequestTest.php:19
+
+17) Kazoo\Tests\Functional\QueueTest::testCreateQueue
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/QueuesTest.php:16
+
+18) Kazoo\Tests\Functional\RegistrationsTest::testGetRegistrations
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/RegistrationsTest.php:17
+
+19) Kazoo\Tests\Functional\ResourceTest::testCreateResource
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/ResourceTest.php:16
+
+20) Kazoo\Tests\Functional\ServicePlanTest::testCreateServicePlan
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/ServicePlanTest.php:16
+
+21) Kazoo\Tests\Functional\UserTest::testCreateUser
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/UserTest.php:16
+
+22) Kazoo\Tests\Functional\VMBoxTest::testCreateVMBox
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/VMBoxTest.php:16
+
+23) Kazoo\Tests\Functional\WebhookTest::testCreateWebhook
+Trying to get property of non-object
+
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/HttpClient/Message/Response.php:30
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:181
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:156
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:142
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/AuthToken/User.php:94
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Api/Entity/Account.php:20
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/SDK.php:130
+/home/bret/Code/internal-reports/app/vendor/2600hz/kazoo-php-sdk/lib/hz2600/Kazoo/Tests/Functional/WebhookTest.php:16
+
+--
+
+There were 77 skipped tests:
+
+1) Kazoo\Tests\Functional\AccountTest::testUpdateChildAccount
+This test depends on "Kazoo\Tests\Functional\AccountTest::testCreateChildAccount" to pass.
+
+2) Kazoo\Tests\Functional\AccountTest::testRemoveChildAccount
+This test depends on "Kazoo\Tests\Functional\AccountTest::testCreateChildAccount" to pass.
+
+3) Kazoo\Tests\Functional\BlacklistTest::testFetchBlacklist
+This test depends on "Kazoo\Tests\Functional\BlacklistTest::testCreateBlacklist" to pass.
+
+4) Kazoo\Tests\Functional\BlacklistTest::testUpdateBlacklist
+This test depends on "Kazoo\Tests\Functional\BlacklistTest::testFetchBlacklist" to pass.
+
+5) Kazoo\Tests\Functional\BlacklistTest::testListingBlacklists
+This test depends on "Kazoo\Tests\Functional\BlacklistTest::testCreateBlacklist" to pass.
+
+6) Kazoo\Tests\Functional\BlacklistTest::testFilteredListingBlacklists
+This test depends on "Kazoo\Tests\Functional\BlacklistTest::testCreateBlacklist" to pass.
+
+7) Kazoo\Tests\Functional\BlacklistTest::testRemoveChildBlacklist
+This test depends on "Kazoo\Tests\Functional\BlacklistTest::testFetchBlacklist" to pass.
+
+8) Kazoo\Tests\Functional\ConferenceTest::testFetchConference
+This test depends on "Kazoo\Tests\Functional\ConferenceTest::testCreateConference" to pass.
+
+9) Kazoo\Tests\Functional\ConferenceTest::testUpdateConference
+This test depends on "Kazoo\Tests\Functional\ConferenceTest::testFetchConference" to pass.
+
+10) Kazoo\Tests\Functional\ConferenceTest::testListingConferences
+This test depends on "Kazoo\Tests\Functional\ConferenceTest::testCreateConference" to pass.
+
+11) Kazoo\Tests\Functional\ConferenceTest::testFilteredListingConferences
+This test depends on "Kazoo\Tests\Functional\ConferenceTest::testCreateConference" to pass.
+
+12) Kazoo\Tests\Functional\ConferenceTest::testRemoveChildConference
+This test depends on "Kazoo\Tests\Functional\ConferenceTest::testFetchConference" to pass.
+
+13) Kazoo\Tests\Functional\ConfigTest::testFetchConfig
+This test depends on "Kazoo\Tests\Functional\ConfigTest::testCreateConfig" to pass.
+
+14) Kazoo\Tests\Functional\ConfigTest::testUpdateConfig
+This test depends on "Kazoo\Tests\Functional\ConfigTest::testFetchConfig" to pass.
+
+15) Kazoo\Tests\Functional\ConfigTest::testRemoveChildConfig
+This test depends on "Kazoo\Tests\Functional\ConfigTest::testFetchConfig" to pass.
+
+16) Kazoo\Tests\Functional\ConnectivityTest::testFetchConnectivity
+This test depends on "Kazoo\Tests\Functional\ConnectivityTest::testCreateConnectivity" to pass.
+
+17) Kazoo\Tests\Functional\ConnectivityTest::testUpdateConnectivity
+This test depends on "Kazoo\Tests\Functional\ConnectivityTest::testFetchConnectivity" to pass.
+
+18) Kazoo\Tests\Functional\ConnectivityTest::testListingConnectivities
+This test depends on "Kazoo\Tests\Functional\ConnectivityTest::testCreateConnectivity" to pass.
+
+19) Kazoo\Tests\Functional\ConnectivityTest::testRemoveChildConnectivity
+This test depends on "Kazoo\Tests\Functional\ConnectivityTest::testFetchConnectivity" to pass.
+
+20) Kazoo\Tests\Functional\DeviceTest::testFetchDevice
+This test depends on "Kazoo\Tests\Functional\DeviceTest::testCreateDevice" to pass.
+
+21) Kazoo\Tests\Functional\DeviceTest::testUpdateDevice
+This test depends on "Kazoo\Tests\Functional\DeviceTest::testFetchDevice" to pass.
+
+22) Kazoo\Tests\Functional\DeviceTest::testListingDevices
+This test depends on "Kazoo\Tests\Functional\DeviceTest::testCreateDevice" to pass.
+
+23) Kazoo\Tests\Functional\DeviceTest::testFilteredListingDevices
+This test depends on "Kazoo\Tests\Functional\DeviceTest::testCreateDevice" to pass.
+
+24) Kazoo\Tests\Functional\DeviceTest::testRemoveChildDevice
+This test depends on "Kazoo\Tests\Functional\DeviceTest::testFetchDevice" to pass.
+
+25) Kazoo\Tests\Functional\DirectoryTest::testFetchDirectory
+This test depends on "Kazoo\Tests\Functional\DirectoryTest::testCreateDirectory" to pass.
+
+26) Kazoo\Tests\Functional\DirectoryTest::testUpdateDirectory
+This test depends on "Kazoo\Tests\Functional\DirectoryTest::testFetchDirectory" to pass.
+
+27) Kazoo\Tests\Functional\DirectoryTest::testListingDirectory
+This test depends on "Kazoo\Tests\Functional\DirectoryTest::testCreateDirectory" to pass.
+
+28) Kazoo\Tests\Functional\DirectoryTest::testRemoveChildDirectory
+This test depends on "Kazoo\Tests\Functional\DirectoryTest::testFetchDirectory" to pass.
+
+29) Kazoo\Tests\Functional\FaxesTest::testFetchFax
+This test depends on "Kazoo\Tests\Functional\FaxesTest::testCreateFax" to pass.
+
+30) Kazoo\Tests\Functional\FaxesTest::testUpdateFax
+This test depends on "Kazoo\Tests\Functional\FaxesTest::testFetchFax" to pass.
+
+31) Kazoo\Tests\Functional\FaxesTest::testListingFaxes
+This test depends on "Kazoo\Tests\Functional\FaxesTest::testCreateFax" to pass.
+
+32) Kazoo\Tests\Functional\FaxesTest::testFilteredListingFaxes
+This test depends on "Kazoo\Tests\Functional\FaxesTest::testCreateFax" to pass.
+
+33) Kazoo\Tests\Functional\FaxesTest::testRemoveChildFaxes
+This test depends on "Kazoo\Tests\Functional\FaxesTest::testFetchFax" to pass.
+
+34) Kazoo\Tests\Functional\GroupTest::testFetchGroup
+This test depends on "Kazoo\Tests\Functional\GroupTest::testCreateGroup" to pass.
+
+35) Kazoo\Tests\Functional\GroupTest::testUpdateGroup
+This test depends on "Kazoo\Tests\Functional\GroupTest::testFetchGroup" to pass.
+
+36) Kazoo\Tests\Functional\GroupTest::testListingGroups
+This test depends on "Kazoo\Tests\Functional\GroupTest::testCreateGroup" to pass.
+
+37) Kazoo\Tests\Functional\GroupTest::testFilteredListingGroups
+This test depends on "Kazoo\Tests\Functional\GroupTest::testCreateGroup" to pass.
+
+38) Kazoo\Tests\Functional\GroupTest::testRemoveChildGroup
+This test depends on "Kazoo\Tests\Functional\GroupTest::testFetchGroup" to pass.
+
+39) Kazoo\Tests\Functional\MediaTest::testFetchMedia
+This test depends on "Kazoo\Tests\Functional\MediaTest::testCreateMedia" to pass.
+
+40) Kazoo\Tests\Functional\MediaTest::testUpdateMedia
+This test depends on "Kazoo\Tests\Functional\MediaTest::testFetchMedia" to pass.
+
+41) Kazoo\Tests\Functional\MediaTest::testListingMedias
+This test depends on "Kazoo\Tests\Functional\MediaTest::testCreateMedia" to pass.
+
+42) Kazoo\Tests\Functional\MediaTest::testFilteredListingMedias
+This test depends on "Kazoo\Tests\Functional\MediaTest::testCreateMedia" to pass.
+
+43) Kazoo\Tests\Functional\MediaTest::testRemoveChildMedia
+This test depends on "Kazoo\Tests\Functional\MediaTest::testFetchMedia" to pass.
+
+44) Kazoo\Tests\Functional\MenuTest::testFetchMenu
+This test depends on "Kazoo\Tests\Functional\MenuTest::testCreateMenu" to pass.
+
+45) Kazoo\Tests\Functional\MenuTest::testUpdateMenu
+This test depends on "Kazoo\Tests\Functional\MenuTest::testFetchMenu" to pass.
+
+46) Kazoo\Tests\Functional\MenuTest::testListingMenus
+This test depends on "Kazoo\Tests\Functional\MenuTest::testCreateMenu" to pass.
+
+47) Kazoo\Tests\Functional\MenuTest::testFilteredListingMenus
+This test depends on "Kazoo\Tests\Functional\MenuTest::testCreateMenu" to pass.
+
+48) Kazoo\Tests\Functional\MenuTest::testRemoveChildMenu
+This test depends on "Kazoo\Tests\Functional\MenuTest::testFetchMenu" to pass.
+
+49) Kazoo\Tests\Functional\PortRequestTest::testFetchPortRequest
+This test depends on "Kazoo\Tests\Functional\PortRequestTest::testCreatePortRequest" to pass.
+
+50) Kazoo\Tests\Functional\PortRequestTest::testUpdatePortRequest
+This test depends on "Kazoo\Tests\Functional\PortRequestTest::testFetchPortRequest" to pass.
+
+51) Kazoo\Tests\Functional\PortRequestTest::testRemoveChildPortRequest
+This test depends on "Kazoo\Tests\Functional\PortRequestTest::testFetchPortRequest" to pass.
+
+52) Kazoo\Tests\Functional\QueueTest::testFetchQueue
+This test depends on "Kazoo\Tests\Functional\QueueTest::testCreateQueue" to pass.
+
+53) Kazoo\Tests\Functional\QueueTest::testUpdateQueue
+This test depends on "Kazoo\Tests\Functional\QueueTest::testFetchQueue" to pass.
+
+54) Kazoo\Tests\Functional\QueueTest::testListingQueues
+This test depends on "Kazoo\Tests\Functional\QueueTest::testCreateQueue" to pass.
+
+55) Kazoo\Tests\Functional\QueueTest::testFilteredListingQueues
+This test depends on "Kazoo\Tests\Functional\QueueTest::testCreateQueue" to pass.
+
+56) Kazoo\Tests\Functional\QueueTest::testRemoveChildQueue
+This test depends on "Kazoo\Tests\Functional\QueueTest::testFetchQueue" to pass.
+
+57) Kazoo\Tests\Functional\ResourceTest::testFetchResource
+This test depends on "Kazoo\Tests\Functional\ResourceTest::testCreateResource" to pass.
+
+58) Kazoo\Tests\Functional\ResourceTest::testUpdateResource
+This test depends on "Kazoo\Tests\Functional\ResourceTest::testFetchResource" to pass.
+
+59) Kazoo\Tests\Functional\ResourceTest::testListingResources
+This test depends on "Kazoo\Tests\Functional\ResourceTest::testCreateResource" to pass.
+
+60) Kazoo\Tests\Functional\ResourceTest::testFilteredListingResources
+This test depends on "Kazoo\Tests\Functional\ResourceTest::testCreateResource" to pass.
+
+61) Kazoo\Tests\Functional\ResourceTest::testRemoveChildResource
+This test depends on "Kazoo\Tests\Functional\ResourceTest::testFetchResource" to pass.
+
+62) Kazoo\Tests\Functional\UserTest::testFetchUser
+This test depends on "Kazoo\Tests\Functional\UserTest::testCreateUser" to pass.
+
+63) Kazoo\Tests\Functional\UserTest::testUpdateUser
+This test depends on "Kazoo\Tests\Functional\UserTest::testFetchUser" to pass.
+
+64) Kazoo\Tests\Functional\UserTest::testListingUsers
+This test depends on "Kazoo\Tests\Functional\UserTest::testCreateUser" to pass.
+
+65) Kazoo\Tests\Functional\UserTest::testFilteredListingUsers
+This test depends on "Kazoo\Tests\Functional\UserTest::testCreateUser" to pass.
+
+66) Kazoo\Tests\Functional\UserTest::testRemoveChildUser
+This test depends on "Kazoo\Tests\Functional\UserTest::testFetchUser" to pass.
+
+67) Kazoo\Tests\Functional\VMBoxTest::testFetchVMBox
+This test depends on "Kazoo\Tests\Functional\VMBoxTest::testCreateVMBox" to pass.
+
+68) Kazoo\Tests\Functional\VMBoxTest::testUpdateVMBox
+This test depends on "Kazoo\Tests\Functional\VMBoxTest::testFetchVMBox" to pass.
+
+69) Kazoo\Tests\Functional\VMBoxTest::testListingVMBoxes
+This test depends on "Kazoo\Tests\Functional\VMBoxTest::testCreateVMBox" to pass.
+
+70) Kazoo\Tests\Functional\VMBoxTest::testFilteredListingVMBoxes
+This test depends on "Kazoo\Tests\Functional\VMBoxTest::testCreateVMBox" to pass.
+
+71) Kazoo\Tests\Functional\VMBoxTest::testRemoveChildVMBox
+This test depends on "Kazoo\Tests\Functional\VMBoxTest::testFetchVMBox" to pass.
+
+72) Kazoo\Tests\Functional\VMBoxTest::testFetchMessages
+This test depends on "Kazoo\Tests\Functional\VMBoxTest::testFetchVMBox" to pass.
+
+73) Kazoo\Tests\Functional\WebhookTest::testFetchWebhook
+This test depends on "Kazoo\Tests\Functional\WebhookTest::testCreateWebhook" to pass.
+
+74) Kazoo\Tests\Functional\WebhookTest::testUpdateWebhook
+This test depends on "Kazoo\Tests\Functional\WebhookTest::testFetchWebhook" to pass.
+
+75) Kazoo\Tests\Functional\WebhookTest::testListingWebhooks
+This test depends on "Kazoo\Tests\Functional\WebhookTest::testCreateWebhook" to pass.
+
+76) Kazoo\Tests\Functional\WebhookTest::testFilteredListingWebhooks
+This test depends on "Kazoo\Tests\Functional\WebhookTest::testCreateWebhook" to pass.
+
+77) Kazoo\Tests\Functional\WebhookTest::testRemoveChildWebhook
+This test depends on "Kazoo\Tests\Functional\WebhookTest::testFetchWebhook" to pass.
+
+FAILURES!
+Tests: 47, Assertions: 32, Errors: 23, Skipped: 77.
