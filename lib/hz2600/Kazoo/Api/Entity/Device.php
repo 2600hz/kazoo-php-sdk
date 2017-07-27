@@ -9,12 +9,12 @@ class Device extends AbstractEntity
         $this->setTokenValue($this->getEntityIdName(), $this->getId());
         $this->setTokenValue('quickcall_number', $number);
 
-        $this->get($options, $url);
+        return $this->get($options, $url);
     }
 
     public function sync() {
         $url = '/sync';
         $this->setTokenValue($this->getEntityIdName(), $this->getId());
-        $this->post(array(), $url);
+        return $this->post(array(), $url);
     }
 }
