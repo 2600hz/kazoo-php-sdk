@@ -15,6 +15,8 @@ use \Kazoo\AuthToken\Exception\Unauthorized;
 use \Kazoo\HttpClient\Exception\HttpException;
 use \Kazoo\HttpClient\Exception\NotFound;
 use \Kazoo\HttpClient\Exception\InvalidMethod;
+use \Kazoo\HttpClient\Exception\ServerErrorResponse;
+use \Kazoo\HttpClient\Exception\ServiceNotAvailable;
 
 use GuzzleHttp\Middleware;
 use GuzzleHttp\HandlerStack;
@@ -90,6 +92,10 @@ class HttpClient implements HttpClientInterface
             case 429:
                 // too many requests
                 throw new RateLimit($response);
+            case 500:
+                throw new ServerErrorResponse($response);
+            case 503:
+                throw new ServiceNotAvailable($response);
             default:
                 if ($code >= 400 && $code < 500) {
                     throw new ApiException($response);
