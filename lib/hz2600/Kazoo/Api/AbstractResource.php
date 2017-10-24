@@ -22,6 +22,12 @@ abstract class AbstractResource implements ChainableInterface
      *
      *
      */
+    private $response;
+
+    /**
+     *
+     *
+     */
     private $token_values = array();
 
     /* CHAINABLE INTERFACE */
@@ -120,14 +126,23 @@ abstract class AbstractResource implements ChainableInterface
      *
      *
      */
+    public function getResponse() {
+        return $this->response;
+    }
+
+    /**
+     *
+     *
+     */
     protected function get(array $filter = array(), $append_uri = null) {
         $uri = $this->getUri($append_uri);
         // FIXME: if append_uri has ? sign, this will produce invalid uri
         if(! empty($filter)) {
-            return $this->getSDK()->get($uri . "?" . http_build_query($filter));
+            $this->response = $this->getSDK()->get($uri . "?" . http_build_query($filter));
         } else {
-            return $this->getSDK()->get($uri);
+            $this->response = $this->getSDK()->get($uri);
         }
+        return $this->response;
     }
 
     /**
@@ -136,7 +151,8 @@ abstract class AbstractResource implements ChainableInterface
      */
     protected function put($payload, $append_uri = null) {
         $uri = $this->getUri($append_uri);
-        return $this->getSDK()->put($uri, $payload);
+        $this->response = $this->getSDK()->put($uri, $payload);
+        return $this->response;
     }
 
     /**
@@ -145,7 +161,8 @@ abstract class AbstractResource implements ChainableInterface
      */
     protected function post($payload, $append_uri = null) {
         $uri = $this->getUri($append_uri);
-        return $this->getSDK()->post($uri, $payload);
+        $this->response = $this->getSDK()->post($uri, $payload);
+        return $this->response;
     }
 
     /**
@@ -154,7 +171,8 @@ abstract class AbstractResource implements ChainableInterface
      */
     protected function delete($payload = null, $append_uri = null) {
         $uri = $this->getUri($append_uri);
-        return $this->getSDK()->delete($uri, $payload);
+        $this->response = $this->getSDK()->delete($uri, $payload);
+        return $this->response;
     }
 
     /**
