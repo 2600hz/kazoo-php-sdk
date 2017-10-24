@@ -140,7 +140,7 @@ abstract class AbstractResource implements ChainableInterface
         if(! empty($filter)) {
             $this->response = $this->getSDK()->get($uri . "?" . http_build_query($filter));
         } else {
-            $this->response = return $this->getSDK()->get($uri);
+            $this->response = $this->getSDK()->get($uri);
         }
         return $this->response;
     }
