@@ -9,10 +9,4 @@ class Devices extends AbstractCollection
         $this->setCollection($response->getData());
         return $this;
     }
-
-    public function ownedBy($userId) {
-        $response = $this->get(array(), '/owned_by/'.$userId);
-        $this->setCollection($response->getData());
-        return $this;
-    }
 }
