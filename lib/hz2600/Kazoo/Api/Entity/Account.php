@@ -57,4 +57,26 @@ class Account extends AbstractEntity
     public function move() {
 
     }
+
+    /**
+     * Create a child account of this account. Returns the new Account entity.
+     *
+     * @param \Kazoo\Api\Entity\Account $account The account to create below
+     * this account
+     *
+     * @return \Kazoo\Api\Entity\Account The new child account after saving
+     */
+    public function createChild($account) {
+        $id = $this->getId();
+        $payload = $account->getPayload();
+
+        $this->setTokenValue($this->getEntityIdName(), $id);
+
+        $response = $this->put($payload);
+
+        $entity = $response->getData();
+        $this->setEntity($entity);
+
+        return $this;
+    }
 }
