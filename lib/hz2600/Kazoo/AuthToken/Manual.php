@@ -16,13 +16,13 @@ class Manual implements AuthTokenInterface
      *
      * @var string auth_token
      */
-    private static $auth_token;
+    private $auth_token;
 
     /**
      *
      * @var string account_id
      */
-    private static $account_id;
+    private $account_id;
 
     /**
      *
