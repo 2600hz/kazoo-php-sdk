@@ -214,4 +214,14 @@ echo $cdrs;
 
 ```
 
+##Create Account
+```php
 
+function CreateNewAccount($sdk, $account_name) {
+	$account = $sdk->Account(null);
+	$account->name = $account_name;
+	$account->save;
+	
+	return $account->getId();
+}
+```
