@@ -413,35 +413,6 @@ abstract class AbstractEntity extends AbstractResource
         $this->read_only = TRUE;
     }
 
-    // auto-create nodes for this->k1->k2->k3 = v1
-    public static function mset($chunk, array $keys, $value) {
-        $head = $chunk;
-        $last = count($keys)-1;
-        foreach($keys as $id => $key) {
-            if ($last == $id) {
-                if (is_null($value)) {
-                    unset($chunk->$key);
-                } else {
-                    $chunk->$key = $value;
-                }
-            } else {
-                $chunk->$key = isset($chunk->$key)? $chunk->$key : new stdClass();
-                $chunk = $chunk->$key;
-            }
-        }
-        return $head;
-    }
-
-    public function set(array $keys, $value) {
-        self::mset($this, $keys, $value);
-        return $this;
-    }
-
-    public function patch(array $keys, $value) {
-        $patch = self::mset(new stdClass(), array_merge(["data"], $keys), $value);
-        return parent::patch(json_encode($patch));
-    }
-
     public function write($object, $append_uri = null) {
         $obj = new \stdClass();
         $obj->data = $object;
