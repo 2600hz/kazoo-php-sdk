@@ -34,7 +34,7 @@ class SDK implements ChainableInterface
             'content_type' => 'application/json',
             'accept' => 'application/json'
         ),
-        'defauts' => array(
+        'defaults' => array(
             'timeout' => 10,
         ),
         'api_limit' => 5000,
