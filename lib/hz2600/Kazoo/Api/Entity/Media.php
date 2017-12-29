@@ -4,7 +4,6 @@ namespace Kazoo\Api\Entity;
 
 class Media extends AbstractEntity
 {
-    
     /**
      * posts media file
      * @param  string $path      Local path of media file
