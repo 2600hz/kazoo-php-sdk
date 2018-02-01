@@ -459,11 +459,6 @@ abstract class AbstractEntity extends AbstractResource
         return $this;
     }
 
-    public function patch(array $keys, $value) {
-        $patch = self::mset(new stdClass(), array_merge(["data"], $keys), $value);
-        return parent::patch(json_encode($patch));
-    }
-
     public function write($object, $append_uri = null) {
         $obj = new \stdClass();
         $obj->data = $object;
