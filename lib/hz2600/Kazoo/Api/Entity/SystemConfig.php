@@ -4,7 +4,8 @@ namespace Kazoo\Api\Entity;
 
 use \Kazoo\Common\Exception\InvalidArgument;
 
-class SystemConfig extends AbstractEntity {
+class SystemConfig extends AbstractEntity
+{
     /**
      * perform a change in system config
      * $arg can be stdClass or key or array of key, values
