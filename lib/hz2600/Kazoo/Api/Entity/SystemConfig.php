@@ -1,4 +1,5 @@
 <?php
+
 namespace Kazoo\Api\Entity;
 
 use \Kazoo\Common\Exception\InvalidArgument;
