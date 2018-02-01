@@ -5,8 +5,7 @@ use \Kazoo\Common\Exception\InvalidArgument;
 
 class Config extends AbstractEntity
 {
-    protected function getUriSnippet()
-    {
+    protected function getUriSnippet() {
         $collectionName = $this->getCollectionName();
         $entityId = $this->getId();
 
@@ -27,8 +26,7 @@ class Config extends AbstractEntity
      * $key used when $value is not null can be a string or an array
      *
      */
-    public function change($arg, $value = null)
-    {
+    public function change($arg, $value = null) {
         $this->reset(true);
         if (!$value) {
             if ($arg instanceof \stdClass) {
