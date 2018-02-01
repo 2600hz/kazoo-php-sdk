@@ -8,8 +8,8 @@ class Config extends AbstractEntity
     protected function getUriSnippet()
     {
         $collectionName = $this->getCollectionName();
-        $entityId       = $this->getId();
-        
+        $entityId = $this->getId();
+
         if (isset($entityId)) {
             $entityId = str_replace("configs_", "", $entityId);
             return "/$collectionName/$entityId";
@@ -18,8 +18,8 @@ class Config extends AbstractEntity
         }
         return "/$collectionName/{{$entityIdName}";
     }
-    
-    
+
+
     /**
      * perform a change in system config
      * $arg can be stdClass or key or array of key, values
