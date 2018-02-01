@@ -34,8 +34,9 @@ class Config extends AbstractEntity
                 $this->setEntity($arg);
                 $this->setId($id);
             } else {
-                if (!is_array($arg))
+                if (!is_array($arg)) {
                     throw new InvalidArgumentException("values is not array");
+                }
                 foreach ($arg as $key_values) {
                     if (!is_array($key_values)) {
                         throw new InvalidArgumentException("values item must be [key, value]");
