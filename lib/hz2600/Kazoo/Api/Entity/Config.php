@@ -10,7 +10,7 @@ class Config extends AbstractEntity
         $entityId = $this->getId();
 
         if (isset($entityId)) {
-            $entityId = str_replace("configs_", "", $entityId);
+            $entityId = str_replace("configs_","",$entityId);
             return "/$collectionName/$entityId";
         } else {
             $entityIdName = $this->getEntityIdName();
