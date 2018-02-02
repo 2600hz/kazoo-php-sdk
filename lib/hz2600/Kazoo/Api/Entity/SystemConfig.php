@@ -14,12 +14,11 @@ class SystemConfig extends AbstractEntity
      *
      */
     public function change($arg, $value = null) {
-        $this->reset(true);
+        $id = $this->getId();
+        $this->reset();
         if (!$value) {
             if ($arg instanceof \stdClass) {
-                $id = $this->getId();
                 $this->setEntity($arg);
-                $this->setId($id);
             } else {
                 if (!is_array($arg)) {
                     throw new InvalidArgumentException("values is not array");
@@ -38,6 +37,7 @@ class SystemConfig extends AbstractEntity
                 $this->set([$arg], $value);
             }
         };
+        $this->setId($id);
         return $this->partialUpdate(null);
     }
 }
