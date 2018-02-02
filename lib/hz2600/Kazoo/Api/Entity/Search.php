@@ -6,8 +6,7 @@ namespace Kazoo\Api\Entity;
 TODO: Add support for accounts/{account_id}/search
 */
 
-class Search extends AbstractEntity
-{
+class Search extends AbstractEntity {
     public function search($type, $value, $view)
     {
 	$type		= urlencode($type);
@@ -20,16 +19,16 @@ class Search extends AbstractEntity
     
     public function searchAccounts($value, $view)
     {
-	    return $this -> search("account", $value, $view);
+	    return $this->search("account", $value, $view);
     }
     
     public function getAccountByRealm($realm)
     {
-	    $result = $this -> searchAccounts($realm, "realm");
+	    $result = $this->searchAccounts($realm, "realm");
 	    
 	    foreach ($result as $account)
 	    {
-		    if ($account -> realm == $realm)
+		    if ($account->realm == $realm)
 		    {
 			    return $account;
 		    }
@@ -40,7 +39,7 @@ class Search extends AbstractEntity
     
     public function getAccountByName($name, $equal = FALSE)
     {
-	    $result = $this -> searchAccounts($name, "name");
+	    $result = $this->searchAccounts($name, "name");
 	    
 	    if (is_array($result))
 	    {
@@ -48,7 +47,7 @@ class Search extends AbstractEntity
 		    {
 			foreach ($result as $account)
 			{
-			    if ($account -> name === $name)
+			    if ($account->name === $name)
 			    {
 				    return $account;
 			    }
@@ -65,7 +64,7 @@ class Search extends AbstractEntity
     
     public function getAccountById($id)
     {
-	    $result = $this -> searchAccounts($id, "id");
+	    $result = $this->searchAccounts($id, "id");
 	    
 	    return is_array($result) && count($result) ? $result[0] : FALSE;
     }
