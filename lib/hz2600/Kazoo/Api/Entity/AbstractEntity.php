@@ -323,8 +323,12 @@ abstract class AbstractEntity extends AbstractResource
      * container to create a new entity.
      *
      */
-    public function reset() {
+    public function reset($preserve_id = false) {
+        $id = $this->getId();
         $this->setEntity();
+        if($preserve_id) {
+            $this->setId($id);
+        }
         return $this;
     }
 
