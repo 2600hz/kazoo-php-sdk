@@ -12,22 +12,22 @@ class Offnet extends AbstractNode
         }
     }
 
-    public function caller_id_type($caller_id_type){
+    public function caller_id_type($caller_id_type) {
         $this->data->caller_id_type = $caller_id_type;
         return $this;
     }
 
-    public function ignore_early_media($ignore_early_media){
+    public function ignore_early_media($ignore_early_media) {
         $this->data->ignore_early_media = $ignore_early_media;
         return $this;
     }
 
-    public function outbound_flags($outbound_flags){
+    public function outbound_flags($outbound_flags) {
         $this->data->outbound_flags = $outbound_flags;
         return $this;
     }
 
-    public function use_local_resources($use_local_resources){
+    public function use_local_resources($use_local_resources) {
         $this->data->use_local_resources = $use_local_resources;
         return $this;
     }
