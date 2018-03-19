@@ -5,6 +5,12 @@ namespace Kazoo\Api\Entity;
 
 class Conference extends AbstractEntity
 {
+    /**
+     * Dial out to endpoints and place answering endpoints in a conference
+     *
+     * @param stdClass $data Endpoints' information for dialing
+     */
+
     public function dial($data) {
         $envelope = new stdClass();
         $envelope->action = "dial";
