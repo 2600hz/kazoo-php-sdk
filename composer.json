@@ -1,32 +1,42 @@
 {
-    "name": "2600hz/kazoo-php-sdk",
-    "type": "library",
-    "keywords": ["kazoo", "sip", "api", "voip", "uc"],
-    "license": "MIT",
-    "description": "Description of project kazoo-php-sdk.",
-    "homepage": "http://github.com/2600hz/kazoo-php-sdk",
     "authors": [
         {
-            "name": "2600hz Team",
-            "homepage": "http://2600hz.com"
+            "homepage": "http://2600hz.com",
+            "name": "2600hz Team"
         },
         {
-            "name": "Ben Wann",
-            "email": "ben@2600hz.com"
+            "email": "ben@2600hz.com",
+            "name": "Ben Wann"
         }
     ],
+    "autoload": {
+        "psr-0": {
+            "CallflowBuilder": "lib/hz2600",
+            "Kazoo": "lib/hz2600"
+        }
+    },
+    "description": "Description of project kazoo-php-sdk.",
+    "homepage": "http://github.com/2600hz/kazoo-php-sdk",
+    "keywords": [
+        "kazoo",
+        "sip",
+        "api",
+        "voip",
+        "uc"
+    ],
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "name": "2600hz/kazoo-php-sdk",
+    "preferred-install": "dist",
     "require": {
-        "php": ">=5.5",
         "ext-curl": "*",
         "guzzlehttp/guzzle": ">=6.2.1",
-        "monolog/monolog": "~1.17"
+        "monolog/monolog": "~1.17",
+        "php": ">=5.5"
     },
-    "minimum-stability": "stable",
-    "preferred-install": "dist",
     "require-dev": {
-        "phpunit/phpunit": "4.8.*"
+        "phpunit/phpunit": "4.8.*",
+        "squizlabs/php_codesniffer": "3.*"
     },
-    "autoload": {
-        "psr-0": {"Kazoo": "lib/hz2600", "CallflowBuilder": "lib/hz2600"}
-    }
+    "type": "library"
 }
