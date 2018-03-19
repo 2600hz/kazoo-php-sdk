@@ -10,12 +10,10 @@ class Conference extends AbstractEntity
         $envelope->action = "dial";
         $envelope->data = $data;
 
-        $id = $this->getId();
-
-        $this->execute($envelope)
+        return $this->executeDial($envelope)
     }
 
-    public function execute($envelope) {
+    public function executeDial($envelope) {
         if ($this->read_only) {
             throw new ReadOnly("The entity is read-only");
         }
@@ -28,8 +26,10 @@ class Conference extends AbstractEntity
         $response = $this->put($payload);
 
         $entity = $response->getData();
-        $this->setEntity($entity);
+        $endpoints = new ConferenceDials();
 
-        return $this;
+        $endpoints->setCollection($entity);
+
+        return $endpoints;
     }
 }
