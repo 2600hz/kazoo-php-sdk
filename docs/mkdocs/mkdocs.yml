@@ -1,0 +1,31 @@
+site_name: Dev Reference
+
+pages:
+- './docs/index.md'
+- './README.md'
+- 'Usage':
+    - './docs/Usage/users.md'
+    - './docs/Usage/vmboxes.md'
+    - './docs/Usage/acls.md'
+    - './docs/Usage/accounts.md'
+    - './docs/Usage/index.md'
+    - './docs/Usage/ips.md'
+    - './docs/Usage/devices.md'
+- 'Adding APIs':
+    - './docs/AddingAPIs/index.md'
+    - './docs/AddingAPIs/entity.md'
+    - './docs/AddingAPIs/collections.md'
+- 'Callflow Builder': './docs/CallflowBuilder/index.md'
+- 'Authentication':
+    - './docs/Authentication/none.md'
+    - './docs/Authentication/user.md'
+    - './docs/Authentication/index.md'
+    - './docs/Authentication/api_key.md'
+- 'Internals':
+    - './docs/SdkInternals/index.md'
+- 'Examples':
+    - './docs/Examples/index.md'
+- 'Testing':
+  - './docs/UnitTests/common.md'
+  - './docs/UnitTests/index.md'
+  - './docs/UnitTests/create_test.md'
