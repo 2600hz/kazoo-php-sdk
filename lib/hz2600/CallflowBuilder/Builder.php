@@ -40,10 +40,20 @@ class Builder {
      * @param \CallflowBuilder\Node\AbstractNode $root_node
      */
     public function name($name){
-        $this->name = $name;  
-        return $this; 
+        $this->name = $name;
+        return $this;
     }
-   
+
+     /**
+     *
+     *
+     *
+     */
+    public function featureCode($featureCode){
+        $this->featurecode = $featureCode;
+        return $this;
+    }
+
      /**
      *
      *
