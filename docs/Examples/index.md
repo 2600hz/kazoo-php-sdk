@@ -99,7 +99,7 @@ $authToken = new \Kazoo\AuthToken\User('username', 'password', 'sip.realm');
 $sdk = new \Kazoo\SDK($authToken, $options);
 
 var_dump("List all devices for user $user_id in account $subaccount_id");
-$filter = array('filter_owner_id' => $user_id);                                 
+$filter = array('filter_owner_id' => $user_id);
 $devices = $sdk->Account($subaccount_id)->Devices($filter);
 foreach($devices as $element) {
     echo $element;
@@ -133,7 +133,7 @@ foreach($account->Users($filter) as $element) {
 
 ```
 
-##Device Quickcall
+## Device Quickcall
 ```php
 <?php
 
@@ -162,7 +162,7 @@ $device->quickcall(4002,$options_caller);
 
 ```
 
-##Phonenumber 
+## Phonenumber
 ```php
 
 <?php
@@ -188,7 +188,7 @@ echo $find_numbers,"\n";
 
 ```
 
-##CDR
+## CDR
 ```php
 
 
@@ -214,14 +214,14 @@ echo $cdrs;
 
 ```
 
-##Create Account
+## Create Account
 ```php
 
 function CreateNewAccount($sdk, $account_name) {
 	$account = $sdk->Account(null);
 	$account->name = $account_name;
 	$account->save;
-	
+
 	return $account->getId();
 }
 ```
