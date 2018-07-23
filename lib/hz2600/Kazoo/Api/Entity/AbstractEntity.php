@@ -154,6 +154,28 @@ abstract class AbstractEntity extends AbstractResource
 
         $this->setId();
     }
+    
+     /**
+     * downloads or streams a media file
+     * @param  boolean $stream  Set to true to stream the file
+     * @return binary           Media file
+     */
+    public function getRaw($stream = false)
+    {
+        $this->setTokenValue($this->getEntityIdName(), $this->getId());
+        $uri = $this->getURI('/raw');
+        $x   = $this->getSDK()->get($uri, array(), array('accept'=>'audio/*',
+            'content_type'=>'audio/*', 'Range'=> 'bytes'));
+
+        header('Content-Type: '.$x->getHeader('Content-Type')[0]);
+        header('content-length: '.$x->getHeader('content-length')[0]);
+        header('Accept-Ranges: '.$x->getHeader('Accept-Ranges')[0]);
+
+        if (!$stream) {
+            header('Content-Disposition: '.$x->getHeader('Content-Disposition')[0]);
+        }
+        echo $x->getBody();
+    }
 
     /**
      * Explicitly fetch from Kazoo, typicall it lazy-loads.
@@ -172,6 +194,24 @@ abstract class AbstractEntity extends AbstractResource
         return $this;
     }
 
+    public function partialUpdate($append_uri){
+        if ($this->read_only) {
+            throw new ReadOnly("The entity is read-only");
+        }
+
+        $id = $this->getId();
+        $payload = $this->getPayload();
+
+        $this->setTokenValue($this->getEntityIdName(), $id);
+
+        $response = $this->patch($payload, $append_uri);
+
+        $entity = $response->getData();
+        $this->setEntity($entity);
+
+        return $this;
+    }
+
     /**
      * Saves the current entity, if it does not have an
      * id then it will be created.
@@ -184,6 +224,7 @@ abstract class AbstractEntity extends AbstractResource
 
         $id = $this->getId();
         $payload = $this->getPayload();
+
         $this->setTokenValue($this->getEntityIdName(), $id);
 
         if (empty($id)) {
@@ -198,6 +239,25 @@ abstract class AbstractEntity extends AbstractResource
         return $this;
     }
 
+    public function update($append_uri = null) {
+        if ($this->read_only) {
+            throw new ReadOnly("The entity is read-only");
+        }
+
+        $id = $this->getId();
+        $payload = $this->getPayload();
+
+        $this->setTokenValue($this->getEntityIdName(), $id);
+
+        $response = $this->post($payload, $append_uri);
+
+        $entity = $response->getData();
+        $this->setEntity($entity);
+
+        return $this;
+    }
+
+
     /**
      * Remove the entity.  Note: it is called remove
      * because the parent has a delete function and
@@ -205,13 +265,13 @@ abstract class AbstractEntity extends AbstractResource
      * $this->put or $this->post.
      *
      */
-    public function remove() {
+    public function remove($append_uri = null) {
         if ($this->read_only) {
             throw new ReadOnly("The entity is read-only");
         }
 
         $this->setTokenValue($this->getEntityIdName(), $this->getId());
-        $this->delete();
+        $this->delete(null, $append_uri);
         $this->reset();
         return $this;
     }
@@ -344,7 +404,6 @@ abstract class AbstractEntity extends AbstractResource
      */
     protected function setId($entity_id = null) {
         $this->entity_id = $entity_id;
-
         if (empty($entity_id)) {
             unset($this->entity->id);
         }
@@ -357,7 +416,6 @@ abstract class AbstractEntity extends AbstractResource
     protected function getPayload() {
         $shell = new stdClass();
         $shell->data = $this->getEntity();
-
         return json_encode($shell);
     }
 
@@ -376,4 +434,50 @@ abstract class AbstractEntity extends AbstractResource
     protected function readOnly() {
         $this->read_only = TRUE;
     }
+
+    // auto-create nodes for this->k1->k2->k3 = v1
+    public static function mset($chunk, array $keys, $value) {
+        $head = $chunk;
+        $last = count($keys)-1;
+        foreach($keys as $id => $key) {
+            if ($last == $id) {
+                if (is_null($value)) {
+                    unset($chunk->$key);
+                } else {
+                    $chunk->$key = $value;
+                }
+            } else {
+                $chunk->$key = isset($chunk->$key)? $chunk->$key : new stdClass();
+                $chunk = $chunk->$key;
+            }
+        }
+        return $head;
+    }
+
+    public function set(array $keys, $value) {
+        self::mset($this, $keys, $value);
+        return $this;
+    }
+
+    public function write($object, $append_uri = null) {
+        $obj = new \stdClass();
+        $obj->data = $object;
+        $payload = json_encode($obj);
+
+        $id = $this->getId();
+        if (empty($id)) {
+            $response = $this->put($payload, $append_uri);
+        } else {
+            $response = $this->post($payload, $append_uri);
+        }
+
+        $entity = $response->getData();
+        $this->setEntity($entity);
+        return $this;
+    }
+
+    public function read() {
+        return $this->getEntity();
+    }
+
 }

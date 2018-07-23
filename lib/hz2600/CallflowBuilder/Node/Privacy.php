@@ -9,7 +9,7 @@ class Privacy extends AbstractNode
         $this->module = "privacy";
     }   
 
-    public function action($action){
-        $this->data->action = $action;  
+    public function mode($mode){
+        $this->data->mode = $mode;  
     }
 }

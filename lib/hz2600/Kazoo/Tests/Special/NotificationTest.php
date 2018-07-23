@@ -12,7 +12,7 @@ namespace Kazoo\Tests\Functional;
 use \Kazoo\Tests\Common\FunctionalTest;
 
 /**
- * @group functional
+ * @group special
  */
 class NotificationTest extends FunctionalTest
 {
@@ -43,6 +43,9 @@ class NotificationTest extends FunctionalTest
      */
     public function testListingNotifications($notification_id) {
         $notifications = $this->getSDK()->Account()->Notifications();
+        $this->markTestIncomplete(
+            'This test requires live notifications to be available'
+        );
 
         $notification = null;
         foreach($notifications as $element) {
@@ -64,6 +67,9 @@ class NotificationTest extends FunctionalTest
      * @depends testId
      */
     public function testFetchNotification($notification_id) {
+        $this->markTestIncomplete(
+            'This test requires live notifications to be available'
+        );
         $notification = $this->getSDK()->Account($this->account_id)->Notification($notification_id);
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\Notification", $notification);

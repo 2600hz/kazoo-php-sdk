@@ -1,13 +1,13 @@
 <?php
 
-namespace Kazoo\Tests\Functional;
+namespace Kazoo\Tests\Special;
 
 use \Exception;
 
 use \Kazoo\Tests\Common\FunctionalTest;
 
 /**
- * @group functional
+ * @group special
  */
 class AclTest extends FunctionalTest
 {
@@ -20,7 +20,5 @@ class AclTest extends FunctionalTest
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Collection\\Acls", $acls);
         $this->assertTrue((count($acls) > 0));
-
-        // $acls->fetch();
     }
 }

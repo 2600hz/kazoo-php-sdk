@@ -4,11 +4,25 @@ namespace Kazoo\HttpClient;
 
 use \Kazoo\SDK;
 use \Kazoo\HttpClient\Message\Response;
-use \Kazoo\HttpClient\Listener\ErrorListener;
-use \Kazoo\HttpClient\Listener\AuthListener;
 
-use \Guzzle\Http\Client as GuzzleClient;
-use \Guzzle\Http\ClientInterface;
+use \Kazoo\Api\Exception\ApiException;
+use \Kazoo\Api\Exception\Validation;
+use \Kazoo\Api\Exception\RateLimit;
+use \Kazoo\Api\Exception\Billing;
+use \Kazoo\Api\Exception\Conflict;
+use \Kazoo\AuthToken\Exception\Unauthenticated;
+use \Kazoo\AuthToken\Exception\Unauthorized;
+use \Kazoo\HttpClient\Exception\HttpException;
+use \Kazoo\HttpClient\Exception\NotFound;
+use \Kazoo\HttpClient\Exception\InvalidMethod;
+use \Kazoo\HttpClient\Exception\ServerErrorResponse;
+use \Kazoo\HttpClient\Exception\ServiceNotAvailable;
+
+use GuzzleHttp\Middleware;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response as GuzzleResponse;
 
 /**
  * Performs requests on Kazoo API.
@@ -18,7 +32,7 @@ class HttpClient implements HttpClientInterface
 {
     /**
      *
-     * @var \Guzzle\Http\Client
+     * @var \GuzzleHttp\Client
      */
     private $client;
 
@@ -40,10 +54,59 @@ class HttpClient implements HttpClientInterface
      */
     public function __construct(SDK $sdk) {
         $this->setSDK($sdk);
-        $this->setClient(new GuzzleClient('', $sdk->getOptions()));
-        $this->addListener('request.before_send', array(new AuthListener($sdk), 'onRequestBeforeSend'));
-        $this->addListener('request.error', array(new ErrorListener(), 'onRequestError'));
-        $this->resetHeaders();
+        $sdk = $this->getSDK();
+        $options = $sdk->getOptions();
+
+        $handler = HandlerStack::create();
+        $handler->push(Middleware::mapRequest(function (Request $request) {
+            $sdk = $this->getSDK();
+            $sdk->logEntity("request", $request);
+            $token = $sdk->getAuthToken()->getToken();
+            return $request->withHeader('X-Auth-Token', $token);
+        }));
+        $handler->push(Middleware::mapResponse(function (GuzzleResponse $guzzleResponse) {
+            $response = new Response($guzzleResponse);
+            $this->getSDK()->logEntity("response", $response);
+            $code = $response->getStatusCode();
+            switch ($code) {
+            case 400:
+                throw new Validation($response);
+            case 401:
+                // invalid creds
+                throw new Unauthenticated($response);
+            case 402:
+                // not enough credit
+                throw new Billing($response);
+            case 403:
+                // forbidden
+                throw new Unauthorized($response);
+            case 404:
+                // not found
+                throw new NotFound($response);
+            case 405:
+                // invalid method
+                throw new InvalidMethod($response);
+            case 409:
+                // conflicting documents
+                throw new Conflict($response);
+            case 429:
+                // too many requests
+                throw new RateLimit($response);
+            case 500:
+                throw new ServerErrorResponse($response);
+            case 503:
+                throw new ServiceNotAvailable($response);
+            default:
+                if ($code >= 400 && $code < 500) {
+                    throw new ApiException($response);
+                } else if ($code > 500) {
+                    throw new HttpException($response);
+                }
+            }
+            return $guzzleResponse;
+        }));
+        $options['handler'] = $handler;
+        $this->setClient(new GuzzleClient($options));
     }
 
     /**
@@ -59,11 +122,11 @@ class HttpClient implements HttpClientInterface
      *
      */
     public function resetHeaders() {
-        $sdk = $this->getSDK();
+        $headers = $this->getSDK()->getOption('headers');
         $this->headers = array(
-            'Accept' => $sdk->getOption('accept'),
-            'Content-Type' => $sdk->getOption('content_type'),
-            'User-Agent' => $sdk->getOption('user_agent'),
+            'Accept' => $headers['accept'],
+            'Content-Type' => $headers['content_type'],
+            'User-Agent' => $headers['user_agent'],
         );
     }
 
@@ -113,12 +176,12 @@ class HttpClient implements HttpClientInterface
 
     private function createRequest($httpMethod, $uri, $content = null, array $headers = array(), array $options = array()) {
         $merged_headers = array_merge($this->headers, $headers);
-        return $this->getClient()->createRequest($httpMethod, $uri, $merged_headers, $content, $options);
+        return new Request($httpMethod, $uri, $merged_headers, $content);
     }
 
     /**
      *
-     * @return \Guzzle\Http\Client $client
+     * @return \GuzzleHttp\Client $client
      */
     private function getClient() {
         return $this->client;
@@ -126,7 +189,7 @@ class HttpClient implements HttpClientInterface
 
     /**
      *
-     * @param \Guzzle\Http\Client $client
+     * @param \GuzzleHttp\Client $client
      */
     private function setClient(GuzzleClient $client) {
         $this->client = $client;
@@ -154,6 +217,6 @@ class HttpClient implements HttpClientInterface
      * @param string|array $listener
      */
     public function addListener($eventName, $listener) {
-        $this->getClient()->getEventDispatcher()->addListener($eventName, $listener);
+        $this->getClient()->getEmitter()->on($eventName, $listener);
     }
 }

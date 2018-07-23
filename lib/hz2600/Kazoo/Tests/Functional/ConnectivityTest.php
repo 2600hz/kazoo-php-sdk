@@ -3,7 +3,7 @@
 namespace Kazoo\Tests\Functional;
 
 use \Kazoo\Tests\Common\FunctionalTest;
-use StdClass; 
+use StdClass;
 
 /**
  * @group functional
@@ -14,12 +14,17 @@ class ConnectivityTest extends FunctionalTest
      * @test
      */
     public function testCreateConnectivity() {
+        $account = $this->getSDK()->Account();
+        $realm = $account->fetch()->realm;
+
         $connectivity = $this->getSDK()->Account()->Connectivity();
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\Connectivity", $connectivity);
         $this->assertTrue((strlen($connectivity->getId()) == 0));
 
         $connectivity->name = "SDK Create Test " . rand(100, 1000);
+        $connectivity->account = new stdClass();
+        $connectivity->account->auth_realm = $realm;
         $connectivity->save();
 
         $this->assertTrue((strlen($connectivity->getId()) > 0));
@@ -73,11 +78,11 @@ class ConnectivityTest extends FunctionalTest
      */
     public function testListingConnectivities($connectivity_id) {
         $connectivities = $this->getSDK()->Account()->Connectivities();
-
         $connectivity = null;
         foreach($connectivities as $element) {
+            $element = $element->fetch();
             if ($element->id == $connectivity_id) {
-                $connectivity = $element->fetch();
+                $connectivity = $element;
                 break;
             }
         }
@@ -86,30 +91,9 @@ class ConnectivityTest extends FunctionalTest
         $this->assertTrue((strlen($connectivity->getId()) > 0));
         $this->assertEquals($connectivity->getId(), $connectivity_id);
 
-        return $connectivity->name;
+        return $connectivity->account->auth_realm;
     }
 
-    /**
-     * @test
-     * @depends testCreateConnectivity
-     * @depends testListingConnectivities
-     */
-    public function testFilteredListingConnectivities($connectivity_id, $connectivity_name) {
-        $filter = array('filter_name' => $connectivity_name);
-        $connectivities = $this->getSDK()->Account()->Connectivities($filter);
-
-        $this->assertTrue(count($connectivities) == 1);
-
-        $element = $connectivities->current();
-
-        $this->assertTrue((strlen($element->id) > 0));
-        $this->assertEquals($element->id, $connectivity_id);
-
-        $filter = array('filter_name' => 'no-such-connectivity');
-        $connectivities = $this->getSDK()->Account()->Connectivities($filter);
-
-        $this->assertTrue(count($connectivities) == 0);
-    }
 
     /**
      * @test

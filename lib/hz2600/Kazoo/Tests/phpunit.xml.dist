@@ -29,6 +29,10 @@
     <testsuite name="SDK Unit Tests">
       <directory>Unit</directory>
     </testsuite>
+    <!--note="Only turn this on if your test kazoo has ALL the CB modules loaded and you are not on a prod system"-->
+    <!--testsuite name="SDK Special Tests">
+      <directory>Special</directory>
+    </testsuite-->
   </testsuites>
 
   <filter>

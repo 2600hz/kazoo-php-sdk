@@ -3,13 +3,13 @@ namespace Kazoo\Api\Entity;
 
 use \stdClass;
 
-use \Guzzle\Http\Exception\ServerErrorResponseException;
+use \kazoo\HttpClient\Exception\HttpException;
 
 use \Kazoo\Common\Exception\ReadOnly;
 
 class PhoneNumber extends AbstractEntity
 {
-    private $new_number = FALSE;
+    private $new_number = TRUE;
 
     /**
      *
@@ -17,10 +17,11 @@ class PhoneNumber extends AbstractEntity
      */
     public function getId() {
         $id = parent::getId();
-        if (isset($id[0]) and $id[0]=="+") {
-            return substr($id, 1);
-        }
-        return urlencode($id);
+        return $id;
+    }
+
+    public function notNew() {
+        $this->new_number = FALSE;
     }
 
     /**
@@ -30,7 +31,7 @@ class PhoneNumber extends AbstractEntity
     public function activate() {
         $id = $this->getId();
         $this->setTokenValue($this->getEntityIdName(), $id);
-        $this->put(array(), "/activate");
+        $this->put('', "/activate");
     }
 
     /**
@@ -40,7 +41,7 @@ class PhoneNumber extends AbstractEntity
     public function reserve() {
         $id = $this->getId();
         $this->setTokenValue($this->getEntityIdName(), $id);
-        $this->put(array(), "/reserve");
+        $this->put('', "/reserve");
     }
 
     /**
@@ -70,11 +71,10 @@ class PhoneNumber extends AbstractEntity
 
         try {
             parent::fetch($append_uri);
-        } catch (ServerErrorResponseException $e) {
+        } catch (HttpException $e) {
             $this->setEntity(new stdClass);
             $this->new_number = TRUE;
         }
-
         $this->setId($id);
 
         return $this;

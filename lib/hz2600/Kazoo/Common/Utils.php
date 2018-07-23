@@ -17,8 +17,16 @@ class Utils
      *
      */
     public static function underscoreClassName($class) {
-        $class_name = self::shortClassName($class);
+        $class_name = self::fixResrvedClassName(self::shortClassName($class));
         return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $class_name));
+    }
+
+    /**
+     * Use reserved Class Name
+     *
+     */
+    public static function fixResrvedClassName($class_name) {
+        return str_replace("My","",$class_name);
     }
 
     /**
@@ -36,6 +44,7 @@ class Utils
             'oes' => 'o',
             'ies' => 'y',
             'ves' => 'f',
+            'hes' => 'h',
             's' => '');
 
         foreach(array_keys($rules) as $key) {
@@ -61,10 +70,15 @@ class Utils
      *   https://stackoverflow.com/questions/1534127/pluralize-in-php
      */
     public static function pluralize($word) {
+        if ($word == "clicktocall") {
+            return $word;
+        }
+
         switch(strtolower($word[strlen($word) - 1])) {
         case 'y':
             return substr($word, 0, -1) . 'ies';
-        case 's':        
+        case 's':
+        case 'h':
         case 'x':
             return $word. 'es';
         default:

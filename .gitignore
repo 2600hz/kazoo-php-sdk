@@ -7,4 +7,7 @@ composer.lock
 vendor/
 vendor/*
 *~
-src/Kazoo/Tests/phpunit.xml
+lib/hz2600/Kazoo/Tests/phpunit.xml
+docs/mkdocs/docs
+/docs/mkdocs/mkdocs.local
+docs/mkdocs/site

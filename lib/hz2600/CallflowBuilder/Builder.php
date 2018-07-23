@@ -32,7 +32,28 @@ class Builder {
         $this->flow = $root_node->build();  
         return $this; 
     }
-   
+
+     /**
+     *
+     *
+     *
+     * @param \CallflowBuilder\Node\AbstractNode $root_node
+     */
+    public function name($name){
+        $this->name = $name;
+        return $this;
+    }
+
+     /**
+     *
+     *
+     *
+     */
+    public function featureCode($featureCode){
+        $this->featurecode = $featureCode;
+        return $this;
+    }
+
      /**
      *
      *

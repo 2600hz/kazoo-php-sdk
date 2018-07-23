@@ -1,0 +1,15 @@
+version: 2
+jobs:
+  build:
+    shell: /bin/bash --login
+    docker:
+      - image: circleci/build-image:ubuntu-14.04-XXL-upstart-1189-5614f37
+        command: /sbin/init
+      - image: circleci/php
+      - image: circleci/python
+    steps:
+      - checkout
+      - run: pip install --upgrade pip
+      - run: pip install pyyaml mkdocs pyembed-markdown jsonschema
+      - run: make fmt
+      - run: make docs-clean docs

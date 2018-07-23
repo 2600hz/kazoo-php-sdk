@@ -29,16 +29,22 @@ class SDK implements ChainableInterface
      */
     private $options = array(
         'base_url' => 'http://127.0.0.1:8000',
-        'user_agent' => 'kazoo-php-sdk (http://github.com/2600hz/kazoo-php-sdk)',
-        'content_type' => 'application/json',
-        'accept' => 'application/json',
-        'timeout' => 10,
+        'headers' => array(
+            'User-Agent' => 'kazoo-php-sdk',
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json'
+        ),
+        'defaults' => array(
+            'timeout' => 10,
+        ),
         'api_limit' => 5000,
-        'api_version' => '1',
+        'api_version' => '2',
         'log_type' => null,
         'log_file' => null,
         'cache_dir' => null,
-        'schema_dir' => null
+        'schema_dir' => null,
+        'logger' => null,
+        'entity_logger' => null
     );
 
     /**
@@ -267,6 +273,7 @@ class SDK implements ChainableInterface
      *
      */
     private function executeGet($uri, $parameters, $requestHeaders) {
+        $this->logMessage("debug", "get %s", $uri);
         return $this->getHttpClient()->get($uri, $parameters, $requestHeaders);
     }
 
@@ -309,6 +316,7 @@ class SDK implements ChainableInterface
      *
      */
     private function executePost($uri, $content, $requestHeaders) {
+        $this->logMessage("debug", "post %s", $uri);
         return $this->getHttpClient()->post($uri, $content, $requestHeaders);
     }
 
@@ -334,6 +342,7 @@ class SDK implements ChainableInterface
      *
      */
     private function executePatch($uri, $content, $requestHeaders) {
+        $this->logMessage("debug", "patch %s", $uri);
         return $this->getHttpClient()->patch($uri, $content, $requestHeaders);
     }
 
@@ -359,6 +368,7 @@ class SDK implements ChainableInterface
      *
      */
     private function executePut($uri, $content, $requestHeaders) {
+        $this->logMessage("debug", "put %s", $uri);
         return $this->getHttpClient()->put($uri, $content, $requestHeaders);
     }
 
@@ -384,6 +394,7 @@ class SDK implements ChainableInterface
      *
      */
     private function executeDelete($uri, $content, $requestHeaders) {
+        $this->logMessage("debug", "delete %s", $uri);
         return $this->getHttpClient()->delete($uri, $content, $requestHeaders);
     }
 
@@ -399,4 +410,24 @@ class SDK implements ChainableInterface
             $this->token_values[$name] = $value;
         }
     }
+
+    // logMessage($severity, $sprintf_format, $arg1, ... )
+    public function logMessage() {
+        if (is_null($this->options['logger'])) {
+            return;
+        }
+        $arguments = func_get_args();
+        $severity = array_shift($arguments);
+        $format = array_shift($arguments);
+        call_user_func_array($this->options['logger'], [$severity, vsprintf($format, $arguments)]);
+    }
+
+    public function logEntity() {
+        if (is_null($this->options['entity_logger'])) {
+            return;
+        }
+        call_user_func_array($this->options['entity_logger'], func_get_args());
+    }
+
+
 }

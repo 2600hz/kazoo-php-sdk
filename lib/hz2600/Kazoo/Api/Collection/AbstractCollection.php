@@ -304,4 +304,9 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
     private function setElementWrapper(ElementWrapper $wrapper) {
         $this->element_wrapper = $wrapper;
     }
+
+    public function remove($append_uri = null) {
+        $this->delete(null, $append_uri);
+        return $this;
+    }
 }
