@@ -16,7 +16,7 @@ class Conference extends AbstractEntity
         $envelope->action = "dial";
         $envelope->data = $data;
 
-        return $this->executeDial($envelope)
+        return $this->executeDial($envelope);
     }
 
     public function executeDial($envelope) {
