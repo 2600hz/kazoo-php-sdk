@@ -42,13 +42,6 @@ class Account extends AbstractEntity
         return $accounts->siblings($filter);
     }
 
-    // TODO: channels is a read-only property...
-    public function channels(array $filter = array()) {
-        $accounts = new Accounts($this->getChain());
-        $accounts->setTokenValue('account_id', $this->getId());
-        return $accounts->channels($filter);
-    }
-
     public function apiKey() {
         $response = $this->get(array(), '/api_key');
         return $response->getData()->api_key;
