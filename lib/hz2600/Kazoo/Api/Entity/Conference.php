@@ -38,4 +38,22 @@ class Conference extends AbstractEntity
 
         return $endpoints;
     }
+    
+    public function participantAction($id, $action) {
+        if (!is_numeric($id)) {
+            throw new RunTimeException("Invalid participant ID");
+        }
+        
+        $payload = json_encode([
+            "data" => [
+                "action" => $action
+            ]
+        ]);
+        
+        $this->setTokenValue($this->getEntityIdName(), $this->getId());
+        
+        $response = $this->put($payload, "/participants/$id");
+        
+        return $response->getData();
+    }
 }
