@@ -41,7 +41,7 @@ class Conference extends AbstractEntity
     
     public function participantAction($id, $action) {
         if (!is_numeric($id)) {
-            throw new RuntimException("Invalid participant ID");
+            throw new RunTimeException("Invalid participant ID");
         }
         
         $payload = json_encode([
