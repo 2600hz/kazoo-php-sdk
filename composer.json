@@ -30,7 +30,7 @@
     "preferred-install": "dist",
     "require": {
         "ext-curl": "*",
-        "guzzlehttp/guzzle": ">=6.2.1",
+        "guzzlehttp/guzzle": ">=6.5",
         "monolog/monolog": "~1.17",
         "php": ">=5.5"
     },
