@@ -414,7 +414,7 @@ abstract class AbstractEntity extends AbstractResource
      *
      */
     protected function getPayload() {
-        $shell = new stdClass();
+        $shell = new \stdClass();
         $shell->data = $this->getEntity();
         return json_encode($shell);
     }
@@ -447,7 +447,7 @@ abstract class AbstractEntity extends AbstractResource
                     $chunk->$key = $value;
                 }
             } else {
-                $chunk->$key = isset($chunk->$key)? $chunk->$key : new stdClass();
+                $chunk->$key = isset($chunk->$key)? $chunk->$key : new \stdClass();
                 $chunk = $chunk->$key;
             }
         }
@@ -460,7 +460,7 @@ abstract class AbstractEntity extends AbstractResource
     }
 
     public function write($object, $append_uri = null) {
-        $obj = new \stdClass();
+        $obj = new \\stdClass();
         $obj->data = $object;
         $payload = json_encode($obj);
 

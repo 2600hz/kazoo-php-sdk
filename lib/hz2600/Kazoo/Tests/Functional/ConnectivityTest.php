@@ -2,8 +2,8 @@
 
 namespace Kazoo\Tests\Functional;
 
-use \Kazoo\Tests\Common\FunctionalTest;
 use StdClass;
+use \Kazoo\Tests\Common\FunctionalTest;
 
 /**
  * @group functional
@@ -13,7 +13,8 @@ class ConnectivityTest extends FunctionalTest
     /**
      * @test
      */
-    public function testCreateConnectivity() {
+    public function testCreateConnectivity()
+    {
         $account = $this->getSDK()->Account();
         $realm = $account->fetch()->realm;
 
@@ -23,7 +24,7 @@ class ConnectivityTest extends FunctionalTest
         $this->assertTrue((strlen($connectivity->getId()) == 0));
 
         $connectivity->name = "SDK Create Test " . rand(100, 1000);
-        $connectivity->account = new stdClass();
+        $connectivity->account = new \stdClass();
         $connectivity->account->auth_realm = $realm;
         $connectivity->save();
 
@@ -35,7 +36,8 @@ class ConnectivityTest extends FunctionalTest
      * @test
      * @depends testCreateConnectivity
      */
-    public function testFetchConnectivity($connectivity_id) {
+    public function testFetchConnectivity($connectivity_id)
+    {
         $connectivity = $this->getSDK()->Account()->Connectivity($connectivity_id);
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\Connectivity", $connectivity);
@@ -49,7 +51,8 @@ class ConnectivityTest extends FunctionalTest
      * @test
      * @depends testFetchConnectivity
      */
-    public function testUpdateConnectivity($connectivity) {
+    public function testUpdateConnectivity($connectivity)
+    {
         $connectivity_id = $connectivity->getId();
         $current_name = $connectivity->name;
         $new_name = "SDK Update Test " . rand(100, 1000);
@@ -76,10 +79,11 @@ class ConnectivityTest extends FunctionalTest
      * @test
      * @depends testCreateConnectivity
      */
-    public function testListingConnectivities($connectivity_id) {
+    public function testListingConnectivities($connectivity_id)
+    {
         $connectivities = $this->getSDK()->Account()->Connectivities();
         $connectivity = null;
-        foreach($connectivities as $element) {
+        foreach ($connectivities as $element) {
             $element = $element->fetch();
             if ($element->id == $connectivity_id) {
                 $connectivity = $element;
@@ -94,13 +98,13 @@ class ConnectivityTest extends FunctionalTest
         return $connectivity->account->auth_realm;
     }
 
-
     /**
      * @test
      * @depends testFetchConnectivity
      * @expectedExceptionDisabled \Kazoo\HttpClient\Exception\NotFound
      */
-    public function testRemoveChildConnectivity($connectivity) {
+    public function testRemoveChildConnectivity($connectivity)
+    {
         $connectivity_id = $connectivity->getId();
 
         $this->assertTrue((strlen($connectivity->getId()) > 0));

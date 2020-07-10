@@ -3,11 +3,10 @@
 namespace Kazoo\Api\Collection;
 
 use \Exception;
-use \stdClass;
-
+use \Kazoo\Api\Exception\Unfetchable;
 use \Kazoo\Common\ChainableInterface;
 use \Kazoo\Common\Exception\ReadOnly;
-use \Kazoo\Api\Exception\Unfetchable;
+use \stdClass;
 
 class ElementWrapper
 {
@@ -39,13 +38,14 @@ class ElementWrapper
      *
      *
      */
-    private $fetchable = TRUE;
+    private $fetchable = true;
 
     /**
      *
      *
      */
-    public function __construct(ChainableInterface $chain, $name) {
+    public function __construct(ChainableInterface $chain, $name)
+    {
         $this->setChain($chain);
         $this->setEntityName('\\Kazoo\\Api\\Entity\\' . $name);
     }
@@ -54,7 +54,8 @@ class ElementWrapper
      *
      *
      */
-    public function __toString() {
+    public function __toString()
+    {
         try {
             return $this->toJson();
         } catch (Exception $e) {
@@ -68,7 +69,8 @@ class ElementWrapper
      *
      *
      */
-    public function __set($name, $value) {
+    public function __set($name, $value)
+    {
         throw new ReadOnly("Collection elements are read-only");
     }
 
@@ -76,7 +78,8 @@ class ElementWrapper
      *
      *
      */
-    public function &__get($name) {
+    public function &__get($name)
+    {
         return $this->getElement()->$name;
     }
 
@@ -84,7 +87,8 @@ class ElementWrapper
      *
      *
      */
-    public function fetch() {
+    public function fetch()
+    {
         if (!$this->fetchable) {
             throw new Unfetchable("This collection element has no corresponing API for the entity");
         }
@@ -102,32 +106,34 @@ class ElementWrapper
      *
      *
      */
-    public function toJson() {
-        return (string)json_encode($this->getElement());
+    public function toJson()
+    {
+        return (string) json_encode($this->getElement());
     }
 
     /**
      *
      *
      */
-    public function setElement(&$element, $id = null) {
+    public function setElement(&$element, $id = null)
+    {
         $this->element_id = $id;
         $this->element = $element;
 
         // TODO: going to need to figure out how to make the id generic..
-        if(!empty($element->device_id)) {
+        if (!empty($element->device_id)) {
             return $this->element_id = $element->device_id;
         }
 
         // TODO: when conference is live, then return object has uuid set, what breaks api
-        if (empty($element->id) && !empty($element->uuid)){
+        if (empty($element->id) && !empty($element->uuid)) {
             return $this->element_id = $element->uuid;
         }
 
         // NOTICE: this is a hack for the odd
         //   connectivity API which is an array of strings.....
-        if(is_string($element)) {
-            $this->element = new stdClass();
+        if (is_string($element)) {
+            $this->element = new \stdClass();
             $this->element_id = $element;
         }
     }
@@ -136,23 +142,26 @@ class ElementWrapper
      *
      *
      */
-    public function fetchable() {
-        $this->fetchable = TRUE;
+    public function fetchable()
+    {
+        $this->fetchable = true;
     }
 
     /**
      *
      *
      */
-    public function unfetchable() {
-        $this->fetchable = FALSE;
+    public function unfetchable()
+    {
+        $this->fetchable = false;
     }
 
     /**
      *
      *
      */
-    private function getElement() {
+    private function getElement()
+    {
         return $this->element;
     }
 
@@ -160,7 +169,8 @@ class ElementWrapper
      *
      *
      */
-    private function getElementId() {
+    private function getElementId()
+    {
         if (is_null($this->element_id)) {
             return $this->element->id;
         }
@@ -172,7 +182,8 @@ class ElementWrapper
      *
      *
      */
-    private function getEntityName() {
+    private function getEntityName()
+    {
         return $this->entity_name;
     }
 
@@ -180,7 +191,8 @@ class ElementWrapper
      *
      *
      */
-    private function setEntityName($entity_name) {
+    private function setEntityName($entity_name)
+    {
         if (!@class_exists($entity_name)) {
             $this->entity_name = null;
         } else {
@@ -192,7 +204,8 @@ class ElementWrapper
      *
      *
      */
-    private function getChain() {
+    private function getChain()
+    {
         return $this->chain;
     }
 
@@ -200,7 +213,8 @@ class ElementWrapper
      *
      *
      */
-    private function setChain(ChainableInterface $chain) {
+    private function setChain(ChainableInterface $chain)
+    {
         $this->chain = $chain;
     }
 }
