@@ -2,9 +2,8 @@
 
 namespace Kazoo\AuthToken;
 
-use \stdClass;
-
 use \Kazoo\SDK;
+use \stdClass;
 
 /**
  *
@@ -41,7 +40,8 @@ class ApiKey implements AuthTokenInterface
      * @param string $password
      * @param string $sipRealm
      */
-    public function __construct($api_key) {
+    public function __construct($api_key)
+    {
         @session_start();
         $this->api_key = $api_key;
     }
@@ -50,7 +50,8 @@ class ApiKey implements AuthTokenInterface
      *
      *
      */
-    public function __destruct() {
+    public function __destruct()
+    {
         if (!is_null($this->auth_response)) {
             $_SESSION['Kazoo']['AuthToken']['ApiKey'] = $this->auth_response;
         }
@@ -60,7 +61,8 @@ class ApiKey implements AuthTokenInterface
      *
      * @return null|SDK
      */
-    public function getSDK() {
+    public function getSDK()
+    {
         return $this->sdk;
     }
 
@@ -68,7 +70,8 @@ class ApiKey implements AuthTokenInterface
      *
      * @param SDK
      */
-    public function setSDK(SDK $sdk) {
+    public function setSDK(SDK $sdk)
+    {
         $this->sdk = $sdk;
     }
 
@@ -76,7 +79,8 @@ class ApiKey implements AuthTokenInterface
      *
      * @return string
      */
-    public function getAccountId() {
+    public function getAccountId()
+    {
         $response = $this->getAuthResponse();
         if (isset($response->account_id)) {
             return $response->account_id;
@@ -88,7 +92,8 @@ class ApiKey implements AuthTokenInterface
      *
      * @return string
      */
-    public function getToken() {
+    public function getToken()
+    {
         $response = $this->getAuthResponse();
         if (isset($response->auth_token)) {
             return $response->auth_token;
@@ -100,7 +105,8 @@ class ApiKey implements AuthTokenInterface
      *
      *
      */
-    public function reset() {
+    public function reset()
+    {
         $this->auth_response = null;
         if (isset($_SESSION['Kazoo']['AuthToken']['ApiKey'])) {
             unset($_SESSION['Kazoo']['AuthToken']['ApiKey']);
@@ -111,7 +117,8 @@ class ApiKey implements AuthTokenInterface
      *
      * @return string
      */
-    private function getAuthResponse() {
+    private function getAuthResponse()
+    {
         if (is_null($this->auth_response)) {
             $this->checkSessionResponse();
         }
@@ -123,7 +130,8 @@ class ApiKey implements AuthTokenInterface
      *
      *
      */
-    private function checkSessionResponse() {
+    private function checkSessionResponse()
+    {
         if (isset($_SESSION['Kazoo']['AuthToken']['ApiKey'])) {
             $this->auth_response = $_SESSION['Kazoo']['AuthToken']['ApiKey'];
         } else {
@@ -135,13 +143,14 @@ class ApiKey implements AuthTokenInterface
      *
      *
      */
-    private function requestToken() {
+    private function requestToken()
+    {
         if ($this->disabled) {
-            return new stdClass();
+            return new \stdClass();
         }
 
-        $payload = new stdClass();
-        $payload->data = new stdClass();
+        $payload = new \stdClass();
+        $payload->data = new \stdClass();
         $payload->data->api_key = $this->api_key;
 
         $sdk = $this->getSDK();

@@ -17,22 +17,22 @@ use \stdClass;
 class ChannelTest extends FunctionalTest
 {
     // don't run tests against the primary account, it will delete system channels
-   // private $account_id = '0a936fc79bdb4a8c38e6089ab44ad030';
+    // private $account_id = '0a936fc79bdb4a8c38e6089ab44ad030';
 
     /**
      * @test
      */
-    public function testListingChannels() {
+    public function testListingChannels()
+    {
 
         $this->markTestIncomplete(
             'This test requires live calls and does bad things to them.'
         );
 
-
         $channels = $this->getSDK()->Account()->Channels();
 
         $channel = null;
-        foreach($channels as $element) {
+        foreach ($channels as $element) {
             if (!empty($element)) {
                 $channel = $element->fetch();
             }
@@ -48,7 +48,8 @@ class ChannelTest extends FunctionalTest
      * @test
      * @depends testListingChannels
      */
-    public function testFetchChannel($channel_id) {
+    public function testFetchChannel($channel_id)
+    {
         $channel = $this->getSDK()->Account()->Channel($channel_id);
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\Channel", $channel);
@@ -62,8 +63,9 @@ class ChannelTest extends FunctionalTest
      * @test
      * @depends testFetchChannel
      */
-    public function testTransferChannel($channel) {
-        $data = new stdClass();
+    public function testTransferChannel($channel)
+    {
+        $data = new \stdClass();
         $data->action = "transfer";
 
         $channel->executeCommand($data);

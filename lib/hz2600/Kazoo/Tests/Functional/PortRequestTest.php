@@ -3,7 +3,6 @@
 namespace Kazoo\Tests\Functional;
 
 use \Kazoo\Tests\Common\FunctionalTest;
-
 use \stdClass;
 
 /**
@@ -14,17 +13,18 @@ class PortRequestTest extends FunctionalTest
     /**
      * @test
      */
-    public function testCreatePortRequest() {
-        $phone_number="+19139593975";
+    public function testCreatePortRequest()
+    {
+        $phone_number = "+19139593975";
         $portrequest = $this->getSDK()->Account()->PortRequest();
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\PortRequest", $portrequest);
         $this->assertTrue((strlen($portrequest->getId()) == 0));
 
         $portrequest->name = "SDK Create Test " . rand(100, 1000);
-        $portrequest->port_state="unconfirmed";
-        $portrequest->numbers = new stdClass();
-        $portrequest->numbers->$phone_number = new stdClass();
+        $portrequest->port_state = "unconfirmed";
+        $portrequest->numbers = new \stdClass();
+        $portrequest->numbers->$phone_number = new \stdClass();
         $portrequest->save();
 
         $this->assertTrue((strlen($portrequest->getId()) > 0));
@@ -35,7 +35,8 @@ class PortRequestTest extends FunctionalTest
      * @test
      * @depends testCreatePortRequest
      */
-    public function testFetchPortRequest($portrequest_id) {
+    public function testFetchPortRequest($portrequest_id)
+    {
         $portrequest = $this->getSDK()->Account()->PortRequest($portrequest_id);
 
         $this->assertInstanceOf("\\Kazoo\\Api\\Entity\\PortRequest", $portrequest);
@@ -49,7 +50,8 @@ class PortRequestTest extends FunctionalTest
      * @test
      * @depends testFetchPortRequest
      */
-    public function testUpdatePortRequest($portrequest) {
+    public function testUpdatePortRequest($portrequest)
+    {
         $portrequest_id = $portrequest->getId();
         $current_name = $portrequest->name;
         $new_name = "SDK Update First " . rand(100, 1000);
@@ -77,7 +79,8 @@ class PortRequestTest extends FunctionalTest
      * @depends testFetchPortRequest
      * @expectedExceptionDisabled \Kazoo\HttpClient\Exception\NotFound
      */
-    public function testRemoveChildPortRequest($portrequest) {
+    public function testRemoveChildPortRequest($portrequest)
+    {
         $portrequest_id = $portrequest->getId();
 
         $this->assertTrue((strlen($portrequest->getId()) > 0));
