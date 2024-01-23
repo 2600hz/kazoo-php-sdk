@@ -8,7 +8,7 @@ use \RuntimeException;
  * ReadOnly Exception
  *
  */
-class ReadOnly extends RuntimeException
+class ReadOnlyException extends RuntimeException
 {
     public function __construct($message){
         parent::__construct($message);

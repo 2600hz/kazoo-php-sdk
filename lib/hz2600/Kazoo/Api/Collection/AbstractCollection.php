@@ -8,7 +8,7 @@ use \ArrayAccess;
 
 use \Kazoo\Common\Utils;
 use \Kazoo\Common\ChainableInterface;
-use \Kazoo\Common\Exception\ReadOnly;
+use \Kazoo\Common\Exception\ReadOnlyException;
 use \Kazoo\Api\AbstractResource;
 
 abstract class AbstractCollection extends AbstractResource implements Iterator, Countable, ArrayAccess
@@ -75,7 +75,7 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
      *
      */
     public function __set($name, $value) {
-        throw new ReadOnly("Collections are read-only");
+        throw new ReadOnlyException("Collections are read-only");
     }
 
     /**
@@ -164,7 +164,7 @@ abstract class AbstractCollection extends AbstractResource implements Iterator, 
      *
      */
     public function offsetSet($offset, $value) {
-        throw new ReadOnly("Collections are read only");
+        throw new ReadOnlyException("Collections are read only");
     }
 
     /**

@@ -6,7 +6,7 @@ use \Exception;
 use \stdClass;
 
 use \Kazoo\Common\ChainableInterface;
-use \Kazoo\Common\Exception\ReadOnly;
+use \Kazoo\Common\Exception\ReadOnlyException;
 use \Kazoo\Api\Exception\Unfetchable;
 
 class ElementWrapper
@@ -69,7 +69,7 @@ class ElementWrapper
      *
      */
     public function __set($name, $value) {
-        throw new ReadOnly("Collection elements are read-only");
+        throw new ReadOnlyException("Collection elements are read-only");
     }
 
     /**
@@ -92,7 +92,7 @@ class ElementWrapper
         $entity_name = $this->getEntityName();
 
         if (is_null($entity_name)) {
-            throw new ReadOnly("This is a read only API");
+            throw new ReadOnlyException("This is a read only API");
         }
 
         return new $entity_name($this->getChain(), array($this->getElementId()));
