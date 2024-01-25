@@ -13,7 +13,7 @@ use \Kazoo\Common\Exception\ReadOnlyException;
 class AppsLink extends AbstractEntity
 {
 
-    public function save(){
+    public function save($append_url=null){
         throw new ReadOnlyException("The entity is read-only");
     }
 
